@@ -2,6 +2,7 @@ package it.polito.mad.team19lab2
 
 import android.os.Bundle
 import android.view.Menu
+import android.widget.Button
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.navigation.NavigationView
@@ -38,6 +39,8 @@ class MainActivity : AppCompatActivity() {
                 R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow), drawerLayout)
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+        //Comment this to avoid the first page is the itemDetail
+        navController.navigate(R.id.action_nav_home_to_itemDetailsFragment)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

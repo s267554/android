@@ -14,6 +14,9 @@
         <action
             android:id="@+id/action_HomeFragment_to_HomeSecondFragment"
             app:destination="@id/nav_home_second" />
+        <action
+            android:id="@+id/action_nav_home_to_itemDetailsFragment"
+            app:destination="@id/nav_item_detail" />
     </fragment>
     <fragment
         android:id="@+id/nav_home_second"
@@ -40,4 +43,24 @@
         android:name="it.polito.mad.team19lab2.ui.slideshow.SlideshowFragment"
         android:label="@string/menu_slideshow"
         tools:layout="@layout/fragment_slideshow" />
+    <fragment
+        android:id="@+id/nav_item_detail"
+        android:name="it.polito.mad.team19lab2.ItemDetailsFragment"
+        android:label="Item details">
+        <action
+            android:id="@+id/action_itemDetailsFragment_to_nav_home"
+            app:destination="@id/nav_home" />
+        <action
+            android:id="@+id/action_nav_item_detail_to_nav_edit_item"
+            app:destination="@id/nav_edit_item" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_edit_item"
+        android:name="it.polito.mad.team19lab2.EditItemFragment"
+        android:label="Edit Item"
+        tools:layout="@layout/fragment_edit_item">
+        <action
+            android:id="@+id/action_nav_edit_item_to_nav_item_detail"
+            app:destination="@id/nav_item_detail" />
+    </fragment>
 </navigation>
