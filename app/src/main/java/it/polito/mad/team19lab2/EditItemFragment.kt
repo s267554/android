@@ -6,6 +6,8 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.*
 import android.view.View.OnTouchListener
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import android.widget.EditText
 import android.widget.TextView
 import androidx.fragment.app.Fragment
@@ -50,6 +52,8 @@ class EditItemFragment : Fragment() {
         priceEditText.setText(item.price.toString())
         val dateEditText = view.findViewById<EditText>(R.id.dateEditText)
         dateEditText.setText(item.expiryDate)
+        val categoryEditText = view.findViewById<EditText>(R.id.dateEditText)
+        //categoryEditText.setText(item.category)
 
         //VALIDATION
         if(item.title.isEmpty())
@@ -60,6 +64,8 @@ class EditItemFragment : Fragment() {
             view.findViewById<TextInputLayout>(R.id.priceTextField).error = getString(R.string.notEmpty)
         if(item.expiryDate.isEmpty())
             view.findViewById<TextInputLayout>(R.id.dateTextField).error = getString(R.string.notEmpty)
+        if(item.category.isEmpty())
+            view.findViewById<TextInputLayout>(R.id.categoryTextField).error = getString(R.string.notEmpty)
         titleEditText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
                 if (p0 != null) {
@@ -139,6 +145,11 @@ class EditItemFragment : Fragment() {
             datePickerDialog?.datePicker?.minDate = System.currentTimeMillis() - 1000;
             datePickerDialog?.show()
         }
+
+        //SPINNER MANAGEMENT
+        val items = listOf("Category1", "Category2", "Category3", "Category4")
+        val adapter = ArrayAdapter(requireContext(), R.layout.list_item, items)
+        (categoryEditText as? AutoCompleteTextView)?.setAdapter(adapter)
 
     }
 
