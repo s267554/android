@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.ms.square.android.expandabletextview.ExpandableTextView
+import kotlinx.android.synthetic.main.item_details_fragment.*
 
 
 class ItemDetailsFragment : Fragment() {
@@ -58,8 +59,9 @@ class ItemDetailsFragment : Fragment() {
 
     //populate and restore bundle do not make the updating visible, only the property are updated
     private fun populateBundle(b:Bundle){
+        b.putString("group19.lab2.PATH",item.path)
         b.putString("group19.lab2.TITLE",item.title)
-        b.putString("group19.lab2.DESCRIPTION",item.description)
+        b.putString("group19.lab2.DESCRIPTION",longText)
         b.putString("group19.lab2.CATEGORY",item.category)
         b.putString("group19.lab2.LOCATION",item.location)
         b.putFloat("group19.lab2.PRICE",item.price)
