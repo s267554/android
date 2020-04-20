@@ -70,8 +70,8 @@ class EditItemFragment : Fragment() {
         priceEditText.setText(item.price.toString())
         val dateEditText = view.findViewById<EditText>(R.id.dateEditText)
         dateEditText.setText(item.expiryDate)
-        val categoryEditText = view.findViewById<EditText>(R.id.dateEditText)
-        //categoryEditText.setText(item.category)
+        val categoryEditText = view.findViewById<AutoCompleteTextView>(R.id.categoryDropdown)
+        categoryEditText.setText(item.category, false)
 
         //VALIDATION
         if(item.title.isEmpty())
@@ -167,7 +167,7 @@ class EditItemFragment : Fragment() {
         //SPINNER MANAGEMENT
         val items = listOf("Category1", "Category2", "Category3", "Category4")
         val adapter = ArrayAdapter(requireContext(), R.layout.list_item, items)
-        (categoryEditText as? AutoCompleteTextView)?.setAdapter(adapter)
+        categoryEditText?.setAdapter(adapter)
 
         registerForContextMenu(imageEdit)
         imageRotate.setOnClickListener{
