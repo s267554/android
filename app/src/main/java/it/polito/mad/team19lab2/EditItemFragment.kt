@@ -19,6 +19,10 @@ import com.google.android.material.textfield.TextInputLayout
 import kotlinx.android.synthetic.main.fragment_edit_item.*
 import kotlinx.android.synthetic.main.fragment_edit_item.image_view
 import kotlinx.android.synthetic.main.fragment_edit_item.roundCardView
+import org.json.JSONObject
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
 import java.util.*
 
 
@@ -28,20 +32,38 @@ class EditItemFragment : Fragment() {
     private var REQUESTCAMERA: Int = 1805
     private var REQUESTGALLERY: Int = 1715
     private var imageModified = false
+    private var id_item: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-        arguments?.let {
-            item.path = it.getString("group19.lab2.PATH").toString()
-            item.title  = it.getString("group19.lab2.TITLE").toString()
-            item.location = it.getString("group19.lab2.LOCATION").toString()
-            item.expiryDate = it.getString("group19.lab2.EXPIRY_DATE").toString()
-            item.category= it.getString("group19.lab2.CATEGORY").toString()
-            item.description = it.getString("group19.lab2.DESCRIPTION").toString()
-            item.price = it.getFloat("group19.lab2.PRICE")
+//        arguments?.let {
+//            item.path = it.getString("group19.lab2.PATH").toString()
+//            item.title  = it.getString("group19.lab2.TITLE").toString()
+//            item.location = it.getString("group19.lab2.LOCATION").toString()
+//            item.expiryDate = it.getString("group19.lab2.EXPIRY_DATE").toString()
+//            item.category= it.getString("group19.lab2.CATEGORY").toString()
+//            item.description = it.getString("group19.lab2.DESCRIPTION").toString()
+//            item.price = it.getFloat("group19.lab2.PRICE")
+//        }
+        // This item is passed through the bundle from ItemDetailsFragment.
+        // It must be a unique string and it is the only thing passed in the bundle
+        id_item = "item_id"
+        val sharedPref = activity?.getSharedPreferences(
+            "it.polito.mad.team19lab2"+id_item, 0)
+        if (sharedPref != null) {
+            val currentItem = sharedPref.getString("item", "notFound")
+            if (currentItem != "notFound") {
+                val jo = JSONObject(currentItem)
+                item.title = jo.get("TITLE").toString()
+                item.description = jo.get("DESCRIPTION").toString()
+                item.location = jo.get("LOCATION").toString()
+                item.price = jo.get("PRICE").toString().toFloat()
+                item.expiryDate = jo.get("DATE").toString()
+                item.category = jo.get("CATEGORY").toString()
+             //   item.path = jo.get("PATH").toString()
+            }
         }
-
     }
 
     override fun onCreateView(
@@ -54,12 +76,12 @@ class EditItemFragment : Fragment() {
 
     override fun onViewCreated (view: View, savedInstanceState : Bundle?){
         super.onViewCreated(view, savedInstanceState)
-//       To be completed
-//        val file = File(activity?.applicationContext?.filesDir, "myimage.png")
-//        if(file.exists()) {
-//            item.image = MediaStore.Images.Media.getBitmap(activity?.contentResolver,Uri.fromFile(file))
-//            image_view.setImageBitmap(item.image)
-//        }
+
+        val file = File(activity?.applicationContext?.filesDir, "$id_item.png")
+        if(file.exists()) {
+            item.image = MediaStore.Images.Media.getBitmap(activity?.contentResolver,Uri.fromFile(file))
+            image_view.setImageBitmap(item.image)
+        }
 
         //Round image management
         roundCardView.viewTreeObserver.addOnGlobalLayoutListener (object: ViewTreeObserver.OnGlobalLayoutListener{
@@ -203,7 +225,6 @@ class EditItemFragment : Fragment() {
         imageEdit.setOnClickListener{
             Toast.makeText(this.context, "Keep pressed", Toast.LENGTH_SHORT).show()
         }
-
     }
 
     companion object {
@@ -223,6 +244,36 @@ class EditItemFragment : Fragment() {
     private fun saveItem(){
         val b=Bundle()
         populateBundle(b)
+
+        // Update or create the image
+        if(imageModified && item.image!=null){
+            val fileForBundle = File(activity?.applicationContext?.filesDir, "$id_item.png")
+            try {
+                FileOutputStream(fileForBundle.absoluteFile).use { out ->
+                    item.image!!.compress(Bitmap.CompressFormat.PNG, 100, out)
+                }
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+            item.path = "${activity?.applicationContext?.filesDir.toString()}$id_item.png"
+        }
+
+        // Update or create Shared Prefs
+        Log.d("xxx", "Save pressed")
+        val sharedPref = activity?.getSharedPreferences(
+            "it.polito.mad.team19lab2"+id_item, 0)
+        val jo = JSONObject()
+        jo.put("TITLE",titleEditText.text.toString())
+        jo.put("DESCRIPTION",descriptionEditText.text.toString())
+        jo.put("LOCATION",locationEditText.text.toString())
+        jo.put("PRICE",priceEditText.text.toString())
+        jo.put("DATE",dateEditText.text.toString())
+        jo.put("CATEGORY",categoryDropdown.text.toString())
+        //jo.put("PATH", item.path)
+        with (sharedPref!!.edit()) {
+            putString("item", jo.toString())
+            commit()
+        }
         val navController = findNavController()
         navController.navigate(R.id.action_nav_edit_item_to_nav_item_detail, b)
     }
@@ -278,8 +329,8 @@ class EditItemFragment : Fragment() {
             when (requestCode) {
                 REQUESTCAMERA -> {
                     val bitmapImage: Bitmap = (data.extras?.get("data")) as Bitmap
-                    image_view.setImageBitmap(bitmapImage)
                     item.image = bitmapImage
+                    image_view.setImageBitmap(item.image)
                     imageModified = true
                 }
                 REQUESTGALLERY -> {
