@@ -24,6 +24,9 @@ class ItemDetailsFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
+        if(savedInstanceState!=null){
+            restoreFromBundle(savedInstanceState)
+        }
     }
 
     override fun onCreateView(
@@ -37,6 +40,12 @@ class ItemDetailsFragment : Fragment() {
     override fun onViewCreated (view: View, savedInstanceState : Bundle?){
         super.onViewCreated(view, savedInstanceState)
         val descriptionTest = view.findViewById<ExpandableTextView>(R.id.expand_text_view)
+        roundCardView.viewTreeObserver.addOnGlobalLayoutListener (object: ViewTreeObserver.OnGlobalLayoutListener{
+            override fun onGlobalLayout() {
+                roundCardView.radius =  roundCardView.height.toFloat() / 2.0F
+                roundCardView.viewTreeObserver.removeOnGlobalLayoutListener(this);
+            }
+        })
         descriptionTest.text=longText
     }
 
@@ -67,6 +76,22 @@ class ItemDetailsFragment : Fragment() {
         b.putFloat("group19.lab2.PRICE",item.price)
         b.putString("group19.lab2.EXPIRY_DATE", item.expiryDate)
     }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        populateBundle(outState)
+    }
+
+    private fun restoreFromBundle(b:Bundle){
+        item.path=b.getString("group19.lab2.PATH", "")
+        item.title=b.getString("group19.lab2.TITLE", "")
+        item.description=b.getString("group19.lab2.DESCRIPTION", "")
+        item.location = b.getString("group19.lab2.LOCATION", "")
+        item.price=b.getFloat("group19.lab2.PRICE", 0F)
+        item.expiryDate=b.getString("group19.lab2.EXPIRY_DATE", "")
+        item.category=b.getString("group19.lab2.CATEGORY", "")
+    }
+
 
 
 }

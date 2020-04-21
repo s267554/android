@@ -46,7 +46,7 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
         //Comment this to avoid the first page is the itemDetail
-        navController.navigate(R.id.action_nav_home_to_itemDetailsFragment)
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

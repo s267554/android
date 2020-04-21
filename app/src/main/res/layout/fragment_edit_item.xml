@@ -32,6 +32,8 @@
                     android:id="@+id/roundCardView"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
                     android:elevation="0dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintDimensionRatio="1:1"

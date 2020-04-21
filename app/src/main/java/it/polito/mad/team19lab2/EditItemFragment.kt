@@ -17,7 +17,8 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.android.synthetic.main.fragment_edit_item.*
-import java.io.File
+import kotlinx.android.synthetic.main.fragment_edit_item.image_view
+import kotlinx.android.synthetic.main.fragment_edit_item.roundCardView
 import java.util.*
 
 
@@ -59,6 +60,14 @@ class EditItemFragment : Fragment() {
 //            item.image = MediaStore.Images.Media.getBitmap(activity?.contentResolver,Uri.fromFile(file))
 //            image_view.setImageBitmap(item.image)
 //        }
+
+        //Round image management
+        roundCardView.viewTreeObserver.addOnGlobalLayoutListener (object: ViewTreeObserver.OnGlobalLayoutListener{
+            override fun onGlobalLayout() {
+                roundCardView.radius =  roundCardView.height.toFloat() / 2.0F
+                roundCardView.viewTreeObserver.removeOnGlobalLayoutListener(this)
+            }
+        })
 
         val titleEditText=view.findViewById<EditText>(R.id.titleEditText)
         titleEditText.setText(item.title)
@@ -145,6 +154,24 @@ class EditItemFragment : Fragment() {
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
         })
+        categoryEditText.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(p0: Editable?) {
+                if (p0 != null) {
+                    if (p0.isEmpty() || p0.isBlank()) {
+                        view.findViewById<TextInputLayout>(R.id.categoryTextField).error =
+                            getString(R.string.notEmpty)
+                    } else {
+                        view.findViewById<TextInputLayout>(R.id.categoryTextField).error = null
+                    }
+                }
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+        })
         //END VALIDATION
 
         //DATE PICKER MANAGEMENT
@@ -160,7 +187,7 @@ class EditItemFragment : Fragment() {
                         dateEditText.setText("$dayOfMonth/$monthOfYear/$year")
                     }, year, month, day)
             }
-            datePickerDialog?.datePicker?.minDate = System.currentTimeMillis() - 1000;
+            datePickerDialog?.datePicker?.minDate = System.currentTimeMillis() - 1000
             datePickerDialog?.show()
         }
 
@@ -212,9 +239,7 @@ class EditItemFragment : Fragment() {
     override fun onCreateContextMenu(menu: ContextMenu, v: View, menuInfo: ContextMenu.ContextMenuInfo?) {
         super.onCreateContextMenu(menu, v, menuInfo)
         val inflater: MenuInflater? = activity?.menuInflater
-        if (inflater != null) {
-            inflater.inflate(R.menu.pic_selection_menu, menu)
-        }
+        inflater?.inflate(R.menu.pic_selection_menu, menu)
     }
 
     override fun onContextItemSelected(item: MenuItem): Boolean {
@@ -278,7 +303,7 @@ class EditItemFragment : Fragment() {
         )
     }
 
-    fun rotateBitmap() {
+    private fun rotateBitmap() {
         if(item.image == null){
             Toast.makeText(activity?.applicationContext,"insert an image before",Toast.LENGTH_SHORT).show()
             return
