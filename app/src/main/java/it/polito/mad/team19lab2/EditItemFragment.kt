@@ -37,6 +37,8 @@ class EditItemFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
+        retainInstance=true
+        Log.d("spinner", "onCreate")
 //        arguments?.let {
 //            item.path = it.getString("group19.lab2.PATH").toString()
 //            item.title  = it.getString("group19.lab2.TITLE").toString()
@@ -76,7 +78,7 @@ class EditItemFragment : Fragment() {
 
     override fun onViewCreated (view: View, savedInstanceState : Bundle?){
         super.onViewCreated(view, savedInstanceState)
-
+        activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         val file = File(activity?.applicationContext?.filesDir, "$id_item.png")
         if(file.exists()) {
             item.image = MediaStore.Images.Media.getBitmap(activity?.contentResolver,Uri.fromFile(file))
@@ -90,7 +92,7 @@ class EditItemFragment : Fragment() {
                 roundCardView.viewTreeObserver.removeOnGlobalLayoutListener(this)
             }
         })
-
+        Log.d("spinner", "onViewCreated")
         val titleEditText=view.findViewById<EditText>(R.id.titleEditText)
         titleEditText.setText(item.title)
         val descriptionEditText = view.findViewById<EditText>(R.id.descriptionEditText)
@@ -102,7 +104,6 @@ class EditItemFragment : Fragment() {
         val dateEditText = view.findViewById<EditText>(R.id.dateEditText)
         dateEditText.setText(item.expiryDate)
         val categoryEditText = view.findViewById<AutoCompleteTextView>(R.id.categoryDropdown)
-        categoryEditText.setText(item.category, false)
 
         //VALIDATION
         if(item.title.isEmpty())
@@ -212,11 +213,12 @@ class EditItemFragment : Fragment() {
             datePickerDialog?.datePicker?.minDate = System.currentTimeMillis() - 1000
             datePickerDialog?.show()
         }
-
+        Log.d("spinner", "eccomi")
         //SPINNER MANAGEMENT
         val items = listOf("Category1", "Category2", "Category3", "Category4")
-        val adapter = ArrayAdapter(requireContext(), R.layout.list_item, items)
+        val adapter = DropdownAdapter(requireContext(), R.layout.list_item, items)
         categoryEditText?.setAdapter(adapter)
+        categoryEditText.setText(item.category, false)
 
         registerForContextMenu(imageEdit)
         imageRotate.setOnClickListener{
@@ -225,6 +227,8 @@ class EditItemFragment : Fragment() {
         imageEdit.setOnClickListener{
             Toast.makeText(this.context, "Keep pressed", Toast.LENGTH_SHORT).show()
         }
+
+        view.findViewById<AutoCompleteTextView>(R.id.categoryDropdown).requestFocus();
     }
 
     companion object {

@@ -154,7 +154,6 @@
                     android:id="@+id/titleEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:enabled="true"
                     android:inputType="text"
                     android:maxLength="25"
                     android:maxLines="1"
@@ -186,7 +185,6 @@
                     android:id="@+id/descriptionEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:enabled="true"
                     android:inputType="textMultiLine|text"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
@@ -219,7 +217,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:focusable="false"
-                    android:focusableInTouchMode="false"
+                    android:focusableInTouchMode="true"
                     android:inputType="none"
                     android:textIsSelectable="false" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -249,7 +247,6 @@
                     android:id="@+id/locationEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:enabled="true"
                     android:inputType="text"
                     android:maxLength="20"
                     android:singleLine="true"
@@ -283,7 +280,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:focusable="false"
-                    android:focusableInTouchMode="false"
+                    android:focusableInTouchMode="true"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:textIsSelectable="false" />
             </com.google.android.material.textfield.TextInputLayout>
