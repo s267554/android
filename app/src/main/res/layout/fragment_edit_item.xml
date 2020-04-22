@@ -257,13 +257,13 @@
            >
 
             <AutoCompleteTextView
-                android:id = "@+id/categoryDropdown"
+                android:id="@+id/categoryDropdown"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="none"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
-                />
+                android:inputType="none"
+                android:textIsSelectable="false" />
         </com.google.android.material.textfield.TextInputLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

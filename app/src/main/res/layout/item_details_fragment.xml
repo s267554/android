@@ -21,6 +21,7 @@
             android:layout_marginTop="8dp"
             android:hint="@string/undefined"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@color/primaryText"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/priceLabel"
             app:layout_constraintTop_toBottomOf="@+id/priceLabel" />
@@ -32,6 +33,7 @@
             android:layout_marginTop="8dp"
             android:hint="@string/undefined"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@color/primaryText"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/locationLabel"
             app:layout_constraintTop_toBottomOf="@+id/locationLabel" />
@@ -43,6 +45,7 @@
             android:layout_marginTop="8dp"
             android:hint="@string/undefined"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@color/primaryText"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/expireLabel"
             app:layout_constraintTop_toBottomOf="@+id/expireLabel" />
@@ -101,6 +104,7 @@
             android:layout_marginTop="16dp"
             android:text="Title"
             android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+            android:textColor="@color/primaryText"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/profilePictureGuideline" />
@@ -247,6 +251,7 @@
             android:layout_marginTop="8dp"
             android:hint="@string/undefined"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@color/primaryText"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/categoryLabel"
             app:layout_constraintTop_toBottomOf="@+id/categoryLabel" />

@@ -64,7 +64,7 @@ class ItemDetailsFragment : Fragment() {
 
     override fun onViewCreated (view: View, savedInstanceState : Bundle?){
         super.onViewCreated(view, savedInstanceState)
-        val descriptionTest = view.findViewById<ExpandableTextView>(R.id.expand_text_view)
+        val descriptionExpandable = view.findViewById<ExpandableTextView>(R.id.expand_text_view)
         roundCardView.viewTreeObserver.addOnGlobalLayoutListener (object: ViewTreeObserver.OnGlobalLayoutListener{
             override fun onGlobalLayout() {
                 roundCardView.radius =  roundCardView.height.toFloat() / 2.0F
@@ -72,15 +72,13 @@ class ItemDetailsFragment : Fragment() {
             }
         })
 
-        //descriptionTest.text=longText
-
         val file = File(activity?.applicationContext?.filesDir, "$id_item.png")
         if(file.exists()) {
             item.image = MediaStore.Images.Media.getBitmap(activity?.contentResolver, Uri.fromFile(file))
             image_view.setImageBitmap(item.image)
         }
         titleTextView.text = item.title
-        expandable_text.text = item.description
+        descriptionExpandable.text = item.description
         locationTextView.text = item.location
         priceTextView.text = item.price.toString()
         expireTextView.text = item.expiryDate
