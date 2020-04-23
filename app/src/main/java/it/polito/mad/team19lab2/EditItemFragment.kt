@@ -37,7 +37,6 @@ class EditItemFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-        retainInstance=true
         Log.d("spinner", "onCreate")
 //        arguments?.let {
 //            item.path = it.getString("group19.lab2.PATH").toString()
@@ -95,6 +94,7 @@ class EditItemFragment : Fragment() {
         Log.d("spinner", "onViewCreated")
         val titleEditText=view.findViewById<EditText>(R.id.titleEditText)
         titleEditText.setText(item.title)
+        //Log.d("spinner", titleEditText.text.toString())
         val descriptionEditText = view.findViewById<EditText>(R.id.descriptionEditText)
         descriptionEditText.setText(item.description)
         val locationEditText = view.findViewById<EditText>(R.id.locationEditText)
@@ -227,7 +227,6 @@ class EditItemFragment : Fragment() {
         imageEdit.setOnClickListener{
             Toast.makeText(this.context, "Keep pressed", Toast.LENGTH_SHORT).show()
         }
-
         view.findViewById<AutoCompleteTextView>(R.id.categoryDropdown).requestFocus();
     }
 
@@ -301,7 +300,7 @@ class EditItemFragment : Fragment() {
         when(item.itemId){
 
             R.id.option_camera -> {
-                Toast.makeText(this.context, "Camera Lauched", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this.context, "Camera Launched", Toast.LENGTH_SHORT).show()
                 Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
                     activity?.packageManager?.let {
                         takePictureIntent.resolveActivity(it)?.also {
