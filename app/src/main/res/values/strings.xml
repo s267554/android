@@ -26,4 +26,6 @@
     <string name="title">title</string>
     <string name="notEmpty">Field required</string>
     <string name="save">save</string>
+    <string name="menu_profile">Profile</string>
+    <string name="menu_items">Items</string>
 </resources>

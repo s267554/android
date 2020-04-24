@@ -1,6 +1,8 @@
 package it.polito.mad.team19lab2
 
+import android.app.Activity
 import android.os.Bundle
+import android.util.Log
 import android.view.ContextMenu
 import android.view.Menu
 import android.view.MenuInflater
@@ -18,6 +20,8 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.content_main.*
 import kotlinx.android.synthetic.main.fragment_home.*
 
 
@@ -42,8 +46,8 @@ class MainActivity : AppCompatActivity() {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(setOf(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow), drawerLayout)
-        setupActionBarWithNavController(navController, appBarConfiguration)
+                R.id.nav_home,R.id.showProfileFragment), drawerLayout) // decidiamo le schermate root e connettiamole al drawer
+        setupActionBarWithNavController(navController, appBarConfiguration)//To add navigation support to the default action bar
         navView.setupWithNavController(navController)
         //Comment this to avoid the first page is the itemDetail
 
@@ -55,8 +59,18 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
+
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment)
+        //destination means source!
+        //Log.d("vittoz","${navController.currentDestination!!.id} vs detail ${R.id.nav_item_detail}")
+        /*if(navController.currentDestination!!.id==R.id.nav_item_detail){//arrivo da item detail
+            navController.navigate(R.id.action_itemDetailsFragment_to_nav_home)
+            return false
+        }
+         */
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
+
+
 }

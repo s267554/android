@@ -12,24 +12,11 @@
         tools:layout="@layout/fragment_home">
 
         <action
-            android:id="@+id/action_HomeFragment_to_HomeSecondFragment"
-            app:destination="@id/nav_home_second" />
-        <action
             android:id="@+id/action_nav_home_to_itemDetailsFragment"
             app:destination="@id/nav_item_detail" />
-    </fragment>
-    <fragment
-        android:id="@+id/nav_home_second"
-        android:name="it.polito.mad.team19lab2.ui.home.HomeSecondFragment"
-        android:label="@string/home_second"
-        tools:layout="@layout/fragment_home_second">
         <action
-            android:id="@+id/action_HomeSecondFragment_to_HomeFragment"
-            app:destination="@id/nav_home" />
-
-        <argument
-            android:name="myArg"
-            app:argType="string" />
+            android:id="@+id/action_nav_home_to_showProfileFragment"
+            app:destination="@id/showProfileFragment" />
     </fragment>
 
     <fragment
@@ -61,6 +48,26 @@
         tools:layout="@layout/fragment_edit_item">
         <action
             android:id="@+id/action_nav_edit_item_to_nav_item_detail"
-            app:destination="@id/nav_item_detail" />
+            app:destination="@id/nav_item_detail"
+            app:popUpTo="@id/nav_item_detail" />
+    </fragment>
+    <fragment
+        android:id="@+id/showProfileFragment"
+        android:name="it.polito.mad.team19lab2.ShowProfileFragment"
+        android:label="ShowProfileFragment" >
+        <action
+            android:id="@+id/action_showProfileFragment_to_editProfileFragment"
+            app:destination="@id/editProfileFragment" />
+        <action
+            android:id="@+id/action_showProfileFragment_to_nav_home"
+            app:destination="@id/nav_home" />
+    </fragment>
+    <fragment
+        android:id="@+id/editProfileFragment"
+        android:name="it.polito.mad.team19lab2.EditProfileFragment"
+        android:label="EditProfileFragment" >
+        <action
+            android:id="@+id/action_editProfileFragment_to_showProfileFragment"
+            app:destination="@id/showProfileFragment" />
     </fragment>
 </navigation>

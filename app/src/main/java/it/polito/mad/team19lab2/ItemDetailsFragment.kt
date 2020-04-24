@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.*
 import android.widget.AutoCompleteTextView
 import android.widget.EditText
+import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.ms.square.android.expandabletextview.ExpandableTextView
@@ -52,6 +53,15 @@ class ItemDetailsFragment : Fragment() {
             }
         }
         Log.d("xxx", "Oncreate Completed")
+        val callback = requireActivity().onBackPressedDispatcher.addCallback(this) {
+            val navController = findNavController()
+            navController.navigate(R.id.action_itemDetailsFragment_to_nav_home)
+        }
+        callback.isEnabled=true
+
+
+
+
     }
 
     override fun onCreateView(

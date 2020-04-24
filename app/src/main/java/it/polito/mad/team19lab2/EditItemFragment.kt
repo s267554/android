@@ -348,6 +348,7 @@ class EditItemFragment : Fragment() {
         }
     }
 
+
     fun rotateImage(source: Bitmap, angle: Int): Bitmap {
         val matrix = Matrix()
         matrix.postRotate(angle.toFloat())
