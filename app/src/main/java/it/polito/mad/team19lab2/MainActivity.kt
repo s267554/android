@@ -1,6 +1,7 @@
 package it.polito.mad.team19lab2
 
 import android.app.Activity
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Log
 import android.view.ContextMenu
@@ -8,6 +9,8 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.View
 import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
@@ -20,15 +23,17 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.net.toUri
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.content_main.*
-import kotlinx.android.synthetic.main.fragment_home.*
-import kotlinx.android.synthetic.main.item_details_fragment.*
+import kotlinx.android.synthetic.main.nav_header_main.*
+import org.json.JSONObject
+import java.io.File
 
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
+    private var u: UserInfo = UserInfo()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,8 +55,8 @@ class MainActivity : AppCompatActivity() {
                 R.id.nav_home,R.id.showProfileFragment), drawerLayout) // decidiamo le schermate root e connettiamole al drawer
         setupActionBarWithNavController(navController, appBarConfiguration)//To add navigation support to the default action bar
         navView.setupWithNavController(navController)
-        //Comment this to avoid the first page is the itemDetail
 
+        //Comment this to avoid the first page is the itemDetail
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -73,5 +78,27 @@ class MainActivity : AppCompatActivity() {
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
+    override fun onResume() {
+        super.onResume()
+        //SHARED PREFERENCES
+        Log.d("vittoz","onrestart()")
+
+        val navView: NavigationView = findViewById(R.id.nav_view)
+        val sharedPref = getSharedPreferences(
+            "it.polito.mad.team19lab2.profile", 0)
+        if(sharedPref!=null) {
+            Log.d("vittoz","onrestart()")
+            val profile = sharedPref.getString("profile", "notFound")
+            if (profile != "notFound") {
+                val jo = JSONObject(profile)
+                nav_view.getHeaderView(0).findViewById<TextView>(R.id.header_title_textView).text = jo.getString("FULL_NAME")
+                nav_view.getHeaderView(0).findViewById<TextView>(R.id.header_subtitle_textView).text = jo.get("NICK_NAME") as String
+                val file = File(filesDir, "myimage.png")
+                if (file.exists()) {
+                    nav_view.getHeaderView(0).findViewById<ImageView>(R.id.header_imageView).setImageURI(file.toUri())
+                }
+            }
+        }
+    }
 
 }

@@ -9,8 +9,8 @@
     <string name="action_settings">Settings</string>
 
     <string name="menu_home">Home</string>
-    <string name="menu_gallery">Gallery</string>
-    <string name="menu_slideshow">Slideshow</string>
+    <string name="menu_profile">Profile</string>
+    <string name="menu_advertisements">Advertisements</string>
 
     <string name="home_second">Home Second</string>
     <string name="default_product_image">default image</string>
@@ -27,8 +27,6 @@
     <string name="title">title</string>
     <string name="notEmpty">Field required</string>
     <string name="save">save</string>
-    <string name="menu_profile">Profile</string>
-    <string name="menu_items">Items</string>
     <string name="etc">...</string>
     <string name="name">fullname</string>
     <string name="nickname">nickname</string>
@@ -46,5 +44,27 @@
         <item>Games &amp; Videogames</item>
         <item>Automotive</item>
         <item>other</item>
+    </string-array>
+
+    <!-- da ricontrollare-->
+    <string name="_10">/10</string>
+    <string name="rating">rating:</string>
+    <string name="profile_image_frame">profile container</string>
+    <string name="activity_show_title">User profile</string>
+    <string name="activity_edit_title">Edit User Profile</string>
+    <string-array name="interests">
+        <item>select your interests</item>
+        <item>home</item>
+        <item>books</item>
+        <item>videogames</item>
+        <item>computers</item>
+        <item>wearing</item>
+        <item>electronics</item>
+        <item>sport</item>
+        <item>music</item>
+        <item>baby</item>
+        <item>car&amp;motorbike</item>
+        <item>pets</item>
+        <item>tv</item>
     </string-array>
 </resources>

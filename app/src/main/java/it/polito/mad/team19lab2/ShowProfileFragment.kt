@@ -2,6 +2,7 @@ package it.polito.mad.team19lab2
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -9,6 +10,7 @@ import android.util.Log
 import android.view.*
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.ms.square.android.expandabletextview.ExpandableTextView
 import kotlinx.android.synthetic.main.fragment_show_profile.*
 import org.json.JSONObject
@@ -31,7 +33,7 @@ class ShowProfileFragment :Fragment() {
         setHasOptionsMenu(true)
         //SHARED PREFERENCES
         val sharedPref = activity?.getSharedPreferences(
-            "it.polito.mad.team19lab2", 0)
+            "it.polito.mad.team19lab2.profile", 0)
         //read preferences
         if(sharedPref!=null) {
             val profile = sharedPref.getString("profile", "notFound")
@@ -40,30 +42,44 @@ class ShowProfileFragment :Fragment() {
                 user.fullname = jo.get("FULL_NAME") as String
                 user.nickname = jo.get("NICK_NAME") as String
                 user.email_address = jo.get("EMAIL") as String
-                user.location_area = jo.get("LOCATION") as String
+                if(jo.has("LOCATION"))
+                    user.location_area = jo.get("LOCATION") as String
+                if(jo.has("INTERESTS")){
                 val jsoninterests = jo.getJSONArray("INTERESTS")
-                user.interests.clear()
-                for (i in 0 until jsoninterests.length())
-                    user.interests.add(jsoninterests.getInt(i))
+                    user.interests.clear()
+                    for (i in 0 until jsoninterests.length())
+                        user.interests.add(jsoninterests.getInt(i))
+                }
+                if(jo.has("RATING"))
                 user.rating = (jo.get("RATING") as Int).toFloat()
-                user.img = jo.get("IMG") as Int
+                if(jo.has("IMG"))
+                    user.img = jo.get("IMG") as Int
             }
         }
+
     }
+
 
     override fun onViewCreated (view: View, savedInstanceState : Bundle?){
         super.onViewCreated(view, savedInstanceState)
-        roundCardView.viewTreeObserver.addOnGlobalLayoutListener (object: ViewTreeObserver.OnGlobalLayoutListener{
-            override fun onGlobalLayout() {
-                roundCardView.radius =  roundCardView.height.toFloat() / 2.0F
-                roundCardView.viewTreeObserver.removeOnGlobalLayoutListener(this);
-            }
-        })
-        name_view.text=user.fullname
-        location_view.text=user.location_area
-        nickname_view.text=user.nickname
-        email_view.text=user.email_address
-        interests_view.text=buildInterestsString()
+        val file = File(context?.filesDir, "myimage.png")
+        if (file.exists()) {
+            user.image = BitmapFactory.decodeFile(file.absolutePath)
+        }
+
+        if (user.image == null) {
+            image_view.setImageResource(user.img)
+        }
+        else {
+            image_view.setImageBitmap(user.image)
+        }
+        name_view.text = user.fullname
+        nickname_view.text = user.nickname
+        email_view.text = user.email_address
+        location_view.text = user.location_area
+        interests_view.text = buildInterestsString()
+        // To show a default value
+        ratingBar.rating= 2.5F
     }
 
     private fun buildInterestsString():String{
@@ -89,7 +105,16 @@ class ShowProfileFragment :Fragment() {
     }
 
     private fun editProfile(){
-        return
+        //val b=Bundle()
+        //populateBundle(b)
+        val navController = findNavController()
+        navController.navigate(R.id.action_showProfileFragment_to_editProfileFragment)
     }
+    //populate and restore bundle do not make the updating visible, only the property are updated
+
+    private fun populateBundle(b:Bundle){
+
+    }
+
 
 }
