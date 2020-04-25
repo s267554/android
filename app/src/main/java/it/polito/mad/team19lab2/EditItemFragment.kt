@@ -38,17 +38,6 @@ class EditItemFragment : Fragment() {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
         Log.d("spinner", "onCreate")
-//        arguments?.let {
-//            item.path = it.getString("group19.lab2.PATH").toString()
-//            item.title  = it.getString("group19.lab2.TITLE").toString()
-//            item.location = it.getString("group19.lab2.LOCATION").toString()
-//            item.expiryDate = it.getString("group19.lab2.EXPIRY_DATE").toString()
-//            item.category= it.getString("group19.lab2.CATEGORY").toString()
-//            item.description = it.getString("group19.lab2.DESCRIPTION").toString()
-//            item.price = it.getFloat("group19.lab2.PRICE")
-//        }
-        // This item is passed through the bundle from ItemDetailsFragment.
-        // It must be a unique string and it is the only thing passed in the bundle
         id_item = "item_id"
         val sharedPref = activity?.getSharedPreferences(
             "it.polito.mad.team19lab2"+id_item, 0)
@@ -62,7 +51,7 @@ class EditItemFragment : Fragment() {
                 item.price = jo.get("PRICE").toString().toFloat()
                 item.expiryDate = jo.get("DATE").toString()
                 item.category = jo.get("CATEGORY").toString()
-             //   item.path = jo.get("PATH").toString()
+                //item.path = jo.get("PATH").toString()
             }
         }
     }
@@ -71,7 +60,6 @@ class EditItemFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_edit_item, container, false)
     }
 
@@ -92,35 +80,34 @@ class EditItemFragment : Fragment() {
             }
         })
         Log.d("spinner", "onViewCreated")
-        val titleEditText=view.findViewById<EditText>(R.id.titleEditText)
         titleEditText.setText(item.title)
-        //Log.d("spinner", titleEditText.text.toString())
-        val descriptionEditText = view.findViewById<EditText>(R.id.descriptionEditText)
         descriptionEditText.setText(item.description)
-        val locationEditText = view.findViewById<EditText>(R.id.locationEditText)
         locationEditText.setText(item.location)
-        val priceEditText = view.findViewById<EditText>(R.id.priceEditText)
         priceEditText.setText(item.price.toString())
-        val dateEditText = view.findViewById<EditText>(R.id.dateEditText)
         dateEditText.setText(item.expiryDate)
         val categoryEditText = view.findViewById<AutoCompleteTextView>(R.id.categoryDropdown)
 
         //VALIDATION
         if(item.title.isEmpty())
-            view.findViewById<TextInputLayout>(R.id.titleTextField).error = getString(R.string.notEmpty)
+            titleTextField.error = getString(R.string.notEmpty)
         if(item.location.isEmpty())
-            view.findViewById<TextInputLayout>(R.id.locationTextField).error = getString(R.string.notEmpty)
+            locationTextField.error = getString(R.string.notEmpty)
         if(item.price.isNaN())
-            view.findViewById<TextInputLayout>(R.id.priceTextField).error = getString(R.string.notEmpty)
+            priceTextField.error = getString(R.string.notEmpty)
         if(item.expiryDate.isEmpty())
-            view.findViewById<TextInputLayout>(R.id.dateTextField).error = getString(R.string.notEmpty)
-        if(item.category.isEmpty())
-            view.findViewById<TextInputLayout>(R.id.categoryTextField).error = getString(R.string.notEmpty)
+            dateTextField.error = getString(R.string.notEmpty)
+        if(item.category.isEmpty()) {
+            categoryTextField.error = getString(R.string.notEmpty)
+        }
+        else{
+            if(item.category != "other")
+                subCategoryTextField.visibility=View.VISIBLE
+        }
         titleEditText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
                 if (p0 != null) {
                     if(p0.isEmpty() || p0.isBlank()){
-                        view.findViewById<TextInputLayout>(R.id.titleTextField).error = getString(R.string.notEmpty)
+                        titleTextField.error = getString(R.string.notEmpty)
                     }
                 }
             }
@@ -128,14 +115,14 @@ class EditItemFragment : Fragment() {
             }
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 if(!p0.isNullOrBlank() && !p0.isNullOrEmpty())
-                    view.findViewById<TextInputLayout>(R.id.titleTextField).error = null
+                    titleTextField.error = null
             }
         })
         priceEditText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
                 if (p0 != null) {
                     if(p0.isEmpty() || p0.isBlank()){
-                        view.findViewById<TextInputLayout>(R.id.priceTextField).error = getString(R.string.notEmpty)
+                        priceTextField.error = getString(R.string.notEmpty)
                     }
                 }
             }
@@ -143,14 +130,14 @@ class EditItemFragment : Fragment() {
             }
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 if(!p0.isNullOrBlank() && !p0.isNullOrEmpty())
-                    view.findViewById<TextInputLayout>(R.id.priceTextField).error = null
+                    priceTextField.error = null
             }
         })
         locationEditText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
                 if (p0 != null) {
                     if(p0.isEmpty() || p0.isBlank()){
-                        view.findViewById<TextInputLayout>(R.id.locationTextField).error = getString(R.string.notEmpty)
+                        locationTextField.error = getString(R.string.notEmpty)
                     }
                 }
             }
@@ -158,40 +145,22 @@ class EditItemFragment : Fragment() {
             }
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 if(!p0.isNullOrBlank() && !p0.isNullOrEmpty())
-                    view.findViewById<TextInputLayout>(R.id.locationTextField).error = null
+                    locationTextField.error = null
             }
         })
         dateEditText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
                 if (p0 != null) {
                     if(p0.isEmpty() || p0.isBlank()){
-                        view.findViewById<TextInputLayout>(R.id.dateTextField).error = getString(R.string.notEmpty)
+                        dateTextField.error = getString(R.string.notEmpty)
                     }
                     else{
-                        view.findViewById<TextInputLayout>(R.id.dateTextField).error = null
+                        dateTextField.error = null
                     }
                 }
             }
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
-        })
-        categoryEditText.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(p0: Editable?) {
-                if (p0 != null) {
-                    if (p0.isEmpty() || p0.isBlank()) {
-                        view.findViewById<TextInputLayout>(R.id.categoryTextField).error =
-                            getString(R.string.notEmpty)
-                    } else {
-                        view.findViewById<TextInputLayout>(R.id.categoryTextField).error = null
-                    }
-                }
-            }
-
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
-
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
         })
@@ -215,11 +184,46 @@ class EditItemFragment : Fragment() {
         }
         Log.d("spinner", "eccomi")
         //SPINNER MANAGEMENT
-        val items = listOf("Category1", "Category2", "Category3", "Category4")
+        val items = resources.getStringArray(R.array.categories).toMutableList()
+        Log.d("spinner", items.toString())
         val adapter = DropdownAdapter(requireContext(), R.layout.list_item, items)
         categoryEditText?.setAdapter(adapter)
         categoryEditText.setText(item.category, false)
+        categoryEditText.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(p0: Editable?) {
+                if (p0 != null) {
+                    if (p0.isEmpty() || p0.isBlank()) {
+                        categoryTextField.error = getString(R.string.notEmpty)
+                        subCategoryTextField.visibility=View.GONE
+                    } else {
+                        categoryTextField.error = null
+                        if(p0.toString()=="other"){
+                            subCategoryTextField.visibility=View.GONE
+                            return
+                        }
+                        for(category in items){
+                            Log.d("spinner", category)
+                            Log.d("spinner", p0.toString())
+                            if(p0.toString() == category){
+                                var subcategories = resources.getStringArray(R.array.sub1).toMutableList()
+                                var subAdapter= DropdownAdapter(requireContext(), R.layout.list_item, subcategories)
+                                subCategoryDropdown?.setAdapter(subAdapter)
+                                subCategoryTextField.visibility=View.VISIBLE
+                                return
+                            }
+                        }
+                        subCategoryTextField.visibility=View.GONE
+                    }
+                }
+            }
 
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+        })
+        //IMAGE MANAGEMENT
         registerForContextMenu(imageEdit)
         imageRotate.setOnClickListener{
             rotateBitmap()
@@ -262,6 +266,10 @@ class EditItemFragment : Fragment() {
         }
 
         // Update or create Shared Prefs
+        var category=categoryDropdown.text.toString()
+        if(subCategoryDropdown.text.isNotEmpty()){
+            category+=", ${subCategoryDropdown.text}"
+        }
         Log.d("xxx", "Save pressed")
         val sharedPref = activity?.getSharedPreferences(
             "it.polito.mad.team19lab2"+id_item, 0)
@@ -271,7 +279,7 @@ class EditItemFragment : Fragment() {
         jo.put("LOCATION",locationEditText.text.toString())
         jo.put("PRICE",priceEditText.text.toString())
         jo.put("DATE",dateEditText.text.toString())
-        jo.put("CATEGORY",categoryDropdown.text.toString())
+        jo.put("CATEGORY", category)
         //jo.put("PATH", item.path)
         with (sharedPref!!.edit()) {
             putString("item", jo.toString())

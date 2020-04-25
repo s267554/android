@@ -35,15 +35,16 @@
     <string name="interests">interests</string>
     <string name="email">email</string>
     <string name="profile_image">profile picture</string>
+    <string name="subcategory">subcategory</string>
     <string-array name="categories">
-        <item>select your interests</item>
-        <item>Arts&amp;Crafts</item>
-        <item>Sports&amp;Hobby</item>
+        <item>Arts &amp; Crafts</item>
+        <item>Sports &amp; Hobby</item>
         <item>Baby</item>
-        <item>Womensfashion</item>
-        <item>Mensfashion</item>
+        <item>Women\&apos;s fashion</item>
+        <item>Men\&apos;s fashion</item>
         <item>Electronics</item>
-        <item>Games&amp;Videogames</item>
+        <item>Games &amp; Videogames</item>
         <item>Automotive</item>
+        <item>other</item>
     </string-array>
 </resources>

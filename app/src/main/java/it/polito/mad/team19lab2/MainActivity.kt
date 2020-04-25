@@ -23,6 +23,7 @@ import androidx.appcompat.widget.Toolbar
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.android.synthetic.main.item_details_fragment.*
 
 
 class MainActivity : AppCompatActivity() {
