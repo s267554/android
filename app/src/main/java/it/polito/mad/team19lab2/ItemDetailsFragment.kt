@@ -53,11 +53,6 @@ class ItemDetailsFragment : Fragment() {
             }
         }
         Log.d("xxx", "Oncreate Completed")
-        val callback = requireActivity().onBackPressedDispatcher.addCallback(this) {
-            val navController = findNavController()
-            navController.navigate(R.id.action_itemDetailsFragment_to_nav_home)
-        }
-        callback.isEnabled=true
     }
 
     override fun onCreateView(
