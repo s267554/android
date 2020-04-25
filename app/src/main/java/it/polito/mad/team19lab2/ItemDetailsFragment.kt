@@ -58,10 +58,6 @@ class ItemDetailsFragment : Fragment() {
             navController.navigate(R.id.action_itemDetailsFragment_to_nav_home)
         }
         callback.isEnabled=true
-
-
-
-
     }
 
     override fun onCreateView(

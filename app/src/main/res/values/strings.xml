@@ -1,3 +1,4 @@
+
 <resources>
     <string name="app_name">team19lab2</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -28,4 +29,21 @@
     <string name="save">save</string>
     <string name="menu_profile">Profile</string>
     <string name="menu_items">Items</string>
+    <string name="etc">...</string>
+    <string name="name">fullname</string>
+    <string name="nickname">nickname</string>
+    <string name="interests">interests</string>
+    <string name="email">email</string>
+    <string name="profile_image">profile picture</string>
+    <string-array name="categories">
+        <item>select your interests</item>
+        <item>Arts&amp;Crafts</item>
+        <item>Sports&amp;Hobby</item>
+        <item>Baby</item>
+        <item>Womensfashion</item>
+        <item>Mensfashion</item>
+        <item>Electronics</item>
+        <item>Games&amp;Videogames</item>
+        <item>Automotive</item>
+    </string-array>
 </resources>
