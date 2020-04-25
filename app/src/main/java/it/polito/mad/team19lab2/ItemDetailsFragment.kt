@@ -49,6 +49,7 @@ class ItemDetailsFragment : Fragment() {
                 item.price = jo.get("PRICE").toString().toFloat()
                 item.expiryDate = jo.get("DATE").toString()
                 item.category = jo.get("CATEGORY").toString()
+                item.subCategory=jo.get("SUBCATEGORY").toString()
 //                item.path = jo.get("PATH").toString()
             }
         }
@@ -84,6 +85,7 @@ class ItemDetailsFragment : Fragment() {
         priceTextView.text = item.price.toString()
         expireTextView.text = item.expiryDate
         categoryTextView.text = item.category
+        subCategoryTextView.text=item.subCategory
     }
 
     override fun onCreateOptionsMenu(menu: Menu, menuInflater: MenuInflater) {

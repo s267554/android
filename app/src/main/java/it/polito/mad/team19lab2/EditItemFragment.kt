@@ -51,6 +51,7 @@ class EditItemFragment : Fragment() {
                 item.price = jo.get("PRICE").toString().toFloat()
                 item.expiryDate = jo.get("DATE").toString()
                 item.category = jo.get("CATEGORY").toString()
+                item.subCategory=jo.get("SUBCATEGORY").toString()
                 //item.path = jo.get("PATH").toString()
             }
         }
@@ -80,6 +81,7 @@ class EditItemFragment : Fragment() {
             }
         })
         Log.d("spinner", "onViewCreated")
+        val items = resources.getStringArray(R.array.categories).toMutableList()
         titleEditText.setText(item.title)
         descriptionEditText.setText(item.description)
         locationEditText.setText(item.location)
@@ -100,8 +102,11 @@ class EditItemFragment : Fragment() {
             categoryTextField.error = getString(R.string.notEmpty)
         }
         else{
-            if(item.category != "other")
-                subCategoryTextField.visibility=View.VISIBLE
+            if(item.category != "other") {
+                subCategoryTextField.visibility = View.VISIBLE
+                manageSubDropdown(item.category, items)
+                subCategoryDropdown.setText(item.subCategory, false)
+            }
         }
         titleEditText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
@@ -184,7 +189,6 @@ class EditItemFragment : Fragment() {
         }
         Log.d("spinner", "eccomi")
         //SPINNER MANAGEMENT
-        val items = resources.getStringArray(R.array.categories).toMutableList()
         Log.d("spinner", items.toString())
         val adapter = DropdownAdapter(requireContext(), R.layout.list_item, items)
         categoryEditText?.setAdapter(adapter)
@@ -197,22 +201,7 @@ class EditItemFragment : Fragment() {
                         subCategoryTextField.visibility=View.GONE
                     } else {
                         categoryTextField.error = null
-                        if(p0.toString()=="other"){
-                            subCategoryTextField.visibility=View.GONE
-                            return
-                        }
-                        for(category in items){
-                            Log.d("spinner", category)
-                            Log.d("spinner", p0.toString())
-                            if(p0.toString() == category){
-                                var subcategories = resources.getStringArray(R.array.sub1).toMutableList()
-                                var subAdapter= DropdownAdapter(requireContext(), R.layout.list_item, subcategories)
-                                subCategoryDropdown?.setAdapter(subAdapter)
-                                subCategoryTextField.visibility=View.VISIBLE
-                                return
-                            }
-                        }
-                        subCategoryTextField.visibility=View.GONE
+                        manageSubDropdown(p0.toString(), items)
                     }
                 }
             }
@@ -267,9 +256,6 @@ class EditItemFragment : Fragment() {
 
         // Update or create Shared Prefs
         var category=categoryDropdown.text.toString()
-        if(subCategoryDropdown.text.isNotEmpty()){
-            category+=", ${subCategoryDropdown.text}"
-        }
         Log.d("xxx", "Save pressed")
         val sharedPref = activity?.getSharedPreferences(
             "it.polito.mad.team19lab2"+id_item, 0)
@@ -279,7 +265,8 @@ class EditItemFragment : Fragment() {
         jo.put("LOCATION",locationEditText.text.toString())
         jo.put("PRICE",priceEditText.text.toString())
         jo.put("DATE",dateEditText.text.toString())
-        jo.put("CATEGORY", category)
+        jo.put("CATEGORY", categoryDropdown.text.toString())
+        jo.put("SUBCATEGORY", subCategoryDropdown.text.toString())
         //jo.put("PATH", item.path)
         with (sharedPref!!.edit()) {
             putString("item", jo.toString())
@@ -375,5 +362,28 @@ class EditItemFragment : Fragment() {
         imageModified=true
         image_view.setImageBitmap(rotatedBitmap)
         item.image = rotatedBitmap
+    }
+
+    private fun manageSubDropdown(chosenCategory: String, categories : MutableList<String>){
+        if(chosenCategory.toString()=="other"){
+            subCategoryDropdown.setText("")
+            subCategoryTextField.visibility=View.GONE
+            return
+        }
+        var index=1;
+        for(category in categories){
+            if(chosenCategory == category){
+                var subId = resources.getIdentifier("sub${index}", "array", context?.packageName)
+                var subcategories=resources.getStringArray(subId).toMutableList()
+                var subAdapter= DropdownAdapter(requireContext(), R.layout.list_item, subcategories)
+                subCategoryDropdown.setText("")
+                subCategoryDropdown?.setAdapter(subAdapter)
+                subCategoryTextField.visibility=View.VISIBLE
+                return
+            }
+            index++
+        }
+        subCategoryDropdown.setText("")
+        subCategoryTextField.visibility=View.GONE
     }
 }
