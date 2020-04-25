@@ -1,5 +1,6 @@
 package it.polito.mad.team19lab2
 
+import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -36,9 +37,9 @@ class ItemDetailsFragment : Fragment() {
 //            restoreFromBundle(savedInstanceState)
 //        }
         // Restore from Shared Prefs
-        id_item = "item_id"
+        id_item = arguments?.getString("item_id1").toString()
         val sharedPref = activity?.getSharedPreferences(
-            "it.polito.mad.team19lab2"+id_item, 0)
+            "it.polito.mad.team19lab2$id_item", Context.MODE_PRIVATE)
         if (sharedPref != null) {
             val currentItem = sharedPref.getString("item", "notFound")
             if (currentItem != "notFound") {
@@ -49,7 +50,9 @@ class ItemDetailsFragment : Fragment() {
                 item.price = jo.get("PRICE").toString().toFloat()
                 item.expiryDate = jo.get("DATE").toString()
                 item.category = jo.get("CATEGORY").toString()
+                item.subCategory=jo.get("SUBCATEGORY").toString()
 //                item.path = jo.get("PATH").toString()
+                Log.d("debugdetail", jo.toString())
             }
         }
         Log.d("xxx", "Oncreate Completed")
@@ -84,6 +87,7 @@ class ItemDetailsFragment : Fragment() {
         priceTextView.text = item.price.toString()
         expireTextView.text = item.expiryDate
         categoryTextView.text = item.category
+        subCategoryTextView.text=item.subCategory
     }
 
     override fun onCreateOptionsMenu(menu: Menu, menuInflater: MenuInflater) {

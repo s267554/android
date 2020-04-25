@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 
 class ItemInfo {
 
+    var subCategory: String = ""
     var img:Int= R.drawable.sport_category_foreground
     var path: String = ""
     var title:String =""
