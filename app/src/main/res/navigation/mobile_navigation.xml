@@ -7,9 +7,9 @@
 
     <fragment
         android:id="@+id/nav_home"
-        android:name="it.polito.mad.team19lab2.ui.home.HomeFragment"
+        android:name="it.polito.mad.team19lab2.ItemListFragment"
         android:label="@string/menu_home"
-        tools:layout="@layout/fragment_home">
+        tools:layout="@layout/fragment_item_list">
 
         <action
             android:id="@+id/action_nav_home_to_itemDetailsFragment"
@@ -37,6 +37,10 @@
         android:id="@+id/nav_item_detail"
         android:name="it.polito.mad.team19lab2.ItemDetailsFragment"
         android:label="Item details">
+        <argument
+            android:name="item_id1"
+            app:argType="string"
+            android:defaultValue="item_id" />
         <action
             android:id="@+id/action_itemDetailsFragment_to_nav_home"
             app:destination="@id/nav_home"
@@ -50,6 +54,10 @@
         android:name="it.polito.mad.team19lab2.EditItemFragment"
         android:label="Edit Item"
         tools:layout="@layout/fragment_edit_item">
+        <argument
+            android:name="item_id1"
+            app:argType="string"
+            android:defaultValue="item_id" />
         <action
             android:id="@+id/action_nav_edit_item_to_nav_item_detail"
             app:destination="@id/nav_item_detail"
