@@ -185,7 +185,6 @@
                 android:id="@+id/categoryTextView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:hint="@string/undefined"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
@@ -193,6 +192,19 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/categoryLabel"
                 app:layout_constraintTop_toBottomOf="@+id/categoryLabel" />
+
+            <TextView
+                android:id="@+id/subCategoryTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="8dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textColor="@color/primaryText"
+                app:layout_constraintBottom_toBottomOf="@+id/categoryIcon"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/categoryLabel"
+                app:layout_constraintTop_toBottomOf="@+id/categoryTextView" />
 
             <TextView
                 android:id="@+id/categoryLabel"
@@ -216,7 +228,7 @@
                 android:contentDescription="@string/location"
                 android:cropToPadding="false"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/categoryIcon"
+                app:layout_constraintTop_toBottomOf="@+id/subCategoryTextView"
                 app:srcCompat="@mipmap/location_icon_round" />
 
             <TextView

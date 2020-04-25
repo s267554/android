@@ -181,7 +181,9 @@ class EditItemFragment : Fragment() {
                 DatePickerDialog(
                     it,
                     DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
-                        dateEditText.setText("$dayOfMonth/$monthOfYear/$year")
+                        val finalMonth=monthOfYear+1
+                        val finalDate="$dayOfMonth/$finalMonth/$year"
+                        dateEditText.setText(finalDate)
                     }, year, month, day)
             }
             datePickerDialog?.datePicker?.minDate = System.currentTimeMillis() - 1000
@@ -212,6 +214,7 @@ class EditItemFragment : Fragment() {
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
         })
+
         //IMAGE MANAGEMENT
         registerForContextMenu(imageEdit)
         imageRotate.setOnClickListener{
