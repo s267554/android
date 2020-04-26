@@ -182,7 +182,7 @@ class EditProfileFragment : Fragment() {
         headerView.findViewById<TextView>(R.id.header_subtitle_textView).text=nameEdit.text
 
         val navController = findNavController()
-        navController.navigate(R.id.action_editProfileFragment_to_showProfileFragment)
+        navController.navigateUp()
     }
 
     private fun isValidEmail(): Boolean {

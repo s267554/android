@@ -276,10 +276,7 @@ class EditItemFragment : Fragment() {
             commit()
         }
         val navController = findNavController()
-        if(arguments?.get("isDeep")==true)
-            navController.navigateUp()
-        else
-            navController.navigate(R.id.action_nav_edit_item_to_nav_item_detail, b)
+        navController.navigateUp()
     }
 
     private fun populateBundle(b:Bundle){
