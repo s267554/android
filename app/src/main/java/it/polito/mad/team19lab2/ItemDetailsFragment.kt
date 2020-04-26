@@ -62,7 +62,7 @@ class ItemDetailsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-       return inflater.inflate(R.layout.item_details_fragment, container, false)
+        return inflater.inflate(R.layout.item_details_fragment, container, false)
     }
 
 
