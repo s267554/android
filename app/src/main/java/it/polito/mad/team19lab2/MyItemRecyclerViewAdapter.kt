@@ -20,7 +20,7 @@ import kotlinx.android.synthetic.main.fragment_item.view.*
  * TODO: Replace the implementation with code for your data type.
  */
 class MyItemRecyclerViewAdapter(
-    private val mValues: Array<ItemInfo>
+    private val mValues: ArrayList<ItemInfo>
     //,
     //private val mListener: OnListFragmentInteractionListener?
 ) : RecyclerView.Adapter<MyItemRecyclerViewAdapter.ViewHolder>() {
@@ -29,11 +29,11 @@ class MyItemRecyclerViewAdapter(
 
     init {
         mOnClickListener = View.OnClickListener { v ->
-            //val item = v.tag as ItemInfo
+            val item = v.tag as ItemInfo
             // Notify the active callbacks interface (the activity, if the fragment is attached to
             // one) that an item has been selected.
             //mListener?.onListFragmentInteraction(item)
-            v.findNavController().navigate(R.id.action_nav_home_to_itemDetailsFragment, bundleOf("item_id1" to "item_id"))
+            v.findNavController().navigate(R.id.action_nav_home_to_itemDetailsFragment, bundleOf("item_id1" to item.itemId))
         }
     }
 
@@ -54,7 +54,7 @@ class MyItemRecyclerViewAdapter(
         }
 
         holder.mEditButton.setOnClickListener {it.findNavController().navigate(R.id.action_nav_home_to_nav_edit_item,
-            bundleOf("item_id1" to "item_id", "isDeep" to true ))}
+            bundleOf("item_id1" to item.itemId, "isDeep" to true ))}
     }
 
     override fun getItemCount(): Int = mValues.size

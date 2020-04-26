@@ -10,10 +10,12 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
+import androidx.navigation.findNavController
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
 
 import org.json.JSONObject
+import java.util.*
 
 /**
  * A fragment representing a list of Items.
@@ -28,7 +30,7 @@ class ItemListFragment : Fragment() {
     //private var listener: OnListFragmentInteractionListener? = null
 
     //my add
-    private lateinit var dataset: Array<ItemInfo>
+    private var dataset = ArrayList<ItemInfo>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,13 +39,14 @@ class ItemListFragment : Fragment() {
             columnCount = it.getInt(ARG_COLUMN_COUNT)
         }
 
-        val sharedPref = activity?.getSharedPreferences("it.polito.mad.team19lab2item_id", Context.MODE_PRIVATE)
+        val sharedPref = activity?.getSharedPreferences("it.polito.mad.team19lab2.items", Context.MODE_PRIVATE)
 
-        var item = ItemInfo()
+
         if (sharedPref != null) {
-            val currentItem = sharedPref.getString("item", "notFound")
-            if (currentItem != "notFound") {
-                val jo = JSONObject(currentItem)
+            for((key,value) in sharedPref.all){
+                val item = ItemInfo()
+                item.itemId = key
+                val jo = JSONObject(value as String)
                 item.title = jo.get("TITLE").toString()
                 item.description = jo.get("DESCRIPTION").toString()
                 item.location = jo.get("LOCATION").toString()
@@ -52,9 +55,9 @@ class ItemListFragment : Fragment() {
                 item.category = jo.get("CATEGORY").toString()
                 //   item.path = jo.get("PATH").toString()
                 Log.d("debuglista", jo.toString())
+                dataset.add(item)
             }
         }
-        dataset = Array(1, {i -> item})
 
     }
 
@@ -68,21 +71,17 @@ class ItemListFragment : Fragment() {
         val recycler: RecyclerView = view.findViewById(R.id.list)
 
         // Set the adapter
-        if (recycler is RecyclerView) {
-            with(recycler) {
-                layoutManager = when {
-                    columnCount <= 1 -> LinearLayoutManager(context)
-                    else -> GridLayoutManager(context, columnCount)
-                }
-                adapter = MyItemRecyclerViewAdapter(dataset /*,listener*/)
+        with(recycler) {
+            layoutManager = when {
+                columnCount <= 1 -> LinearLayoutManager(context)
+                else -> GridLayoutManager(context, columnCount)
             }
+            adapter = MyItemRecyclerViewAdapter(dataset /*,listener*/)
         }
 
         // altro bello schifo
         val fab: FloatingActionButton = view.findViewById(R.id.fab)
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
+        fab.setOnClickListener {  view -> view.findNavController().navigate(R.id.action_nav_home_to_nav_edit_item, bundleOf("item_id1" to UUID.randomUUID().toString()))
         }
         return view
     }
