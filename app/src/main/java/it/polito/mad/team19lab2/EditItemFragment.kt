@@ -16,7 +16,6 @@ import android.view.*
 import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.textfield.TextInputLayout
 import kotlinx.android.synthetic.main.fragment_edit_item.*
 import kotlinx.android.synthetic.main.fragment_edit_item.image_view
 import kotlinx.android.synthetic.main.fragment_edit_item.roundCardView
@@ -224,7 +223,6 @@ class EditItemFragment : Fragment() {
         imageEdit.setOnClickListener{
             Toast.makeText(this.context, "Keep pressed", Toast.LENGTH_SHORT).show()
         }
-        view.findViewById<AutoCompleteTextView>(R.id.categoryDropdown).requestFocus();
     }
 
     companion object {

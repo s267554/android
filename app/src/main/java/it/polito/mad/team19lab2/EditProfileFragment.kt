@@ -8,18 +8,23 @@ import android.graphics.Matrix
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Log
 import android.util.Patterns
 import android.view.*
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.navigation.NavigationView
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_edit_profile.*
-import kotlinx.android.synthetic.main.nav_header_main.*
+import kotlinx.android.synthetic.main.fragment_edit_profile.imageEdit
+import kotlinx.android.synthetic.main.fragment_edit_profile.image_view
+import kotlinx.android.synthetic.main.fragment_edit_profile.roundCardView
 import org.json.JSONObject
 import java.io.File
 import java.io.FileOutputStream
@@ -28,13 +33,13 @@ import java.io.IOException
 
 class EditProfileFragment : Fragment() {
     var u:UserInfo= UserInfo()
+
     private val listVOs: MutableList<StateVO> = mutableListOf()
     private var REQUEST_CAMERA: Int = 1805
     private var REQUEST_GALLERY: Int = 1715
     private var imageModified=false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,savedInstanceState: Bundle?): View? {
-
         return inflater.inflate(R.layout.fragment_edit_profile, container, false)
     }
 
@@ -69,69 +74,127 @@ class EditProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        //image management
         val file = File(context?.filesDir, "myimage.png")
         if (file.exists()) {
             u.image = BitmapFactory.decodeFile(file.absolutePath)
         }
-
         if (u.image == null) {
             image_view.setImageResource(u.img)
         }
         else {
             image_view.setImageBitmap(u.image)
         }
-        nameEdit.setText(u.fullname)
-        nicknameEdit.setText(u.nickname)
-        emailEdit.setText(u.email_address)
-        locationEdit.setText(u.location_area)
+        registerForContextMenu(imageEdit)
+        imageRotateProfile.setOnClickListener{
+            rotateBitmap()
+        }
+        imageEdit.setOnClickListener{
+            Toast.makeText(this.context, "Keep pressed", Toast.LENGTH_SHORT).show()
+        }
+        roundCardView.viewTreeObserver.addOnGlobalLayoutListener (object: ViewTreeObserver.OnGlobalLayoutListener{
+            override fun onGlobalLayout() {
+                roundCardView.radius =  roundCardView.height.toFloat() / 2.0F
+                roundCardView.viewTreeObserver.removeOnGlobalLayoutListener(this)
+            }
+        })
+
+        //SET VALUE
+        fullNameProfileEditText.setText(u.fullname)
+        nicknameProfileEditText.setText(u.nickname)
+        emailProfileEditText.setText(u.email_address)
+        locationProfileEditText.setText(u.location_area)
         imageEdit.setOnClickListener {
             Toast.makeText(context, "Keep pressed", Toast.LENGTH_SHORT).show()
         }
-        registerForContextMenu(imageEdit)
-        //spinner
-        val selectInterests=this.resources.getStringArray(R.array.interests).toMutableList()
-
-        if(listVOs.isEmpty()){
-            for (i in selectInterests.indices) {
-                val stateVO = StateVO()
-                stateVO.title = selectInterests[i]
-                stateVO.isSelected = false
-                listVOs.add(stateVO)
+        //Initial validation
+        if(fullNameProfileEditText == null || fullNameProfileEditText.text?.isEmpty() == true){
+            fullNameProfile.error=getString(R.string.notEmpty)
+        }
+        if(nicknameProfileEditText == null || nicknameProfileEditText.text?.isEmpty() == true){
+            nicknameProfile.error=getString(R.string.notEmpty)
+        }
+        if(emailProfileEditText == null || emailProfileEditText.text?.isEmpty() == true){
+            emailProfile.error=getString(R.string.notEmpty)
+        }
+        //SPINNER
+        val selectInterests=this.resources.getStringArray(R.array.categories).toMutableList()
+        listVOs.clear()
+        var k = 0
+        for (i in 0 until selectInterests.size) {
+            val stateVO = StateVO()
+            stateVO.title = selectInterests[i]
+            stateVO.isSelected = false
+            if(k < u.interests.size&&i == u.interests[k]){
+                k++
+                stateVO.isSelected = true
+            }
+            listVOs.add(stateVO)
+        }
+        val adapter = MyAdapter(requireContext(), 0, listVOs)
+        interestsDropdown.setAdapter(adapter)
+        //VALIDATION
+        fullNameProfileEditText.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(p0: Editable?) {
+                if (p0 != null) {
+                    if(p0.isEmpty() || p0.isBlank()){
+                        fullNameProfile.error = getString(R.string.notEmpty)
+                    }
+                }
+            }
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                if(!p0.isNullOrBlank() && !p0.isNullOrEmpty())
+                    fullNameProfile.error = null
+            }
+        })
+        nicknameProfileEditText.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(p0: Editable?) {
+                if (p0 != null) {
+                    if(p0.isEmpty() || p0.isBlank()){
+                        nicknameProfile.error = getString(R.string.notEmpty)
+                    }
+                }
+            }
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                if(!p0.isNullOrBlank() && !p0.isNullOrEmpty())
+                    nicknameProfile.error = null
+            }
+        })
+        emailProfileEditText.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(p0: Editable?) {
+                if (p0 != null) {
+                    if(p0.isEmpty() || p0.isBlank()){
+                        emailProfile.error = getString(R.string.notEmpty)
+                    }
+                }
+            }
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                if(!p0.isNullOrBlank() && !p0.isNullOrEmpty())
+                    emailProfile.error = null
+            }
+        })
+        emailProfileEditText.setOnFocusChangeListener { _, hasFocus ->
+            if(!hasFocus){
+                if(!isValidEmail())
+                    emailProfile.error=getString(R.string.invalidEmail)
             }
         }
-        val myAdapter = MyAdapter(
-            requireContext(), 0,
-            listVOs
-        )
-        mySpinner.adapter=myAdapter
-        roundCardView.invalidate()
     }
 
-    //forse bisogna creare un altro menu per il profilo
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.item_edit_menu, menu)
+        inflater.inflate(R.menu.profile_edit_menu, menu)
     }
-
-    /*
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        populateEditedBundle(outState)
-        for(i in listVOs.indices)
-            println("$i - "+listVOs[i].isSelected)
-    }
-
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-        restoreFromBundle(savedInstanceState)
-    }
-    */
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if(item.itemId == R.id.save_item_action)
+        if(item.itemId == R.id.save_profile_action)
             saveProfile()
-        else if(item.itemId == R.id.cancel_action)
+        else if(item.itemId == R.id.cancel_profile_action)
             cancelModification()
         return super.onOptionsItemSelected(item)
     }
@@ -139,8 +202,8 @@ class EditProfileFragment : Fragment() {
     private fun saveProfile(){
         val navigationView = requireActivity().findViewById<View>(R.id.nav_view) as NavigationView
         val headerView = navigationView.getHeaderView(0)
-        if(nameEdit.text.toString().isEmpty()){
-            Toast.makeText(context,"enter name",Toast.LENGTH_SHORT).show()
+        if(fullNameProfileEditText.text.toString().isEmpty() || nicknameProfileEditText.text.toString().isEmpty()){
+            Toast.makeText(context,"Insert all required fields",Toast.LENGTH_SHORT).show()
             return
         }
         if(!isValidEmail()){
@@ -157,36 +220,34 @@ class EditProfileFragment : Fragment() {
             } catch (e: IOException) {
                 e.printStackTrace()
             }
-
-
         }
         val sharedPref = activity?.getSharedPreferences(
             "it.polito.mad.team19lab2.profile", 0)
         val jo = JSONObject()
-        jo.put("FULL_NAME",nameEdit.text.toString())
-
-        jo.put("NICK_NAME",nicknameEdit.text.toString())
-        jo.put("LOCATION",locationEdit.text.toString())
-        jo.put("EMAIL",emailEdit.text.toString())
+        jo.put("FULL_NAME",fullNameProfileEditText.text.toString())
+        jo.put("NICK_NAME",nicknameProfileEditText.text.toString())
+        jo.put("LOCATION",locationProfileEditText.text.toString())
+        jo.put("EMAIL",emailProfileEditText.text.toString())
         val interests= mutableListOf<Int>()
         for(i in listVOs.indices)
             if(listVOs[i].isSelected)
                 interests.add(i)
-        if(!interests.isEmpty())
-            jo.put("INTERESTS", interests.toIntArray())
+        Log.d("interest", interests.toString())
+        if(interests.isNotEmpty())
+            jo.put("INTERESTS", JSONObject.wrap(interests))
         with (sharedPref!!.edit()) {
             putString("profile", jo.toString())
             commit()
         }
-        headerView.findViewById<TextView>(R.id.header_title_textView).text=nicknameEdit.text
-        headerView.findViewById<TextView>(R.id.header_subtitle_textView).text=nameEdit.text
+        headerView.findViewById<TextView>(R.id.header_title_textView).text=nicknameProfileEditText.text
+        headerView.findViewById<TextView>(R.id.header_subtitle_textView).text=fullNameProfileEditText.text
 
         val navController = findNavController()
-        navController.navigateUp()
+        navController.navigate(R.id.action_editProfileFragment_to_showProfileFragment)
     }
 
     private fun isValidEmail(): Boolean {
-        val target = emailEdit.text.toString()
+        val target = emailProfileEditText.text.toString()
         return if (target.isEmpty()) {
             false
         } else {
@@ -197,41 +258,6 @@ class EditProfileFragment : Fragment() {
     private fun cancelModification(){
         val navController = findNavController()
         navController.navigateUp()//(R.id.action_editProfileFragment_to_showProfileFragment)
-    }
-
-    //populate and restore bundle do not make the updating visible, only the property are updated
-    private fun populateEditedBundle(b:Bundle){
-        b.putString("group19.lab2.FULL_NAME",nameEdit.text.toString())
-        b.putString("group19.lab2.NICK_NAME",nicknameEdit.text.toString())
-        b.putString("group19.lab2.EMAIL",emailEdit.text.toString())
-        b.putString("group19.lab2.LOCATION",locationEdit.text.toString())
-        val interests= mutableListOf<Int>()
-        for(i in listVOs.indices)
-            if(listVOs[i].isSelected)
-                interests.add(i)
-        b.putIntArray("group19.lab2.INTERESTS",interests.toIntArray())
-        b.putInt("group19.lab2.IMG",u.img)
-    }
-
-    private fun restoreFromBundle(b:Bundle){
-        u.fullname = b.getString("group19.lab2.FULL_NAME")!!
-        u.nickname = b.getString("group19.lab2.NICK_NAME")!!
-        u.email_address = b.getString("group19.lab2.EMAIL")!!
-        u.location_area = b.getString("group19.lab2.LOCATION")!!
-        val interests = b.getIntArray("group19.lab2.INTERESTS")!!.toMutableList()
-        val selectInterests=this.resources.getStringArray(R.array.interests).toMutableList()
-        listVOs.clear()
-        var k = 0
-        for (i in 0 until selectInterests.size) {
-            val stateVO = StateVO()
-            stateVO.title = selectInterests[i]
-            stateVO.isSelected = false
-            if(k < interests.size&&i == interests[k]){
-                k++
-                stateVO.isSelected = true
-            }
-            listVOs.add(stateVO)
-        }
     }
 
     override fun onCreateContextMenu(menu: ContextMenu, v: View, menuInfo: ContextMenu.ContextMenuInfo?) {
@@ -301,7 +327,7 @@ class EditProfileFragment : Fragment() {
         )
     }
 
-    fun rotateBitmap(v: View?) {
+    private fun rotateBitmap() {
         if(u.image == null){
             Toast.makeText(activity?.applicationContext,"insert an image before",Toast.LENGTH_SHORT).show()
             return

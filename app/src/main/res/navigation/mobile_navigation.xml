@@ -66,5 +66,9 @@
     <fragment
         android:id="@+id/editProfileFragment"
         android:name="it.polito.mad.team19lab2.EditProfileFragment"
-        android:label="EditProfileFragment" />
+        android:label="EditProfileFragment" >
+        <action
+            android:id="@+id/action_editProfileFragment_to_showProfileFragment"
+            app:destination="@id/showProfileFragment" />
+    </fragment>
 </navigation>

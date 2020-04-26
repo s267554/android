@@ -4,104 +4,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginLeft="16dp"
-    android:layout_marginRight="16dp"
+    android:layout_marginBottom="16dp"
     android:fillViewport="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".EditProfileActivity">
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/profilePictureGuideline2"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintGuide_percent="0.3"
-            app:layout_constraintTop_toBottomOf="@+id/frameLayout2" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/iconGuideline2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.12" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/labelGuideline2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.24" />
-
-        <ImageView
-            android:id="@+id/nicknameIcon2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="@string/nickname"
-            android:cropToPadding="false"
-            app:layout_constraintBottom_toTopOf="@+id/emailIcon2"
-            app:layout_constraintEnd_toEndOf="@+id/nameIcon2"
-            app:layout_constraintStart_toStartOf="@+id/nameIcon2"
-            app:layout_constraintTop_toBottomOf="@+id/nameIcon2"
-            app:srcCompat="@mipmap/nickname_icon_round" />
-
-        <ImageView
-            android:id="@+id/locationIcon2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="@string/location"
-            android:cropToPadding="false"
-            app:layout_constraintBottom_toTopOf="@+id/interestsIcon2"
-            app:layout_constraintEnd_toEndOf="@+id/emailIcon2"
-            app:layout_constraintStart_toStartOf="@+id/emailIcon2"
-            app:layout_constraintTop_toBottomOf="@+id/emailIcon2"
-            app:srcCompat="@mipmap/location_icon_round" />
-
-        <ImageView
-            android:id="@+id/interestsIcon2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="@string/interests"
-            android:cropToPadding="false"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/locationIcon2"
-            app:layout_constraintStart_toStartOf="@+id/locationIcon2"
-            app:layout_constraintTop_toBottomOf="@+id/locationIcon2"
-            app:srcCompat="@mipmap/interests_icon_round" />
-
-        <ImageView
-            android:id="@+id/nameIcon2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="@string/name"
-            android:cropToPadding="false"
-            app:layout_constraintBottom_toTopOf="@+id/nicknameIcon2"
-            app:layout_constraintEnd_toEndOf="@+id/iconGuideline2"
-            app:layout_constraintStart_toStartOf="@+id/iconGuideline2"
-            app:layout_constraintTop_toBottomOf="@+id/frameLayout2"
-            app:srcCompat="@mipmap/account_icon_round" />
-
-        <ImageView
-            android:id="@+id/emailIcon2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="@string/email"
-            android:cropToPadding="false"
-            app:layout_constraintBottom_toTopOf="@+id/locationIcon2"
-            app:layout_constraintEnd_toEndOf="@+id/nicknameIcon2"
-            app:layout_constraintStart_toStartOf="@+id/nicknameIcon2"
-            app:layout_constraintTop_toBottomOf="@+id/nicknameIcon2"
-            app:srcCompat="@mipmap/email_icon_round" />
+        android:layout_height="wrap_content"
+        android:touchscreenBlocksFocus="false"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        tools:context=".ItemDetailsFragment">
 
         <FrameLayout
             android:id="@+id/frameLayout2"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="10dp"
-            app:layout_constraintBottom_toTopOf="@+id/profilePictureGuideline2"
+            app:layout_constraintBottom_toTopOf="@+id/profilePictureGuideline"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -114,20 +33,21 @@
                     android:id="@+id/roundCardView"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
                     android:elevation="0dp"
                     app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintDimensionRatio="1:1"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintDimensionRatio="1:1">
+                    app:layout_constraintTop_toTopOf="parent">
 
                     <ImageView
                         android:id="@+id/image_view"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:contentDescription="@string/profile_image"
                         android:scaleType="centerCrop"
-                        tools:srcCompat="@mipmap/avatar" />
+                        app:srcCompat="@drawable/avatar_foreground" />
 
                 </androidx.cardview.widget.CardView>
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -136,141 +56,188 @@
                 android:id="@+id/imageEdit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="top|left"
+                android:layout_gravity="start|top"
                 app:srcCompat="@android:drawable/ic_menu_camera" />
 
             <ImageButton
-                android:id="@+id/imageRotate"
+                android:id="@+id/imageRotateProfile"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right|top"
-                android:onClick="rotateBitmap"
+                android:layout_gravity="top|end"
                 app:srcCompat="@android:drawable/ic_menu_rotate" />
-
         </FrameLayout>
 
-        <TextView
-            android:id="@+id/textView4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/email"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            app:layout_constraintStart_toStartOf="@+id/textView3"
-            app:layout_constraintTop_toTopOf="@+id/emailIcon2" />
-
-        <TextView
-            android:id="@+id/textView6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingRight="16dp"
-            android:text="@string/interests"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            app:layout_constraintStart_toStartOf="@+id/labelGuideline2"
-            app:layout_constraintTop_toTopOf="@+id/interestsIcon2" />
-
-        <TextView
-            android:id="@+id/textView3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/nickname"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            app:layout_constraintStart_toStartOf="@+id/textView2"
-            app:layout_constraintTop_toTopOf="@+id/nicknameIcon2" />
-
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/name"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            app:layout_constraintStart_toStartOf="@+id/labelGuideline2"
-            app:layout_constraintTop_toTopOf="@+id/nameIcon2"
-            tools:layout_goneMarginRight="16dp" />
-
-        <TextView
-            android:id="@+id/textView5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingRight="16dp"
-            android:text="@string/location"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            app:layout_constraintStart_toStartOf="@+id/textView4"
-            app:layout_constraintTop_toTopOf="@+id/locationIcon2" />
-
-        <EditText
-            android:id="@+id/nameEdit"
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/profilePictureGuideline"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:hint="@string/undefined"
-            android:inputType="textPersonName"
-            android:maxLength="45"
-            android:selectAllOnFocus="false"
-            android:singleLine="false"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            app:layout_constraintBottom_toTopOf="@+id/textView3"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintGuide_begin="200dp" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/fullNameProfile"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:hint="@string/name"
+            app:boxBackgroundColor="@color/category_icon_background"
+            app:boxStrokeColor="@color/colorPrimary"
+            app:counterEnabled="false"
+            app:errorEnabled="true"
+            app:hintAnimationEnabled="true"
+            app:hintEnabled="true"
+            app:hintTextAppearance="@style/TextAppearance.AppCompat.Small"
+            app:hintTextColor="@color/colorPrimary"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="@+id/textView2"
-            app:layout_constraintTop_toBottomOf="@+id/textView2"
-            app:layout_constraintVertical_bias="0.133" />
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/frameLayout2"
+            app:startIconDrawable="@drawable/account_profile_foreground"
+            app:startIconTint="@color/colorPrimary">
 
-        <EditText
-            android:id="@+id/nicknameEdit"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/fullNameProfileEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:enabled="true"
+                android:inputType="text"
+                android:maxLength="20"
+                android:singleLine="true"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/nicknameProfile"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:hint="@string/nickname"
-            android:inputType="textPersonName"
-            android:maxLength="45"
-            android:singleLine="false"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            app:layout_constraintBottom_toTopOf="@+id/textView4"
+            app:boxBackgroundColor="@color/category_icon_background"
+            app:boxStrokeColor="@color/colorPrimary"
+            app:counterEnabled="false"
+            app:errorEnabled="true"
+            app:hintAnimationEnabled="true"
+            app:hintEnabled="true"
+            app:hintTextAppearance="@style/TextAppearance.AppCompat.Small"
+            app:hintTextColor="@color/colorPrimary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/textView3"
-            app:layout_constraintTop_toBottomOf="@+id/textView3"
-            app:layout_constraintVertical_bias="0.13" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fullNameProfile"
+            app:startIconDrawable="@drawable/nickname_profile_foreground"
+            app:startIconTint="@color/colorPrimary">
 
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/nicknameProfileEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:enabled="true"
+                android:inputType="text"
+                android:maxLength="20"
+                android:singleLine="true"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <EditText
-            android:id="@+id/emailEdit"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/emailProfile"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:hint="@string/email"
-            android:inputType="textEmailAddress"
-            android:maxLength="70"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            app:layout_constraintBottom_toTopOf="@+id/textView5"
+            app:boxBackgroundColor="@color/category_icon_background"
+            app:boxStrokeColor="@color/colorPrimary"
+            app:counterEnabled="false"
+            app:errorEnabled="true"
+            app:hintAnimationEnabled="true"
+            app:hintEnabled="true"
+            app:hintTextAppearance="@style/TextAppearance.AppCompat.Small"
+            app:hintTextColor="@color/colorPrimary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/textView4"
-            app:layout_constraintTop_toBottomOf="@+id/textView4"
-            app:layout_constraintVertical_bias="0.13" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/nicknameProfile"
+            app:startIconDrawable="@drawable/email_profile_foreground"
+            app:startIconTint="@color/colorPrimary">
 
-        <EditText
-            android:id="@+id/locationEdit"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/emailProfileEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:enabled="true"
+                android:inputType="text|textEmailAddress"
+                android:maxLength="40"
+                android:singleLine="true"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/locationProfile"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
             android:hint="@string/location"
-            android:inputType="text"
-            android:maxLength="45"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            app:layout_constraintBottom_toTopOf="@+id/textView6"
+            app:boxBackgroundColor="@color/category_icon_background"
+            app:boxStrokeColor="@color/colorPrimary"
+            app:counterEnabled="false"
+            app:errorEnabled="false"
+            app:hintAnimationEnabled="true"
+            app:hintEnabled="true"
+            app:hintTextAppearance="@style/TextAppearance.AppCompat.Small"
+            app:hintTextColor="@color/colorPrimary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/textView5"
-            app:layout_constraintTop_toBottomOf="@+id/textView5"
-            app:layout_constraintVertical_bias="0.133" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/emailProfile"
+            app:startIconDrawable="@drawable/location_icon_edit"
+            app:startIconTint="@color/colorPrimary">
 
-        <Spinner
-            android:id="@+id/mySpinner"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/locationProfileEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:enabled="true"
+                android:inputType="text"
+                android:maxLength="20"
+                android:singleLine="true"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/test"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:spinnerMode="dialog"
+            android:layout_marginTop="16dp"
+            android:hint="@string/interests"
+            app:boxBackgroundColor="@color/category_icon_background"
+            app:boxStrokeColor="@color/colorPrimary"
+            app:counterEnabled="false"
+            app:errorEnabled="true"
+            app:hintAnimationEnabled="true"
+            app:hintEnabled="true"
+            app:hintTextAppearance="@style/TextAppearance.AppCompat.Small"
+            app:hintTextColor="@color/colorPrimary"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/labelGuideline2"
-            app:layout_constraintTop_toBottomOf="@+id/textView6" />
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/locationProfile"
+            app:startIconDrawable="@drawable/interests_profile_foreground"
+            app:startIconTint="@color/colorPrimary">
+
+            <AutoCompleteTextView
+                android:id="@+id/interestsDropdown"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:inputType="none|textNoSuggestions"
+                android:textIsSelectable="false" />
+        </com.google.android.material.textfield.TextInputLayout>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 </ScrollView>

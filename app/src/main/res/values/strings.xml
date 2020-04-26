@@ -52,6 +52,7 @@
     <string name="profile_image_frame">profile container</string>
     <string name="activity_show_title">User profile</string>
     <string name="activity_edit_title">Edit User Profile</string>
+    <string name="invalidEmail">Invalid email</string>
     <string-array name="interests">
         <item>select your interests</item>
         <item>home</item>

@@ -12,7 +12,10 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.ms.square.android.expandabletextview.ExpandableTextView
+import kotlinx.android.synthetic.main.fragment_edit_item.*
 import kotlinx.android.synthetic.main.fragment_show_profile.*
+import kotlinx.android.synthetic.main.fragment_show_profile.image_view
+import kotlinx.android.synthetic.main.fragment_show_profile.roundCardView
 import org.json.JSONObject
 import java.io.File
 
@@ -80,6 +83,13 @@ class ShowProfileFragment :Fragment() {
         interests_view.text = buildInterestsString()
         // To show a default value
         ratingBar.rating= 2.5F
+        //Round image management
+        roundCardView.viewTreeObserver.addOnGlobalLayoutListener (object: ViewTreeObserver.OnGlobalLayoutListener{
+            override fun onGlobalLayout() {
+                roundCardView.radius =  roundCardView.height.toFloat() / 2.0F
+                roundCardView.viewTreeObserver.removeOnGlobalLayoutListener(this)
+            }
+        })
     }
 
     private fun buildInterestsString():String{

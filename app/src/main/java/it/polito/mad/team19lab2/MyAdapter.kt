@@ -7,8 +7,13 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.CheckBox
 import android.widget.TextView
+import androidx.lifecycle.MutableLiveData
 
-class MyAdapter(context: Context, resource: Int, objects: List<StateVO>) :
+class MyAdapter(
+    context: Context,
+    resource: Int,
+    objects: List<StateVO>
+) :
     ArrayAdapter<StateVO?>(context, resource, objects) {
     private val mContext: Context
     private val listState: ArrayList<StateVO>
@@ -28,7 +33,7 @@ class MyAdapter(context: Context, resource: Int, objects: List<StateVO>) :
         return getCustomView(position, convertView, parent)
     }
 
-    fun getCustomView(position: Int, convertView: View?, parent: ViewGroup?): View {//creo i view holder
+    private fun getCustomView(position: Int, convertView: View?, parent: ViewGroup?): View {//creo i view holder
         var convertView: View? = convertView
         val holder: ViewHolder
         if (convertView == null) {
@@ -46,19 +51,16 @@ class MyAdapter(context: Context, resource: Int, objects: List<StateVO>) :
         isFromView = true
         holder.mCheckBox!!.isChecked = listState[position].isSelected//setto la checkboxe in base al campo selected dell'item (tipo stateVO)
         isFromView = false
-        if (position == 0) {//the first is only the title, cant be checkable
-            holder.mCheckBox!!.visibility = View.INVISIBLE
-        } else {
-            holder.mCheckBox!!.visibility = View.VISIBLE
-        }
+        holder.mCheckBox!!.visibility = View.VISIBLE
         holder.mCheckBox!!.tag = position
         //setto il checkedchange listener, uso il tag che rappresenta la posizione per sapere quale bottone è statp checkato dall'utente
         //e aggiorno la mia lista listState
         holder.mCheckBox!!.setOnCheckedChangeListener { buttonView, isChecked ->
             val getPosition = buttonView.tag as Int
             if (!isFromView) {
-                listState[position].isSelected=isChecked
+                listState[position].isSelected = isChecked
             }
+
         }
         return convertView!!
     }
