@@ -29,8 +29,7 @@
         android:label="Item details">
         <argument
             android:name="item_id1"
-            app:argType="string"
-            android:defaultValue="item_id" />
+            app:argType="string" />
         <action
             android:id="@+id/action_nav_item_detail_to_nav_edit_item"
             app:destination="@id/nav_edit_item"
@@ -43,7 +42,6 @@
         tools:layout="@layout/fragment_edit_item">
         <argument
             android:name="item_id1"
-            android:defaultValue="item_id"
             app:argType="string" />
         <action
             android:id="@+id/action_nav_edit_item_to_nav_home"
@@ -54,6 +52,9 @@
             android:id="@+id/deepLink"
             android:autoVerify="false"
             app:uri="it.polito.mad.team19lab2/editItem"/>
+        <action
+            android:id="@+id/action_nav_edit_item_to_nav_item_detail"
+            app:destination="@id/nav_item_detail" />
     </fragment>
     <fragment
         android:id="@+id/showProfileFragment"
