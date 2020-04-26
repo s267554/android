@@ -9,6 +9,7 @@ import android.view.*
 import android.widget.AutoCompleteTextView
 import android.widget.EditText
 import androidx.activity.addCallback
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.ms.square.android.expandabletextview.ExpandableTextView
@@ -37,24 +38,7 @@ class ItemDetailsFragment : Fragment() {
 //            restoreFromBundle(savedInstanceState)
 //        }
         // Restore from Shared Prefs
-        id_item = arguments?.getString("item_id1").toString()
-        val sharedPref = activity?.getSharedPreferences(
-            "it.polito.mad.team19lab2.items", Context.MODE_PRIVATE)
-        if (sharedPref != null) {
-            val currentItem = sharedPref.getString(id_item, "notFound")
-            if (currentItem != "notFound") {
-                val jo = JSONObject(currentItem)
-                item.title = jo.get("TITLE").toString()
-                item.description = jo.get("DESCRIPTION").toString()
-                item.location = jo.get("LOCATION").toString()
-                item.price = jo.get("PRICE").toString().toFloat()
-                item.expiryDate = jo.get("DATE").toString()
-                item.category = jo.get("CATEGORY").toString()
-                item.subCategory=jo.get("SUBCATEGORY").toString()
-//                item.path = jo.get("PATH").toString()
-                Log.d("debugdetail", jo.toString())
-            }
-        }
+
         Log.d("xxx", "Oncreate Completed")
     }
 
@@ -75,6 +59,26 @@ class ItemDetailsFragment : Fragment() {
                 roundCardView.viewTreeObserver.removeOnGlobalLayoutListener(this);
             }
         })
+
+        id_item = arguments?.getString("item_id1").toString()
+        Log.d("debugDetail","arg id_item: $id_item")
+        val sharedPref = activity?.getSharedPreferences(
+            "it.polito.mad.team19lab2.items", Context.MODE_PRIVATE)
+        if (sharedPref != null) {
+            val currentItem = sharedPref.getString(id_item, "notFound")
+            if (currentItem != "notFound") {
+                val jo = JSONObject(currentItem)
+                item.title = jo.get("TITLE").toString()
+                item.description = jo.get("DESCRIPTION").toString()
+                item.location = jo.get("LOCATION").toString()
+                item.price = jo.get("PRICE").toString().toFloat()
+                item.expiryDate = jo.get("DATE").toString()
+                item.category = jo.get("CATEGORY").toString()
+                item.subCategory=jo.get("SUBCATEGORY").toString()
+//                item.path = jo.get("PATH").toString()
+                Log.d("debugdetail", jo.toString())
+            }
+        }
 
         val file = File(activity?.applicationContext?.filesDir, "$id_item.png")
         if(file.exists()) {
@@ -101,10 +105,7 @@ class ItemDetailsFragment : Fragment() {
     }
 
     private fun editItem(){
-        val b=Bundle()
-        populateBundle(b)
-        val navController = findNavController()
-        navController.navigate(R.id.action_nav_item_detail_to_nav_edit_item, b)
+        findNavController().navigate(R.id.action_nav_item_detail_to_nav_edit_item, bundleOf("item_id1" to id_item))
     }
 
     //populate and restore bundle do not make the updating visible, only the property are updated

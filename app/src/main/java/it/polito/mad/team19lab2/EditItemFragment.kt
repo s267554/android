@@ -14,6 +14,7 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.*
 import android.widget.*
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputLayout
@@ -39,23 +40,7 @@ class EditItemFragment : Fragment() {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
         Log.d("spinner", "onCreate")
-        id_item = arguments?.getString("item_id1").toString()
-        val sharedPref = activity?.getSharedPreferences(
-            "it.polito.mad.team19lab2.items", 0)
-        if (sharedPref != null) {
-            val currentItem = sharedPref.getString(id_item, "notFound")
-            if (currentItem != "notFound") {
-                val jo = JSONObject(currentItem)
-                item.title = jo.get("TITLE").toString()
-                item.description = jo.get("DESCRIPTION").toString()
-                item.location = jo.get("LOCATION").toString()
-                item.price = jo.get("PRICE").toString().toFloat()
-                item.expiryDate = jo.get("DATE").toString()
-                item.category = jo.get("CATEGORY").toString()
-                item.subCategory=jo.get("SUBCATEGORY").toString()
-                //item.path = jo.get("PATH").toString()
-            }
-        }
+
     }
 
     override fun onCreateView(
@@ -72,6 +57,27 @@ class EditItemFragment : Fragment() {
         if(file.exists()) {
             item.image = MediaStore.Images.Media.getBitmap(activity?.contentResolver,Uri.fromFile(file))
             image_view.setImageBitmap(item.image)
+        }
+
+        id_item = arguments?.getString("item_id1").toString()
+        Log.d("debugEdit","arg id_item: $id_item")
+        val sharedPref = activity?.getSharedPreferences(
+            "it.polito.mad.team19lab2.items", Context.MODE_PRIVATE)
+        if (sharedPref != null) {
+            val currentItem = sharedPref.getString(id_item, "notFound")
+            if (currentItem != "notFound") {
+
+                val jo = JSONObject(currentItem)
+                item.title = jo.get("TITLE").toString()
+                item.description = jo.get("DESCRIPTION").toString()
+                item.location = jo.get("LOCATION").toString()
+                item.price = jo.get("PRICE").toString().toFloat()
+                item.expiryDate = jo.get("DATE").toString()
+                item.category = jo.get("CATEGORY").toString()
+                item.subCategory=jo.get("SUBCATEGORY").toString()
+                //item.path = jo.get("PATH").toString()
+                Log.d("debugeditonview", "category ${item.location}")
+            }
         }
 
         //Round image management
@@ -242,9 +248,6 @@ class EditItemFragment : Fragment() {
     }
 
     private fun saveItem(){
-        val b=Bundle()
-        populateBundle(b)
-
         // Update or create the image
         if(imageModified && item.image!=null){
             val fileForBundle = File(activity?.applicationContext?.filesDir, "$id_item.png")
@@ -276,8 +279,10 @@ class EditItemFragment : Fragment() {
             putString(id_item, jo.toString())
             commit()
         }
-        val navController = findNavController()
-        navController.navigateUp()
+        findNavController().navigate(R.id.action_nav_edit_item_to_nav_item_detail, bundleOf("item_id1" to id_item))
+//        val navController = findNavController()
+//        navController.navigateUp()
+
     }
 
     private fun populateBundle(b:Bundle){
