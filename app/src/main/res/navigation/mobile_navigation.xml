@@ -10,7 +10,9 @@
         android:name="it.polito.mad.team19lab2.ItemListFragment"
         android:label="@string/menu_home"
         tools:layout="@layout/fragment_item_list">
-
+        <argument
+            android:name="item_id1"
+            app:argType="string" />
         <action
             android:id="@+id/action_nav_home_to_itemDetailsFragment"
             app:destination="@id/nav_item_detail"
