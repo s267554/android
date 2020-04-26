@@ -277,8 +277,12 @@ class EditItemFragment : Fragment() {
             putString(id_item, jo.toString())
             commit()
         }
-        findNavController().navigate(R.id.action_nav_edit_item_to_nav_item_detail, bundleOf("item_id1" to id_item))
-//        val navController = findNavController()
+        if(arguments?.getBoolean("deep_link")==true)
+            findNavController().navigate(R.id.action_nav_edit_item_to_nav_home, bundleOf("item_id1" to id_item))
+        else
+            findNavController().navigate(R.id.action_nav_edit_item_to_nav_item_detail, bundleOf("item_id1" to id_item))
+
+
 //        navController.navigateUp()
 
     }

@@ -52,12 +52,11 @@ class MainActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment)
         //destination means source!
-        //Log.d("vittoz","${navController.currentDestination!!.id} vs detail ${R.id.nav_item_detail}")
-        /*if(navController.currentDestination!!.id==R.id.nav_item_detail){//arrivo da item detail
-            navController.navigate(R.id.action_itemDetailsFragment_to_nav_home)
+        Log.d("vittoz","${navController.currentDestination!!.id} vs detail ${R.id.nav_item_detail}")
+        if(navController.currentDestination!!.id==R.id.nav_item_detail){//arrivo da item detail
+            navController.navigate(R.id.action_nav_item_detail_to_nav_home)
             return false
         }
-         */
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
@@ -84,19 +83,30 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+
     fun setInterestsDropdown(listState: ArrayList<StateVO>) {
-        var interests=""
-        for(element in listState) {
-            if(element.isSelected){
-                if(interests.isEmpty()){
-                    interests+=element.title
-                }
-                else{
-                    interests+=", ${element.title}"
+        var interests = ""
+        for (element in listState) {
+            if (element.isSelected) {
+                if (interests.isEmpty()) {
+                    interests += element.title
+                } else {
+                    interests += ", ${element.title}"
                 }
             }
         }
         findViewById<AutoCompleteTextView>(R.id.interestsDropdown)?.setText(interests, false)
+    }
+
+    override fun onBackPressed() {
+        val navController = findNavController(R.id.nav_host_fragment)
+        //destination means source!
+        Log.d("vittoz","${navController.currentDestination!!.id} vs detail ${R.id.nav_item_detail}")
+        if(navController.currentDestination!!.id==R.id.nav_item_detail){//arrivo da item detail
+            navController.navigate(R.id.action_nav_item_detail_to_nav_home)
+        }
+        else
+            super.onBackPressed()
     }
 
 }
