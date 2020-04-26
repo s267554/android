@@ -122,9 +122,5 @@ class ShowProfileFragment :Fragment() {
     }
     //populate and restore bundle do not make the updating visible, only the property are updated
 
-    private fun populateBundle(b:Bundle){
-
-    }
-
 
 }

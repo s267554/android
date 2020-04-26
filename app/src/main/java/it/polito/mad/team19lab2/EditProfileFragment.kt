@@ -13,18 +13,14 @@ import android.text.TextWatcher
 import android.util.Log
 import android.util.Patterns
 import android.view.*
+import android.widget.AdapterView
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.fragment_edit_profile.*
-import kotlinx.android.synthetic.main.fragment_edit_profile.imageEdit
-import kotlinx.android.synthetic.main.fragment_edit_profile.image_view
-import kotlinx.android.synthetic.main.fragment_edit_profile.roundCardView
 import org.json.JSONObject
 import java.io.File
 import java.io.FileOutputStream
@@ -131,6 +127,7 @@ class EditProfileFragment : Fragment() {
             }
             listVOs.add(stateVO)
         }
+        (requireContext() as MainActivity).setInterestsDropdown(listVOs as ArrayList<StateVO>)
         val adapter = MyAdapter(requireContext(), 0, listVOs)
         interestsDropdown.setAdapter(adapter)
         //VALIDATION
@@ -337,6 +334,7 @@ class EditProfileFragment : Fragment() {
         image_view.setImageBitmap(rotatedBitmap)
         u.image = rotatedBitmap
     }
+
 }
 
 class StateVO {

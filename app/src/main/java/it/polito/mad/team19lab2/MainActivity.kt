@@ -1,19 +1,9 @@
 package it.polito.mad.team19lab2
 
-import android.app.Activity
-import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Log
-import android.view.ContextMenu
 import android.view.Menu
-import android.view.MenuInflater
-import android.view.View
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
+import android.widget.*
 import com.google.android.material.navigation.NavigationView
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -25,7 +15,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.net.toUri
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.nav_header_main.*
 import org.json.JSONObject
 import java.io.File
 
@@ -50,7 +39,6 @@ class MainActivity : AppCompatActivity() {
                 R.id.nav_home,R.id.showProfileFragment), drawerLayout) // decidiamo le schermate root e connettiamole al drawer
         setupActionBarWithNavController(navController, appBarConfiguration)//To add navigation support to the default action bar
         navView.setupWithNavController(navController)
-
         //Comment this to avoid the first page is the itemDetail
     }
 
@@ -94,6 +82,21 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    fun setInterestsDropdown(listState: ArrayList<StateVO>) {
+        var interests=""
+        for(element in listState) {
+            if(element.isSelected){
+                if(interests.isEmpty()){
+                    interests+=element.title
+                }
+                else{
+                    interests+=", ${element.title}"
+                }
+            }
+        }
+        findViewById<AutoCompleteTextView>(R.id.interestsDropdown)?.setText(interests, false)
     }
 
 }

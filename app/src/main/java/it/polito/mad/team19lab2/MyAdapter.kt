@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.CheckBox
 import android.widget.TextView
-import androidx.lifecycle.MutableLiveData
 
 class MyAdapter(
     context: Context,
@@ -60,7 +59,7 @@ class MyAdapter(
             if (!isFromView) {
                 listState[position].isSelected = isChecked
             }
-
+            (mContext as MainActivity).setInterestsDropdown(listState)
         }
         return convertView!!
     }
