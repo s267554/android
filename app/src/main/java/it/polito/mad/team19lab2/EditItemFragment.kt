@@ -2,6 +2,7 @@ package it.polito.mad.team19lab2
 
 import android.app.Activity
 import android.app.DatePickerDialog
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Matrix
@@ -38,11 +39,11 @@ class EditItemFragment : Fragment() {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
         Log.d("spinner", "onCreate")
-        id_item = "item_id"
+        id_item = arguments?.getString("item_id1").toString()
         val sharedPref = activity?.getSharedPreferences(
-            "it.polito.mad.team19lab2"+id_item, 0)
+            "it.polito.mad.team19lab2.items", 0)
         if (sharedPref != null) {
-            val currentItem = sharedPref.getString("item", "notFound")
+            val currentItem = sharedPref.getString(id_item, "notFound")
             if (currentItem != "notFound") {
                 val jo = JSONObject(currentItem)
                 item.title = jo.get("TITLE").toString()
@@ -261,7 +262,7 @@ class EditItemFragment : Fragment() {
         var category=categoryDropdown.text.toString()
         Log.d("xxx", "Save pressed")
         val sharedPref = activity?.getSharedPreferences(
-            "it.polito.mad.team19lab2"+id_item, 0)
+            "it.polito.mad.team19lab2.items", Context.MODE_PRIVATE)
         val jo = JSONObject()
         jo.put("TITLE",titleEditText.text.toString())
         jo.put("DESCRIPTION",descriptionEditText.text.toString())
@@ -272,7 +273,7 @@ class EditItemFragment : Fragment() {
         jo.put("SUBCATEGORY", subCategoryDropdown.text.toString())
         //jo.put("PATH", item.path)
         with (sharedPref!!.edit()) {
-            putString("item", jo.toString())
+            putString(id_item, jo.toString())
             commit()
         }
         val navController = findNavController()

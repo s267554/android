@@ -39,9 +39,9 @@ class ItemDetailsFragment : Fragment() {
         // Restore from Shared Prefs
         id_item = arguments?.getString("item_id1").toString()
         val sharedPref = activity?.getSharedPreferences(
-            "it.polito.mad.team19lab2$id_item", Context.MODE_PRIVATE)
+            "it.polito.mad.team19lab2.items", Context.MODE_PRIVATE)
         if (sharedPref != null) {
-            val currentItem = sharedPref.getString("item", "notFound")
+            val currentItem = sharedPref.getString(id_item, "notFound")
             if (currentItem != "notFound") {
                 val jo = JSONObject(currentItem)
                 item.title = jo.get("TITLE").toString()
