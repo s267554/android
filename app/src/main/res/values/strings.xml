@@ -50,8 +50,10 @@
     <string name="_10">/10</string>
     <string name="rating">rating:</string>
     <string name="profile_image_frame">profile container</string>
-    <string name="activity_show_title">User profile</string>
-    <string name="activity_edit_title">Edit User Profile</string>
+    <string name="profile_bar">Profile</string>
+    <string name="profile_edit_bar">Edit Profile</string>
+    <string name="item_deatails_bar">Item details</string>
+    <string name="item_edit_bar">Item Edit</string>
     <string name="invalidEmail">Invalid email</string>
     <string-array name="interests">
         <item>select your interests</item>
