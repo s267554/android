@@ -28,7 +28,7 @@
     <fragment
         android:id="@+id/nav_item_detail"
         android:name="it.polito.mad.team19lab2.ItemDetailsFragment"
-        android:label="Item details">
+        android:label="@string/item_deatails_bar">
         <argument
             android:name="item_id1"
             app:argType="string" />
@@ -45,7 +45,7 @@
     <fragment
         android:id="@+id/nav_edit_item"
         android:name="it.polito.mad.team19lab2.EditItemFragment"
-        android:label="Edit Item"
+        android:label="@string/item_edit_bar"
         tools:layout="@layout/fragment_edit_item">
         <argument
             android:name="item_id1"
@@ -55,10 +55,6 @@
             app:destination="@id/nav_home"
             app:popUpTo="@id/nav_home"
             app:popUpToInclusive="true" />
-        <deepLink
-            android:id="@+id/deepLink"
-            android:autoVerify="false"
-            app:uri="it.polito.mad.team19lab2/editItem"/>
         <action
             android:id="@+id/action_nav_edit_item_to_nav_item_detail"
             app:destination="@id/nav_item_detail"
@@ -68,7 +64,7 @@
     <fragment
         android:id="@+id/showProfileFragment"
         android:name="it.polito.mad.team19lab2.ShowProfileFragment"
-        android:label="ShowProfileFragment" >
+        android:label="@string/profile_bar">
         <action
             android:id="@+id/action_showProfileFragment_to_editProfileFragment"
             app:destination="@id/editProfileFragment" />
@@ -76,7 +72,7 @@
     <fragment
         android:id="@+id/editProfileFragment"
         android:name="it.polito.mad.team19lab2.EditProfileFragment"
-        android:label="EditProfileFragment" >
+        android:label="@string/profile_edit_bar">
         <action
             android:id="@+id/action_editProfileFragment_to_showProfileFragment"
             app:destination="@id/showProfileFragment"
