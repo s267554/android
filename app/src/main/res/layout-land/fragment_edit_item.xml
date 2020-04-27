@@ -169,7 +169,8 @@
                 android:hint="@string/description"
                 app:boxBackgroundColor="@color/category_icon_background"
                 app:boxStrokeColor="@color/colorPrimary"
-                app:counterEnabled="false"
+                app:counterEnabled="true"
+                app:counterMaxLength="500"
                 app:errorEnabled="false"
                 app:hintAnimationEnabled="true"
                 app:hintEnabled="true"
@@ -185,6 +186,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textMultiLine|text"
+                    android:maxLength="500"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -250,7 +252,6 @@
                     android:layout_height="wrap_content"
                     android:focusable="false"
                     android:focusableInTouchMode="false"
-                    android:hint="@string/undefined"
                     android:inputType="none|textNoSuggestions"
                     android:textIsSelectable="false" />
             </com.google.android.material.textfield.TextInputLayout>
