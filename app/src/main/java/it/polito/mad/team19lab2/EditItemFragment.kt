@@ -18,8 +18,10 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import kotlinx.android.synthetic.main.fragment_edit_item.*
+import kotlinx.android.synthetic.main.fragment_edit_item.imageEdit
 import kotlinx.android.synthetic.main.fragment_edit_item.image_view
 import kotlinx.android.synthetic.main.fragment_edit_item.roundCardView
+import kotlinx.android.synthetic.main.fragment_edit_profile.*
 import org.json.JSONObject
 import java.io.File
 import java.io.FileOutputStream
@@ -34,6 +36,9 @@ class EditItemFragment : Fragment() {
     private var REQUESTGALLERY: Int = 1715
     private var imageModified = false
     private var id_item: String = ""
+    private var year: Int = 0;
+    private var month: Int = 0;
+    private var day: Int=0;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -179,9 +184,9 @@ class EditItemFragment : Fragment() {
 
         //DATE PICKER MANAGEMENT
         val c = Calendar.getInstance()
-        val year = c.get(Calendar.YEAR)
-        val month = c.get(Calendar.MONTH)
-        val day = c.get(Calendar.DAY_OF_MONTH)
+        year = if(dateEditText.text.isNullOrBlank()) c.get(Calendar.YEAR) else dateEditText.text.toString().split("/")[2].toInt()
+        month = if(dateEditText.text.isNullOrBlank()) c.get(Calendar.MONTH) else dateEditText.text.toString().split("/")[1].toInt()-1
+        day = if(dateEditText.text.isNullOrBlank() && day == 0) c.get(Calendar.DAY_OF_MONTH) else dateEditText.text.toString().split("/")[0].toInt()
         dateEditText.setOnClickListener {
             val datePickerDialog = activity?.let {
                 DatePickerDialog(
@@ -189,6 +194,9 @@ class EditItemFragment : Fragment() {
                     DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
                         val finalMonth=monthOfYear+1
                         val finalDate="$dayOfMonth/$finalMonth/$year"
+                        this.year=year
+                        this.month=monthOfYear
+                        this.day=dayOfMonth
                         dateEditText.setText(finalDate)
                     }, year, month, day)
             }
@@ -246,6 +254,13 @@ class EditItemFragment : Fragment() {
     }
 
     private fun saveItem(){
+        //check validity of fields
+        if(categoryDropdown.text.isNullOrBlank() || dateEditText.text.isNullOrBlank()
+            || priceEditText.text.isNullOrBlank() || titleEditText.text.isNullOrBlank()
+            || locationEditText.text.isNullOrBlank()){
+            Toast.makeText(context,"Insert all required fields",Toast.LENGTH_SHORT).show()
+            return
+        }
         // Update or create the image
         if(imageModified && item.image!=null){
             val fileForBundle = File(activity?.applicationContext?.filesDir, "$id_item.png")

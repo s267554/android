@@ -88,7 +88,7 @@ class ItemDetailsFragment : Fragment() {
         titleTextView.text = item.title
         descriptionExpandable.text = item.description
         locationTextView.text = item.location
-        priceTextView.text = item.price.toString()
+        priceTextView.text = item.price.toString() + " €"
         expireTextView.text = item.expiryDate
         categoryTextView.text = item.category
         subCategoryTextView.text=item.subCategory
