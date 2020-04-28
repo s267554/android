@@ -23,6 +23,7 @@ import kotlinx.android.synthetic.main.fragment_edit_item.imageEdit
 import kotlinx.android.synthetic.main.fragment_edit_item.image_view
 import kotlinx.android.synthetic.main.fragment_edit_item.roundCardView
 import kotlinx.android.synthetic.main.fragment_edit_profile.*
+import kotlinx.android.synthetic.main.item_details_fragment.*
 import org.json.JSONObject
 import java.io.File
 import java.io.FileOutputStream
@@ -58,11 +59,6 @@ class EditItemFragment : Fragment() {
     override fun onViewCreated (view: View, savedInstanceState : Bundle?){
         super.onViewCreated(view, savedInstanceState)
         activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-        val file = File(activity?.applicationContext?.filesDir, "$id_item.png")
-        if(file.exists()) {
-            item.image = MediaStore.Images.Media.getBitmap(activity?.contentResolver,Uri.fromFile(file))
-            image_view.setImageBitmap(item.image)
-        }
 
         id_item = arguments?.getString("item_id1").toString()
         Log.d("debugEdit","arg id_item: $id_item")
@@ -85,6 +81,11 @@ class EditItemFragment : Fragment() {
             }
         }
 
+        val file = File(activity?.applicationContext?.filesDir, "$id_item.png")
+        if(file.exists()) {
+            item.image = MediaStore.Images.Media.getBitmap(activity?.contentResolver, Uri.fromFile(file))
+            image_view.setImageBitmap(item.image)
+        }
         //Round image management
         roundCardView.viewTreeObserver.addOnGlobalLayoutListener (object: ViewTreeObserver.OnGlobalLayoutListener{
             override fun onGlobalLayout() {
