@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.navigation.findNavController
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -91,11 +92,15 @@ class ItemListFragment : Fragment() {
         val fab: FloatingActionButton = view.findViewById(R.id.fab)
         fab.setOnClickListener {  view -> view.findNavController().navigate(R.id.action_nav_home_to_nav_edit_item, bundleOf("item_id1" to UUID.randomUUID().toString(),"deep_link" to true))
         }
+
+        if(dataset.count() != 0)
+            view.findViewById<TextView>(R.id.empty_list)?.visibility = View.INVISIBLE
+
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-//        super.onViewCreated(view, savedInstanceState)
+        super.onViewCreated(view, savedInstanceState)
 //        val id = arguments?.getString("item_id1").toString()
 //        if(id == "")
 //            return
