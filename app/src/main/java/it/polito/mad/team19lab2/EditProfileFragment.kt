@@ -1,6 +1,7 @@
 package it.polito.mad.team19lab2
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -13,6 +14,7 @@ import android.text.TextWatcher
 import android.util.Log
 import android.util.Patterns
 import android.view.*
+import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.ImageView
 import android.widget.TextView
@@ -239,6 +241,7 @@ class EditProfileFragment : Fragment() {
     }
 
     private fun saveProfile(){
+        context?.let { view?.let { it1 -> hideKeyboardFrom(it, it1) } }
         val navigationView = requireActivity().findViewById<View>(R.id.nav_view) as NavigationView
         val headerView = navigationView.getHeaderView(0)
         if(fullNameProfileEditText.text.toString().isEmpty() || nicknameProfileEditText.text.toString().isEmpty()){
@@ -375,6 +378,11 @@ class EditProfileFragment : Fragment() {
         imageModified=true
         image_view.setImageBitmap(rotatedBitmap)
         u.image = rotatedBitmap
+    }
+
+    fun hideKeyboardFrom(context: Context, view: View) {
+        val imm: InputMethodManager = context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
 }
