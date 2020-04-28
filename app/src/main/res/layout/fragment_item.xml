@@ -33,14 +33,21 @@
             android:layout_margin="@dimen/text_margin"
             android:textAppearance="?attr/textAppearanceListItem" />
 
-        <ImageView
-            android:id="@+id/item_image_preview"
+        <com.google.android.material.card.MaterialCardView
+            android:layout_alignParentEnd="true"
+            android:layout_margin="@dimen/text_margin"
             android:layout_width="110dp"
             android:layout_height="110dp"
-            android:layout_alignParentEnd="true"
-            android:scaleType="centerCrop"
-            android:layout_margin="@dimen/text_margin"
-            app:srcCompat="@drawable/sport_category_foreground" />
+            app:cardCornerRadius="5dp">
+
+            <ImageView
+                android:id="@+id/item_image_preview"
+                android:scaleType="centerCrop"
+                app:srcCompat="@drawable/sport_category_foreground"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent" />
+
+        </com.google.android.material.card.MaterialCardView>
 
     </RelativeLayout>
 </com.google.android.material.card.MaterialCardView>
