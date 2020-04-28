@@ -22,9 +22,7 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.fragment_edit_profile.*
 import org.json.JSONObject
-import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
+import java.io.*
 
 
 class EditProfileFragment : Fragment() {
@@ -68,8 +66,49 @@ class EditProfileFragment : Fragment() {
         }
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        val interestsRecover= mutableListOf<Int>()
+        for(i in listVOs.indices)
+            if(listVOs[i].isSelected)
+                interestsRecover.add(i)
+        outState.putIntArray("group19.lab2.INTERESTS",interestsRecover.toIntArray())
+        if(imageModified)
+            outState.putParcelable("group19.lab2.IMG", u.image)
+    }
+
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+        if(savedInstanceState!=null) {
+            val interestsRestored =
+                savedInstanceState.getIntArray("group19.lab2.INTERESTS")!!.toMutableList()
+            val selectInterests = this.resources.getStringArray(R.array.categories).toMutableList()
+            listVOs.clear()
+            var k = 0
+            for (i in 0 until selectInterests.size) {
+                val stateVO = StateVO()
+                stateVO.title = selectInterests[i]
+                stateVO.isSelected = false
+                if (k < interestsRestored.size && i == interestsRestored[k]) {
+                    k++
+                    stateVO.isSelected = true
+                }
+                listVOs.add(stateVO)
+            }
+            (requireContext() as MainActivity).setInterestsDropdown(listVOs as ArrayList<StateVO>)
+            val adapter = MyAdapter(requireContext(), 0, listVOs)
+            interestsDropdown.setAdapter(adapter)
+            val imageRestored : Bitmap? =savedInstanceState.getParcelable("group19.lab2.IMG")
+            if(imageRestored != null){
+                u.image=imageRestored
+                image_view.setImageBitmap(imageRestored)
+            }
+        }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_UNCHANGED);
         //image management
         val file = File(context?.filesDir, "myimage.png")
         if (file.exists()) {
