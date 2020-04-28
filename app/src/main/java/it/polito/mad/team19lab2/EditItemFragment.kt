@@ -14,22 +14,18 @@ import android.text.InputFilter
 import android.text.TextWatcher
 import android.util.Log
 import android.view.*
-import android.widget.*
+import android.view.inputmethod.InputMethodManager
+import android.widget.AutoCompleteTextView
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import kotlinx.android.synthetic.main.fragment_edit_item.*
-import kotlinx.android.synthetic.main.fragment_edit_item.imageEdit
-import kotlinx.android.synthetic.main.fragment_edit_item.image_view
-import kotlinx.android.synthetic.main.fragment_edit_item.roundCardView
-import kotlinx.android.synthetic.main.fragment_edit_profile.*
-import kotlinx.android.synthetic.main.item_details_fragment.*
 import org.json.JSONObject
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.util.*
-
 
 
 class EditItemFragment : Fragment() {
@@ -260,6 +256,8 @@ class EditItemFragment : Fragment() {
     }
 
     private fun saveItem(){
+        //force close keyborard
+        context?.let { view?.let { it1 -> hideKeyboardFrom(it, it1) } }
         //check validity of fields
         if(categoryDropdown.text.isNullOrBlank() || dateEditText.text.isNullOrBlank()
             || priceEditText.text.isNullOrBlank() || titleEditText.text.isNullOrBlank()
@@ -417,5 +415,10 @@ class EditItemFragment : Fragment() {
         }
         subCategoryDropdown.setText("")
         subCategoryTextField.visibility=View.GONE
+    }
+
+    private fun hideKeyboardFrom(context: Context, view: View) {
+        val imm: InputMethodManager = context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 }
