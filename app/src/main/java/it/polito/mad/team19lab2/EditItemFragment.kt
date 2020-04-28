@@ -93,7 +93,7 @@ class EditItemFragment : Fragment() {
                 roundCardView.viewTreeObserver.removeOnGlobalLayoutListener(this)
             }
         })
-        Log.d("spinner", "onViewCreated")
+
         val items = resources.getStringArray(R.array.categories).toMutableList()
         titleEditText.setText(item.title)
         descriptionEditText.setText(item.description)
@@ -259,6 +259,27 @@ class EditItemFragment : Fragment() {
         return super.onOptionsItemSelected(item)
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        Log.d("xxx", "Launched on Save instance state")
+        if(imageModified){
+            outState.apply {
+                putParcelable("group19.lab2.TMPIMG", item.image)
+            }
+        }
+    }
+
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+        if (savedInstanceState != null){
+            val bm: Bitmap? = savedInstanceState.getParcelable("group19.lab2.TMPIMG")
+            if(bm != null) {
+                image_view.setImageBitmap(bm)
+                item.image = bm
+            }
+            imageModified = true
+        }
+    }
     private fun saveItem(){
         //check validity of fields
         if(categoryDropdown.text.isNullOrBlank() || dateEditText.text.isNullOrBlank()
@@ -282,7 +303,6 @@ class EditItemFragment : Fragment() {
 
         // Update or create Shared Prefs
         var category=categoryDropdown.text.toString()
-        Log.d("xxx", "Save pressed")
         val sharedPref = activity?.getSharedPreferences(
             "it.polito.mad.team19lab2.items", Context.MODE_PRIVATE)
         val jo = JSONObject()

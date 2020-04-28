@@ -73,8 +73,10 @@ class EditProfileFragment : Fragment() {
             if(listVOs[i].isSelected)
                 interestsRecover.add(i)
         outState.putIntArray("group19.lab2.INTERESTS",interestsRecover.toIntArray())
-        if(imageModified)
+        if(imageModified){
             outState.putParcelable("group19.lab2.IMG", u.image)
+            outState.putBoolean("group19.lab2.IMGFLAG", imageModified)
+        }
     }
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
@@ -102,6 +104,7 @@ class EditProfileFragment : Fragment() {
             if(imageRestored != null){
                 u.image=imageRestored
                 image_view.setImageBitmap(imageRestored)
+                imageModified = savedInstanceState.getBoolean("group19.lab2.IMGFLAG")
             }
         }
     }
