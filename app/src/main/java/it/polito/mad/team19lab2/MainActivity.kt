@@ -52,12 +52,12 @@ class MainActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment)
         //destination means source!
-        /*Log.d("vittoz","${navController.currentDestination!!.id} vs detail ${R.id.nav_item_detail}")
+        Log.d("vittoz","${navController.currentDestination!!.id} vs detail ${R.id.nav_item_detail}")
         if(navController.currentDestination!!.id==R.id.nav_item_detail){//arrivo da item detail
             navController.navigate(R.id.action_nav_item_detail_to_nav_home)
             return false
         }
-        */
+
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
@@ -99,7 +99,7 @@ class MainActivity : AppCompatActivity() {
         findViewById<AutoCompleteTextView>(R.id.interestsDropdown)?.setText(interests, false)
     }
 
-    /*
+
     override fun onBackPressed() {
         val navController = findNavController(R.id.nav_host_fragment)
         //destination means source!
@@ -110,6 +110,6 @@ class MainActivity : AppCompatActivity() {
         else
             super.onBackPressed()
     }
-    */
+
 
 }

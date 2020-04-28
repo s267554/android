@@ -81,40 +81,40 @@ class ItemListFragment : Fragment() {
 
         // altro bello schifo
         val fab: FloatingActionButton = view.findViewById(R.id.fab)
-        fab.setOnClickListener {  view -> view.findNavController().navigate(R.id.action_nav_home_to_nav_edit_item, bundleOf("item_id1" to UUID.randomUUID().toString()))
+        fab.setOnClickListener {  view -> view.findNavController().navigate(R.id.action_nav_home_to_nav_edit_item, bundleOf("item_id1" to UUID.randomUUID().toString(),"deep_link" to true))
         }
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        val id = arguments?.getString("item_id1").toString()
-        if(id == "")
-            return
-        Log.d("debugListonViewCreated", "arg: $id")
-        Log.d("debugListonViewCreated", "datacount: ${dataset.count()}")
-        dataset.remove(dataset.find { it.itemId == id })
-        Log.d("debugListonViewCreated", "datacount: ${dataset.count()}")
-        val newItem = ItemInfo()
-        var sharedPref = activity?.getSharedPreferences("it.polito.mad.team19lab2.items", Context.MODE_PRIVATE)
-        if (sharedPref != null) {
-            val jostring = sharedPref.getString(id, "notFound") as String
-            if(jostring!="notFound") {
-                val jo = JSONObject(jostring)
-                newItem.title = jo.get("TITLE").toString()
-                newItem.description = jo.get("DESCRIPTION").toString()
-                newItem.location = jo.get("LOCATION").toString()
-                newItem.price = jo.get("PRICE").toString().toFloat()
-                newItem.expiryDate = jo.get("DATE").toString()
-                newItem.category = jo.get("CATEGORY").toString()
-                //   item.path = jo.get("PATH").toString()
-                Log.d("debuglistaupdate", jo.toString())
-                dataset.add(newItem)
-            }
-        }
-        Log.d("debugListonViewCreated", "datacount: ${dataset.count()}")
-        val recycler: RecyclerView = view.findViewById(R.id.list)
-        recycler.adapter!!.notifyDataSetChanged()
+//        super.onViewCreated(view, savedInstanceState)
+//        val id = arguments?.getString("item_id1").toString()
+//        if(id == "")
+//            return
+//        Log.d("debugListonViewCreated", "arg: $id")
+//        Log.d("debugListonViewCreated", "datacount: ${dataset.count()}")
+//        dataset.remove(dataset.find { it.itemId == id })
+//        Log.d("debugListonViewCreated", "datacount: ${dataset.count()}")
+//        val newItem = ItemInfo()
+//        var sharedPref = activity?.getSharedPreferences("it.polito.mad.team19lab2.items", Context.MODE_PRIVATE)
+//        if (sharedPref != null) {
+//            val jostring = sharedPref.getString(id, "notFound") as String
+//            if(jostring!="notFound") {
+//                val jo = JSONObject(jostring)
+//                newItem.title = jo.get("TITLE").toString()
+//                newItem.description = jo.get("DESCRIPTION").toString()
+//                newItem.location = jo.get("LOCATION").toString()
+//                newItem.price = jo.get("PRICE").toString().toFloat()
+//                newItem.expiryDate = jo.get("DATE").toString()
+//                newItem.category = jo.get("CATEGORY").toString()
+//                //   item.path = jo.get("PATH").toString()
+//                Log.d("debuglistaupdate", jo.toString())
+//                dataset.add(newItem)
+//            }
+//        }
+//        Log.d("debugListonViewCreated", "datacount: ${dataset.count()}")
+//        val recycler: RecyclerView = view.findViewById(R.id.list)
+//        recycler.adapter!!.notifyDataSetChanged()
     }
 
     override fun onAttach(context: Context) {
