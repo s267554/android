@@ -1,7 +1,9 @@
 package it.polito.mad.team19lab2
 
 import android.content.Context
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
@@ -15,6 +17,7 @@ import androidx.navigation.findNavController
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 import org.json.JSONObject
+import java.io.File
 import java.util.*
 
 /**
@@ -53,6 +56,11 @@ class ItemListFragment : Fragment() {
                 item.price = jo.get("PRICE").toString().toFloat()
                 item.expiryDate = jo.get("DATE").toString()
                 item.category = jo.get("CATEGORY").toString()
+
+                val file = File(activity?.applicationContext?.filesDir, "$key.png")
+                if(file.exists()) {
+                    item.image = MediaStore.Images.Media.getBitmap(activity?.contentResolver, Uri.fromFile(file))
+                }
                 //   item.path = jo.get("PATH").toString()
                 Log.d("debuglista", jo.toString())
                 dataset.add(item)

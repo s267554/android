@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.navigation.findNavController
@@ -47,6 +48,8 @@ class MyItemRecyclerViewAdapter(
         val item = mValues[position]
         holder.mIdView.text = item.title
         holder.mContentView.text = item.price.toString()
+        if(item.image!=null)
+            holder.mImage.setImageBitmap(item.image)
 
         with(holder.mView) {
             tag = item
@@ -63,6 +66,7 @@ class MyItemRecyclerViewAdapter(
         val mIdView: TextView = mView.item_number
         val mContentView: TextView = mView.content
         val mEditButton: Button = mView.item_list_edit_button
+        val mImage: ImageView = mView.item_image_preview
 
         override fun toString(): String {
             return super.toString() + " '" + mContentView.text + "'"
