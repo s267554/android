@@ -269,8 +269,8 @@
                     android:id="@+id/interests_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:hint="@string/undefined"
                     android:scrollbars="none"
-                    android:text="@string/etc"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:textColor="#000000" />
             </ScrollView>

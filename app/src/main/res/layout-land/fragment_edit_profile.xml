@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ItemDetailsFragment">
+    tools:context=".EditProfileFragment">
 
 
     <FrameLayout
@@ -13,7 +13,7 @@
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="5dp"
-        app:layout_constraintBottom_toTopOf="@+id/priceTextField"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/profilePictureGuideline"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -43,7 +43,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop"
-                    app:srcCompat="@drawable/sport_category_foreground" />
+                    app:srcCompat="@drawable/avatar_foreground" />
 
             </androidx.cardview.widget.CardView>
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -58,7 +58,7 @@
             app:srcCompat="@android:drawable/ic_menu_camera" />
 
         <ImageButton
-            android:id="@+id/imageRotate"
+            android:id="@+id/imageRotateProfile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="top|end"
@@ -67,42 +67,6 @@
             app:srcCompat="@android:drawable/ic_menu_rotate" />
     </FrameLayout>
 
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/priceTextField"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
-        android:hint="@string/price"
-        app:boxBackgroundColor="@color/category_icon_background"
-        app:boxStrokeColor="@color/colorPrimary"
-        app:counterEnabled="false"
-        app:errorEnabled="true"
-        app:hintAnimationEnabled="true"
-        app:hintEnabled="true"
-        app:hintTextAppearance="@style/TextAppearance.AppCompat.Small"
-        app:hintTextColor="@color/colorPrimary"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/profilePictureGuideline"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/frameLayout2"
-        app:startIconDrawable="@drawable/price_icon_edit"
-        app:startIconTint="@color/colorPrimary">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/priceEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:enabled="true"
-            android:inputType="numberDecimal"
-            android:maxLength="20"
-            android:singleLine="true"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
-
-    </com.google.android.material.textfield.TextInputLayout>
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/profilePictureGuideline"
@@ -131,73 +95,11 @@
             android:orientation="vertical">
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/titleTextField"
+                android:id="@+id/fullNameProfile"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:hint="@string/title"
-                app:boxBackgroundColor="@color/category_icon_background"
-                app:boxStrokeColor="@color/colorPrimary"
-                app:counterEnabled="true"
-                app:counterMaxLength="25"
-                app:errorEnabled="true"
-                app:hintAnimationEnabled="true"
-                app:hintEnabled="true"
-                app:hintTextAppearance="@style/TextAppearance.AppCompat.Small"
-                app:hintTextColor="@color/colorPrimary"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/titleEditText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="text"
-                    android:maxLength="25"
-                    android:maxLines="1"
-                    android:singleLine="true"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Large" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/descriptionTextField"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:hint="@string/description"
-                app:boxBackgroundColor="@color/category_icon_background"
-                app:boxStrokeColor="@color/colorPrimary"
-                app:counterEnabled="true"
-                app:counterMaxLength="500"
-                app:errorEnabled="false"
-                app:hintAnimationEnabled="true"
-                app:hintEnabled="true"
-                app:hintTextAppearance="@style/TextAppearance.AppCompat.Small"
-                app:hintTextColor="@color/colorPrimary"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/titleTextField">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/descriptionEditText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textMultiLine|text"
-                    android:maxLength="500"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/categoryTextField"
-                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:hint="@string/category"
+                android:hint="@string/name"
                 app:boxBackgroundColor="@color/category_icon_background"
                 app:boxStrokeColor="@color/colorPrimary"
                 app:counterEnabled="false"
@@ -209,78 +111,15 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/descriptionTextField"
-                app:startIconDrawable="@drawable/category_icon_edit"
-                app:startIconTint="@color/colorPrimary">
-
-                <AutoCompleteTextView
-                    android:id="@+id/categoryDropdown"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:focusable="false"
-                    android:focusableInTouchMode="true"
-                    android:inputType="none|textNoSuggestions"
-                    android:textIsSelectable="false" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/subCategoryTextField"
-                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:hint="@string/subcategory"
-                app:boxBackgroundColor="@color/category_icon_background"
-                app:boxStrokeColor="@color/colorPrimary"
-                app:counterEnabled="false"
-                app:errorEnabled="true"
-                android:visibility="gone"
-                app:hintAnimationEnabled="true"
-                app:hintEnabled="true"
-                app:hintTextAppearance="@style/TextAppearance.AppCompat.Small"
-                app:hintTextColor="@color/colorPrimary"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/categoryTextField"
-                app:startIconDrawable="@drawable/category_icon_edit"
-                app:startIconTint="@color/colorPrimary">
-
-                <AutoCompleteTextView
-                    android:id="@+id/subCategoryDropdown"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:focusable="false"
-                    android:focusableInTouchMode="false"
-                    android:inputType="none|textNoSuggestions"
-                    android:textIsSelectable="false" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/locationTextField"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:hint="@string/location"
-                app:boxBackgroundColor="@color/category_icon_background"
-                app:boxStrokeColor="@color/colorPrimary"
-                app:counterEnabled="false"
-                app:errorEnabled="true"
-                app:hintAnimationEnabled="true"
-                app:hintEnabled="true"
-                app:hintTextAppearance="@style/TextAppearance.AppCompat.Small"
-                app:hintTextColor="@color/colorPrimary"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/subCategoryTextField"
-                app:startIconDrawable="@drawable/location_icon_edit"
+                app:layout_constraintTop_toTopOf="parent"
+                app:startIconDrawable="@drawable/account_profile_foreground"
                 app:startIconTint="@color/colorPrimary">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/locationEditText"
+                    android:id="@+id/fullNameProfileEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:enabled="true"
                     android:inputType="text"
                     android:maxLength="20"
                     android:singleLine="true"
@@ -289,11 +128,10 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/dateTextField"
+                android:id="@+id/nicknameProfile"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:hint="@string/expiryDate"
+                android:hint="@string/nickname"
                 app:boxBackgroundColor="@color/category_icon_background"
                 app:boxStrokeColor="@color/colorPrimary"
                 app:counterEnabled="false"
@@ -305,20 +143,118 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/locationTextField"
-                app:startIconDrawable="@drawable/date_icon_edit"
+                app:layout_constraintTop_toBottomOf="@+id/fullNameProfile"
+                app:startIconDrawable="@drawable/nickname_profile_foreground"
                 app:startIconTint="@color/colorPrimary">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/dateEditText"
+                    android:id="@+id/nicknameProfileEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:enabled="true"
+                    android:inputType="text"
+                    android:maxLength="20"
+                    android:singleLine="true"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/emailProfile"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="@string/email"
+                app:boxBackgroundColor="@color/category_icon_background"
+                app:boxStrokeColor="@color/colorPrimary"
+                app:counterEnabled="false"
+                app:errorEnabled="true"
+                app:hintAnimationEnabled="true"
+                app:hintEnabled="true"
+                app:hintTextAppearance="@style/TextAppearance.AppCompat.Small"
+                app:hintTextColor="@color/colorPrimary"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/nicknameProfile"
+                app:startIconDrawable="@drawable/email_profile_foreground"
+                app:startIconTint="@color/colorPrimary">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/emailProfileEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:enabled="true"
+                    android:inputType="text|textEmailAddress"
+                    android:maxLength="40"
+                    android:singleLine="true"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/locationProfile"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="@string/location"
+                app:boxBackgroundColor="@color/category_icon_background"
+                app:boxStrokeColor="@color/colorPrimary"
+                app:counterEnabled="false"
+                app:errorEnabled="false"
+                app:hintAnimationEnabled="true"
+                app:hintEnabled="true"
+                app:hintTextAppearance="@style/TextAppearance.AppCompat.Small"
+                app:hintTextColor="@color/colorPrimary"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/emailProfile"
+                app:startIconDrawable="@drawable/location_icon_edit"
+                app:startIconTint="@color/colorPrimary">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/locationProfileEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:enabled="true"
+                    android:inputType="text"
+                    android:maxLength="20"
+                    android:singleLine="true"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/test"
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:hint="@string/interests"
+                app:boxBackgroundColor="@color/category_icon_background"
+                app:boxStrokeColor="@color/colorPrimary"
+                app:counterEnabled="false"
+                app:errorEnabled="true"
+                app:hintAnimationEnabled="true"
+                app:hintEnabled="true"
+                app:hintTextAppearance="@style/TextAppearance.AppCompat.Small"
+                app:hintTextColor="@color/colorPrimary"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/locationProfile"
+                app:startIconDrawable="@drawable/interests_profile_foreground"
+                app:startIconTint="@color/colorPrimary">
+
+                <AutoCompleteTextView
+                    android:id="@+id/interestsDropdown"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:focusable="false"
-                    android:focusableInTouchMode="true"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:focusableInTouchMode="false"
+                    android:inputType="none|textNoSuggestions"
                     android:textIsSelectable="false" />
             </com.google.android.material.textfield.TextInputLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

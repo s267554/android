@@ -10,6 +10,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.text.Editable
+import android.text.InputFilter
 import android.text.TextWatcher
 import android.util.Log
 import android.view.*
@@ -237,6 +238,10 @@ class EditItemFragment : Fragment() {
         imageEdit.setOnClickListener{
             Toast.makeText(this.context, "Keep pressed", Toast.LENGTH_SHORT).show()
         }
+
+        //PRICE MANAGEMENT
+        val inputFilter =  arrayOf<InputFilter>(PriceInputFilter(10,2))
+        priceEditText.filters = inputFilter
     }
 
     companion object {
