@@ -27,7 +27,7 @@
     <string name="title">title</string>
     <string name="notEmpty">Field required</string>
     <string name="save">save</string>
-    <string name="etc">...</string>
+    <string name="etc">…</string>
     <string name="name">fullname</string>
     <string name="nickname">nickname</string>
     <string name="interests">interests</string>
