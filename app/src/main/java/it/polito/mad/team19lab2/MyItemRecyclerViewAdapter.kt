@@ -57,7 +57,7 @@ class MyItemRecyclerViewAdapter(
         }
 
         holder.mEditButton.setOnClickListener {it.findNavController().navigate(R.id.action_nav_home_to_nav_edit_item,
-            bundleOf("item_id1" to item.itemId, "deep_link" to true ))}
+            bundleOf("item_id1" to item.itemId, "deep_link" to true, "edit" to true ))}
     }
 
     override fun getItemCount(): Int = mValues.size
