@@ -154,7 +154,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/descriptionTextField"
+            app:layout_constraintTop_toBottomOf="@+id/priceTextField"
             app:startIconDrawable="@drawable/location_icon_edit"
             app:startIconTint="@color/colorPrimary">
 
@@ -187,7 +187,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/locationTextField"
+            app:layout_constraintTop_toBottomOf="@+id/subCategoryTextField"
             app:startIconDrawable="@drawable/price_icon_edit"
             app:startIconTint="@color/colorPrimary">
 
@@ -220,7 +220,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/priceTextField"
+            app:layout_constraintTop_toBottomOf="@+id/locationTextField"
             app:startIconDrawable="@drawable/date_icon_edit"
             app:startIconTint="@color/colorPrimary">
 
@@ -252,7 +252,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/dateTextField"
+            app:layout_constraintTop_toBottomOf="@+id/descriptionTextField"
             app:startIconDrawable="@drawable/category_icon_edit"
             app:startIconTint="@color/colorPrimary">
 

@@ -47,7 +47,7 @@ class MyItemRecyclerViewAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = mValues[position]
         holder.mIdView.text = item.title
-        holder.mContentView.text = item.price.toString()
+        holder.mContentView.text = "€ " + item.price.toString()
         if(item.image!=null)
             holder.mImage.setImageBitmap(item.image)
 

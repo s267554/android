@@ -276,6 +276,7 @@ class EditItemFragment : Fragment() {
             imageModified = true
         }
     }
+
     private fun saveItem(){
         //force close keyborard
         context?.let { view?.let { it1 -> hideKeyboardFrom(it, it1) } }
