@@ -318,7 +318,11 @@ class EditItemFragment : Fragment() {
             commit()
         }
         if(arguments?.getBoolean("deep_link")==true){
-            val msg = "Item created"
+            val msg:String?
+            if(arguments?.getBoolean("edit")==true)
+                msg= "Item updated"
+            else
+                msg="Item created"
             Toast.makeText(context,msg, Toast.LENGTH_SHORT).show()
             findNavController().navigate(R.id.action_nav_edit_item_to_nav_home, bundleOf("item_id1" to id_item))
         }
