@@ -62,7 +62,7 @@ class ItemListFragment : Fragment() {
         // Set the adapter
         with(recycler) {
             layoutManager = LinearLayoutManager(context)
-            adapter = MyItemRecyclerViewAdapter(dataset /*,listener*/)
+            adapter = MyItemRecyclerViewAdapter(dataset)
         }
 
         val fab: FloatingActionButton = view.findViewById(R.id.fab)
