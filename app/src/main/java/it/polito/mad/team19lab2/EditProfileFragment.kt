@@ -284,6 +284,7 @@ class EditProfileFragment : Fragment() {
         headerView.findViewById<TextView>(R.id.header_title_textView).text=nicknameProfileEditText.text
         headerView.findViewById<TextView>(R.id.header_subtitle_textView).text=fullNameProfileEditText.text
 
+        Toast.makeText(context,"Profile Updated", Toast.LENGTH_SHORT).show()
         val navController = findNavController()
         navController.navigate(R.id.action_editProfileFragment_to_showProfileFragment)
     }
