@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
         tools:context=".ItemDetailsFragment">
 
         <ImageView
@@ -47,7 +48,6 @@
             android:layout_marginTop="16dp"
             android:contentDescription="@string/interests"
             android:cropToPadding="false"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/locationIcon"
             app:layout_constraintStart_toStartOf="@+id/locationIcon"
             app:layout_constraintTop_toBottomOf="@+id/locationIcon"
@@ -121,21 +121,21 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
         </FrameLayout>
 
-    <RatingBar
-        android:id="@+id/ratingBar"
-        style="@style/Widget.AppCompat.RatingBar.Indicator"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:numStars="5"
-        android:rating="3"
-        android:stepSize="0.5"
-        android:theme="@style/RatingBar"
-        app:layout_constraintBottom_toTopOf="@+id/profilePictureGuideline"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/frameLayout" />
+        <RatingBar
+            android:id="@+id/ratingBar"
+            style="@style/Widget.AppCompat.RatingBar.Indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:numStars="5"
+            android:rating="3"
+            android:stepSize="0.5"
+            android:theme="@style/RatingBar"
+            app:layout_constraintBottom_toTopOf="@+id/profilePictureGuideline"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/frameLayout" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/profilePictureGuideline"
@@ -166,26 +166,26 @@
             app:layout_constraintStart_toStartOf="@+id/textView5"
             app:layout_constraintTop_toTopOf="@+id/interestsIcon" />
 
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/nickname"
-        android:textAppearance="@style/TextAppearance.AppCompat.Small"
-        app:layout_constraintStart_toStartOf="@+id/textView2"
-        app:layout_constraintTop_toTopOf="@+id/nicknameIcon" />
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/nickname"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            app:layout_constraintStart_toStartOf="@+id/textView2"
+            app:layout_constraintTop_toTopOf="@+id/nicknameIcon" />
 
-    <TextView
-        android:id="@+id/email_view"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="@string/undefined"
-        android:text="@string/etc"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:textColor="#000000"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/textView4"
-        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+        <TextView
+            android:id="@+id/email_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/undefined"
+            android:text="@string/etc"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="#000000"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/textView4"
+            app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
         <TextView
             android:id="@+id/textView2"
@@ -199,29 +199,29 @@
             app:layout_constraintTop_toTopOf="@+id/nameIcon"
             tools:layout_goneMarginRight="16dp" />
 
-    <TextView
-        android:id="@+id/nickname_view"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="@string/undefined"
-        android:text="@string/etc"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:textColor="#000000"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/textView3"
-        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+        <TextView
+            android:id="@+id/nickname_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/undefined"
+            android:text="@string/etc"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="#000000"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/textView3"
+            app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
-    <TextView
-        android:id="@+id/location_view"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="@string/undefined"
-        android:text="@string/etc"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:textColor="#000000"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/email_view"
-        app:layout_constraintTop_toBottomOf="@+id/textView5" />
+        <TextView
+            android:id="@+id/location_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/undefined"
+            android:text="@string/etc"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="#000000"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/email_view"
+            app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
         <TextView
             android:id="@+id/textView5"
@@ -245,27 +245,17 @@
             app:layout_constraintStart_toStartOf="@+id/textView2"
             app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
-        <ScrollView
-            android:id="@+id/interests_scroller"
+        <TextView
+            android:id="@+id/interests_view"
             android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginBottom="8dp"
-            android:fillViewport="true"
-            android:scrollbars="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/undefined"
+            android:scrollbars="none"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="#000000"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/textView6"
-            app:layout_constraintTop_toBottomOf="@+id/textView6">
-
-            <TextView
-                android:id="@+id/interests_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/undefined"
-                android:scrollbars="none"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="#000000" />
-        </ScrollView>
+            app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

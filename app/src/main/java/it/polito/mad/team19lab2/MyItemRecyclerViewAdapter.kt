@@ -63,7 +63,7 @@ class MyItemRecyclerViewAdapter(
     override fun getItemCount(): Int = mValues.size
 
     inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
-        val mIdView: TextView = mView.item_number
+        val mIdView: TextView = mView.item_title
         val mContentView: TextView = mView.content
         val mEditButton: Button = mView.item_list_edit_button
         val mImage: ImageView = mView.item_image_preview
