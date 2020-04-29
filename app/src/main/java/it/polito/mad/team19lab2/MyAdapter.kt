@@ -14,25 +14,19 @@ class MyAdapter(
     objects: List<StateVO>
 ) :
     ArrayAdapter<StateVO?>(context, resource, objects) {
-    private val mContext: Context
-    private val listState: ArrayList<StateVO>
-    private val myAdapter: MyAdapter
+    private val mContext: Context = context
+    private val listState: ArrayList<StateVO> = objects as ArrayList<StateVO>
     private var isFromView = false
-    init {
-        mContext = context
-        listState = objects as ArrayList<StateVO>
-        myAdapter = this
-    }
 
     override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup?): View {
-        return getCustomView(position, convertView, parent)
+        return getCustomView(position, convertView)
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        return getCustomView(position, convertView, parent)
+        return getCustomView(position, convertView)
     }
 
-    private fun getCustomView(position: Int, convertView: View?, parent: ViewGroup?): View {//creo i view holder
+    private fun getCustomView(position: Int, convertView: View?): View {//creo i view holder
         var convertView: View? = convertView
         val holder: ViewHolder
         if (convertView == null) {
@@ -55,7 +49,7 @@ class MyAdapter(
         //setto il checkedchange listener, uso il tag che rappresenta la posizione per sapere quale bottone è statp checkato dall'utente
         //e aggiorno la mia lista listState
         holder.mCheckBox!!.setOnCheckedChangeListener { buttonView, isChecked ->
-            val getPosition = buttonView.tag as Int
+            buttonView.tag as Int
             if (!isFromView) {
                 listState[position].isSelected = isChecked
             }

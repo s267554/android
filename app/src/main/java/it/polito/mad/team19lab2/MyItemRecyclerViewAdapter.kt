@@ -10,20 +10,11 @@ import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.navigation.findNavController
 
-
-//import it.polito.mad.team19lab2.ItemListFragment.OnListFragmentInteractionListener
-
 import kotlinx.android.synthetic.main.fragment_item.view.*
 
-/**
- * [RecyclerView.Adapter] that can display a [DummyItem] and makes a call to the
- * specified [OnListFragmentInteractionListener].
- * TODO: Replace the implementation with code for your data type.
- */
+
 class MyItemRecyclerViewAdapter(
     private val mValues: ArrayList<ItemInfo>
-    //,
-    //private val mListener: OnListFragmentInteractionListener?
 ) : RecyclerView.Adapter<MyItemRecyclerViewAdapter.ViewHolder>() {
 
     private val mOnClickListener: View.OnClickListener
@@ -31,9 +22,6 @@ class MyItemRecyclerViewAdapter(
     init {
         mOnClickListener = View.OnClickListener { v ->
             val item = v.tag as ItemInfo
-            // Notify the active callbacks interface (the activity, if the fragment is attached to
-            // one) that an item has been selected.
-            //mListener?.onListFragmentInteraction(item)
             v.findNavController().navigate(R.id.action_nav_home_to_itemDetailsFragment, bundleOf("item_id1" to item.itemId))
         }
     }
