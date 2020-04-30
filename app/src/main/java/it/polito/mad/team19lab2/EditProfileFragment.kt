@@ -128,7 +128,7 @@ class EditProfileFragment : Fragment() {
             rotateBitmap()
         }
         imageEdit.setOnClickListener{
-            Toast.makeText(this.context, "Keep pressed", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this.context, resources.getString(R.string.keep_pressed), Toast.LENGTH_SHORT).show()
         }
         roundCardView.viewTreeObserver.addOnGlobalLayoutListener (object: ViewTreeObserver.OnGlobalLayoutListener{
             override fun onGlobalLayout() {
@@ -143,7 +143,7 @@ class EditProfileFragment : Fragment() {
         emailProfileEditText.setText(u.email_address)
         locationProfileEditText.setText(u.location_area)
         imageEdit.setOnClickListener {
-            Toast.makeText(context, "Keep pressed", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, resources.getString(R.string.keep_pressed), Toast.LENGTH_SHORT).show()
         }
         //Initial validation
         if(fullNameProfileEditText == null || fullNameProfileEditText.text?.isEmpty() == true){
@@ -243,11 +243,11 @@ class EditProfileFragment : Fragment() {
         val navigationView = requireActivity().findViewById<View>(R.id.nav_view) as NavigationView
         val headerView = navigationView.getHeaderView(0)
         if(fullNameProfileEditText.text.toString().isEmpty() || nicknameProfileEditText.text.toString().isEmpty()){
-            Toast.makeText(context,"Insert all required fields",Toast.LENGTH_SHORT).show()
+            Toast.makeText(context,resources.getString(R.string.insert_all_required_fields),Toast.LENGTH_SHORT).show()
             return
         }
         if(!isValidEmail()){
-            Toast.makeText(context,"enter valid email",Toast.LENGTH_SHORT).show()
+            Toast.makeText(context,resources.getString(R.string.invalidEmail),Toast.LENGTH_SHORT).show()
             return
         }
         if(imageModified && u.image!=null){
@@ -281,7 +281,7 @@ class EditProfileFragment : Fragment() {
         headerView.findViewById<TextView>(R.id.header_title_textView).text=nicknameProfileEditText.text
         headerView.findViewById<TextView>(R.id.header_subtitle_textView).text=fullNameProfileEditText.text
 
-        Toast.makeText(context,"Profile Updated", Toast.LENGTH_SHORT).show()
+        Toast.makeText(context,resources.getString(R.string.profile_updated), Toast.LENGTH_SHORT).show()
         val navController = findNavController()
         navController.navigate(R.id.action_editProfileFragment_to_showProfileFragment)
     }
@@ -309,7 +309,7 @@ class EditProfileFragment : Fragment() {
     override fun onContextItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
             R.id.option_camera -> {
-                Toast.makeText(this.context, "Camera Launched", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this.context, resources.getString(R.string.camera_launched), Toast.LENGTH_SHORT).show()
                 Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
                     activity?.packageManager?.let {
                         takePictureIntent.resolveActivity(it)?.also {
@@ -320,7 +320,7 @@ class EditProfileFragment : Fragment() {
                 return true
             }
             R.id.option_gallery -> {
-                Toast.makeText(this.context, "Gallery Launched", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this.context, resources.getString(R.string.gallery_launched), Toast.LENGTH_SHORT).show()
                 Intent(Intent.ACTION_GET_CONTENT).setType("image/*").also { getPictureIntent ->
                     activity?.packageManager?.let {
                         getPictureIntent.resolveActivity(it)?.also {
@@ -369,7 +369,7 @@ class EditProfileFragment : Fragment() {
 
     private fun rotateBitmap() {
         if(u.image == null){
-            Toast.makeText(activity?.applicationContext,"insert an image before",Toast.LENGTH_SHORT).show()
+            Toast.makeText(activity?.applicationContext,resources.getString(R.string.insert_image_before),Toast.LENGTH_SHORT).show()
             return
         }
         val rotatedBitmap: Bitmap = rotateImage(u.image!!, 90)

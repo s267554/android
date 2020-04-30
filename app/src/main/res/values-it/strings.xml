@@ -42,6 +42,7 @@
     <string name="camera_launched">camera avviata</string>
     <string name="gallery_launched">galleria avviata</string>
     <string name="insert_image_before">prima inserisci un\&apos;immagine</string>
+    <string name="profile_updated">profilo aggiornato</string>
 
 
     <string-array name="categories">
