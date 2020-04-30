@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-        <string name="app_name">team19lab2</string>
+        <string name="app_name">MyMarket</string>
         <string name="nav_header_title">Nome</string>
         <string name="nav_header_subtitle">Nickname</string>
         <string name="nav_header_desc">Navigation header</string>
