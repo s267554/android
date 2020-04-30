@@ -233,7 +233,7 @@ class EditItemFragment : Fragment() {
             rotateBitmap()
         }
         imageEdit.setOnClickListener{
-            Toast.makeText(this.context, "Keep pressed", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this.context, resources.getString(R.string.keep_pressed), Toast.LENGTH_SHORT).show()
         }
 
         //PRICE MANAGEMENT
@@ -284,7 +284,7 @@ class EditItemFragment : Fragment() {
         if(categoryDropdown.text.isNullOrBlank() || dateEditText.text.isNullOrBlank()
             || priceEditText.text.isNullOrBlank() || titleEditText.text.isNullOrBlank()
             || locationEditText.text.isNullOrBlank()){
-            Toast.makeText(context,"Insert all required fields",Toast.LENGTH_SHORT).show()
+            Toast.makeText(context,resources.getString(R.string.insert_all_required_fields),Toast.LENGTH_SHORT).show()
             return
         }
         // Update or create the image
@@ -320,14 +320,14 @@ class EditItemFragment : Fragment() {
         if(arguments?.getBoolean("deep_link")==true){
             val msg:String?
             if(arguments?.getBoolean("edit")==true)
-                msg= "Item updated"
+                msg= resources.getString(R.string.item_update_message)
             else
-                msg="Item created"
+                msg=resources.getString(R.string.item_create_message)
             Toast.makeText(context,msg, Toast.LENGTH_SHORT).show()
             findNavController().navigate(R.id.action_nav_edit_item_to_nav_home, bundleOf("item_id1" to id_item))
         }
         else {
-            val msg = "Item updated"
+            val  msg= resources.getString(R.string.item_update_message)
             Toast.makeText(context,msg, Toast.LENGTH_SHORT).show()
             findNavController().navigate(
                 R.id.action_nav_edit_item_to_nav_item_detail,
@@ -358,7 +358,7 @@ class EditItemFragment : Fragment() {
         when(item.itemId){
 
             R.id.option_camera -> {
-                Toast.makeText(this.context, "Camera Launched", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this.context, resources.getString(R.string.camera_launched), Toast.LENGTH_SHORT).show()
                 Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
                     activity?.packageManager?.let {
                         takePictureIntent.resolveActivity(it)?.also {
@@ -369,7 +369,7 @@ class EditItemFragment : Fragment() {
                 return true
             }
             R.id.option_gallery -> {
-                Toast.makeText(this.context, "Gallery Launched", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this.context, resources.getString(R.string.gallery_launched), Toast.LENGTH_SHORT).show()
                 Intent(Intent.ACTION_GET_CONTENT).setType("image/*").also { getPictureIntent ->
                     activity?.packageManager?.let {
                         getPictureIntent.resolveActivity(it)?.also {
@@ -418,7 +418,7 @@ class EditItemFragment : Fragment() {
 
     private fun rotateBitmap() {
         if(item.image == null){
-            Toast.makeText(activity?.applicationContext,"insert an image before",Toast.LENGTH_SHORT).show()
+            Toast.makeText(activity?.applicationContext,resources.getString(R.string.insert_image_before),Toast.LENGTH_SHORT).show()
             return
         }
         val rotatedBitmap: Bitmap = rotateImage(item.image!!, 90)

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+        <string name="app_name">team19lab2</string>
+        <string name="nav_header_title">Nome</string>
+        <string name="nav_header_subtitle">Nickname</string>
+        <string name="nav_header_desc">Navigation header</string>
+
+        <string name="menu_home">Annunci</string>
+        <string name="menu_profile">Profilo</string>
+        <string name="menu_advertisements">Annunci</string>
+
+        <string name="description">Descrizione</string>
+        <string name="category">Categoria</string>
+        <string name="undefined">Indefinito</string>
+        <string name="price">Prezzo</string>
+        <string name="location">Luogo</string>
+        <string name="expiryDate">Scadenza</string>
+        <string name="edit">Modifica</string>
+
+        <!-- TODO: Remove or change this placeholder text -->
+        <string name="title">Titolo</string>
+        <string name="notEmpty">Campo obbligatorio</string>
+        <string name="save">Salva</string>
+        <string name="etc">...</string>
+        <string name="name">Nome</string>
+        <string name="nickname">Nickname</string>
+        <string name="interests">Interessi</string>
+        <string name="email">Email</string>
+        <string name="profile_image">Immagine del profilo</string>
+        <string name="subcategory">Sottocategoria</string>
+
+        <!-- da ricontrollare-->
+        <string name="profile_bar">Profilo</string>
+        <string name="profile_edit_bar">Modifica profilo</string>
+        <string name="item_deatails_bar">Dettagli</string>
+        <string name="item_edit_bar">Modifica annuncio</string>
+        <string name="invalidEmail">Email non valida</string>
+    <string name="item_update_message">Annuncio aggiornato</string>
+    <string name="item_create_message">Annuncio creato</string>
+    <string name="keep_pressed">tieni premuto</string>
+    <string name="insert_all_required_fields">inserisci tutti i campi obbligatori</string>
+    <string name="camera_launched">camera avviata</string>
+    <string name="gallery_launched">galleria avviata</string>
+    <string name="insert_image_before">prima inserisci un\&apos;immagine</string>
+
+
+    <string-array name="categories">
+        <item>Arti e Mestieri</item>
+        <item>Sport &amp; Hobby</item>
+        <item>Bambini</item>
+        <item>Moda Donna</item>
+        <item>Moda Uomo</item>
+        <item>Elettronica</item>
+        <item>Giochi e Videogiochi</item>
+        <item>Auto</item>
+        <item>Altro</item>
+    </string-array>
+</resources>

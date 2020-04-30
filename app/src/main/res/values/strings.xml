@@ -1,39 +1,33 @@
 
 <resources>
     <string name="app_name">team19lab2</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_title">Full name</string>
+    <string name="nav_header_subtitle">Nickname</string>
     <string name="nav_header_desc">Navigation header</string>
-    <string name="action_settings">Settings</string>
 
-    <string name="menu_home">Home</string>
+    <string name="menu_home">Advertisements</string>
     <string name="menu_profile">Profile</string>
     <string name="menu_advertisements">Advertisements</string>
 
-    <string name="home_second">Home Second</string>
-    <string name="default_product_image">default image</string>
     <string name="description">Description</string>
-    <string name="category">category</string>
+    <string name="category">Category</string>
     <string name="undefined">undefined</string>
-    <string name="price">price</string>
-    <string name="location">location</string>
-    <string name="expiryDate">expiry date</string>
-    <string name="edit">edit</string>
+    <string name="price">Price</string>
+    <string name="location">Location</string>
+    <string name="expiryDate">Expiry date</string>
+    <string name="edit">Edit</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title">title</string>
+    <string name="title">Title</string>
     <string name="notEmpty">Field required</string>
-    <string name="save">save</string>
+    <string name="save">Save</string>
     <string name="etc">...</string>
-    <string name="name">fullname</string>
-    <string name="nickname">nickname</string>
-    <string name="interests">interests</string>
-    <string name="email">email</string>
-    <string name="profile_image">profile picture</string>
-    <string name="subcategory">subcategory</string>
+    <string name="name">Fullname</string>
+    <string name="nickname">Nickname</string>
+    <string name="interests">Interests</string>
+    <string name="email">Email</string>
+    <string name="profile_image">Profile picture</string>
+    <string name="subcategory">Subcategory</string>
     <string-array name="categories">
         <item>Arts &amp; Crafts</item>
         <item>Sports &amp; Hobby</item>
@@ -47,27 +41,16 @@
     </string-array>
 
     <!-- da ricontrollare-->
-    <string name="_10">/10</string>
-    <string name="rating">rating:</string>
-    <string name="profile_image_frame">profile container</string>
     <string name="profile_bar">Profile</string>
     <string name="profile_edit_bar">Edit Profile</string>
     <string name="item_deatails_bar">Item details</string>
     <string name="item_edit_bar">Item Edit</string>
     <string name="invalidEmail">Invalid email</string>
-    <string-array name="interests">
-        <item>select your interests</item>
-        <item>home</item>
-        <item>books</item>
-        <item>videogames</item>
-        <item>computers</item>
-        <item>wearing</item>
-        <item>electronics</item>
-        <item>sport</item>
-        <item>music</item>
-        <item>baby</item>
-        <item>car&amp;motorbike</item>
-        <item>pets</item>
-        <item>tv</item>
-    </string-array>
+    <string name="item_update_message">Item updated</string>
+    <string name="item_create_message">Item created</string>
+    <string name="keep_pressed">keep pressed</string>
+    <string name="insert_all_required_fields">insert all required fields</string>
+    <string name="camera_launched">camera launched</string>
+    <string name="gallery_launched">gallery launched</string>
+    <string name="insert_image_before">insert an image before</string>
 </resources>
