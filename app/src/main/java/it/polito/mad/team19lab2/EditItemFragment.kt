@@ -12,7 +12,6 @@ import android.provider.MediaStore
 import android.text.Editable
 import android.text.InputFilter
 import android.text.TextWatcher
-import android.util.Log
 import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.AutoCompleteTextView
@@ -34,15 +33,13 @@ class EditItemFragment : Fragment() {
     private var REQUESTGALLERY: Int = 1715
     private var imageModified = false
     private var id_item: String = ""
-    private var year: Int = 0;
-    private var month: Int = 0;
-    private var day: Int=0;
+    private var year: Int = 0
+    private var month: Int = 0
+    private var day: Int=0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-        Log.d("spinner", "onCreate")
-
     }
 
     override fun onCreateView(
@@ -54,16 +51,14 @@ class EditItemFragment : Fragment() {
 
     override fun onViewCreated (view: View, savedInstanceState : Bundle?){
         super.onViewCreated(view, savedInstanceState)
-        activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
 
         id_item = arguments?.getString("item_id1").toString()
-        Log.d("debugEdit","arg id_item: $id_item")
         val sharedPref = activity?.getSharedPreferences(
             "it.polito.mad.team19lab2.items", Context.MODE_PRIVATE)
         if (sharedPref != null) {
             val currentItem = sharedPref.getString(id_item, "notFound")
             if (currentItem != "notFound") {
-
                 val jo = JSONObject(currentItem)
                 item.title = jo.get("TITLE").toString()
                 item.description = jo.get("DESCRIPTION").toString()
@@ -72,8 +67,6 @@ class EditItemFragment : Fragment() {
                 item.expiryDate = jo.get("DATE").toString()
                 item.category = jo.get("CATEGORY").toString()
                 item.subCategory=jo.get("SUBCATEGORY").toString()
-                //item.path = jo.get("PATH").toString()
-                Log.d("debugeditonview", "category ${item.location}")
             }
         }
 
@@ -201,9 +194,7 @@ class EditItemFragment : Fragment() {
             datePickerDialog?.datePicker?.minDate = System.currentTimeMillis() - 1000
             datePickerDialog?.show()
         }
-        Log.d("spinner", "eccomi")
         //SPINNER MANAGEMENT
-        Log.d("spinner", items.toString())
         val adapter = DropdownAdapter(requireContext(), R.layout.list_item, items)
         categoryEditText?.setAdapter(adapter)
         categoryEditText.setText(item.category, false)
@@ -241,9 +232,7 @@ class EditItemFragment : Fragment() {
         priceEditText.filters = inputFilter
     }
 
-    companion object {
-        fun newInstance() = EditItemFragment()
-    }
+    companion object;
 
     override fun onCreateOptionsMenu(menu: Menu, menuInflater: MenuInflater) {
         menuInflater.inflate(R.menu.item_edit_menu, menu)
@@ -257,7 +246,6 @@ class EditItemFragment : Fragment() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        Log.d("xxx", "Launched on Save instance state")
         if(imageModified){
             outState.apply {
                 putParcelable("group19.lab2.TMPIMG", item.image)
@@ -312,7 +300,6 @@ class EditItemFragment : Fragment() {
         jo.put("DATE",dateEditText.text.toString())
         jo.put("CATEGORY", categoryDropdown.text.toString())
         jo.put("SUBCATEGORY", subCategoryDropdown.text.toString())
-        //jo.put("PATH", item.path)
         with (sharedPref!!.edit()) {
             putString(id_item, jo.toString())
             commit()
@@ -334,8 +321,6 @@ class EditItemFragment : Fragment() {
                 bundleOf("item_id1" to id_item)
             )
         }
-
-//        navController.navigateUp()
 
     }
 
@@ -407,7 +392,7 @@ class EditItemFragment : Fragment() {
     }
 
 
-    fun rotateImage(source: Bitmap, angle: Int): Bitmap {
+    private fun rotateImage(source: Bitmap, angle: Int): Bitmap {
         val matrix = Matrix()
         matrix.postRotate(angle.toFloat())
         return Bitmap.createBitmap(
@@ -428,17 +413,17 @@ class EditItemFragment : Fragment() {
     }
 
     private fun manageSubDropdown(chosenCategory: String, categories : MutableList<String>){
-        if(chosenCategory.toString()=="other"){
+        if(chosenCategory =="other"){
             subCategoryDropdown.setText("")
             subCategoryTextField.visibility=View.GONE
             return
         }
-        var index=1;
+        var index = 1
         for(category in categories){
             if(chosenCategory == category){
-                var subId = resources.getIdentifier("sub${index}", "array", context?.packageName)
-                var subcategories=resources.getStringArray(subId).toMutableList()
-                var subAdapter= DropdownAdapter(requireContext(), R.layout.list_item, subcategories)
+                val subId = resources.getIdentifier("sub${index}", "array", context?.packageName)
+                val subcategories=resources.getStringArray(subId).toMutableList()
+                val subAdapter= DropdownAdapter(requireContext(), R.layout.list_item, subcategories)
                 subCategoryDropdown.setText("")
                 subCategoryDropdown?.setAdapter(subAdapter)
                 subCategoryTextField.visibility=View.VISIBLE

@@ -1,18 +1,10 @@
 package it.polito.mad.team19lab2
 
-import android.content.Context
-import android.content.Intent
 import android.graphics.BitmapFactory
-import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
-import android.util.Log
 import android.view.*
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.ms.square.android.expandabletextview.ExpandableTextView
-import kotlinx.android.synthetic.main.fragment_edit_item.*
 import kotlinx.android.synthetic.main.fragment_show_profile.*
 import kotlinx.android.synthetic.main.fragment_show_profile.image_view
 import kotlinx.android.synthetic.main.fragment_show_profile.roundCardView
@@ -25,10 +17,6 @@ class ShowProfileFragment :Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_show_profile, container, false)
-    }
-
-    companion object {
-        fun newInstance() = ItemDetailsFragment()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -93,15 +81,14 @@ class ShowProfileFragment :Fragment() {
     }
 
     private fun buildInterestsString():String{
-        val selectInterests=resources.getStringArray(R.array.categories).toMutableList()
-            ?: return ""
+        val selectInterests= resources.getStringArray(R.array.categories).toMutableList()
         var s = ""
         for (i in user.interests.indices) {
             s += selectInterests[user.interests[i]]
             if(i!=user.interests.size-1)
                 s= "$s, "
         }
-        return s;
+        return s
     }
 
     override fun onCreateOptionsMenu(menu: Menu, menuInflater: MenuInflater) {
@@ -115,8 +102,6 @@ class ShowProfileFragment :Fragment() {
     }
 
     private fun editProfile(){
-        //val b=Bundle()
-        //populateBundle(b)
         val navController = findNavController()
         navController.navigate(R.id.action_showProfileFragment_to_editProfileFragment)
     }

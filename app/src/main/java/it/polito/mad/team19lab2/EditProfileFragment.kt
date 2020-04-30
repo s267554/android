@@ -11,11 +11,9 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.util.Patterns
 import android.view.*
 import android.view.inputmethod.InputMethodManager
-import android.widget.AdapterView
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -28,7 +26,7 @@ import java.io.*
 
 
 class EditProfileFragment : Fragment() {
-    var u:UserInfo= UserInfo()
+    private var u = UserInfo()
 
     private val listVOs: MutableList<StateVO> = mutableListOf()
     private var REQUEST_CAMERA: Int = 1805
@@ -113,7 +111,7 @@ class EditProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_UNCHANGED);
+        activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_UNCHANGED)
         //image management
         val file = File(context?.filesDir, "myimage.png")
         if (file.exists()) {
@@ -274,7 +272,6 @@ class EditProfileFragment : Fragment() {
         for(i in listVOs.indices)
             if(listVOs[i].isSelected)
                 interests.add(i)
-        Log.d("interest", interests.toString())
         if(interests.isNotEmpty())
             jo.put("INTERESTS", JSONObject.wrap(interests))
         with (sharedPref!!.edit()) {
@@ -381,7 +378,7 @@ class EditProfileFragment : Fragment() {
         u.image = rotatedBitmap
     }
 
-    fun hideKeyboardFrom(context: Context, view: View) {
+    private fun hideKeyboardFrom(context: Context, view: View) {
         val imm: InputMethodManager = context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(view.windowToken, 0)
     }

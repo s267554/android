@@ -1,7 +1,6 @@
 package it.polito.mad.team19lab2
 
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.widget.*
 import com.google.android.material.navigation.NavigationView
@@ -22,7 +21,6 @@ import java.io.File
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
-    private var u: UserInfo = UserInfo()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,7 +50,6 @@ class MainActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment)
         //destination means source!
-        Log.d("vittoz","${navController.currentDestination!!.id} vs detail ${R.id.nav_item_detail}")
         if(navController.currentDestination!!.id==R.id.nav_item_detail){//arrivo da item detail
             navController.navigate(R.id.action_nav_item_detail_to_nav_home)
             return false
@@ -64,13 +61,10 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         //SHARED PREFERENCES
-        Log.d("vittoz","onrestart()")
 
-        val navView: NavigationView = findViewById(R.id.nav_view)
         val sharedPref = getSharedPreferences(
             "it.polito.mad.team19lab2.profile", 0)
         if(sharedPref!=null) {
-            Log.d("vittoz","onrestart()")
             val profile = sharedPref.getString("profile", "notFound")
             if (profile != "notFound") {
                 val jo = JSONObject(profile)
@@ -89,10 +83,10 @@ class MainActivity : AppCompatActivity() {
         var interests = ""
         for (element in listState) {
             if (element.isSelected) {
-                if (interests.isEmpty()) {
-                    interests += element.title
+                interests += if (interests.isEmpty()) {
+                    element.title
                 } else {
-                    interests += ", ${element.title}"
+                    ", ${element.title}"
                 }
             }
         }
@@ -103,7 +97,6 @@ class MainActivity : AppCompatActivity() {
     override fun onBackPressed() {
         val navController = findNavController(R.id.nav_host_fragment)
         //destination means source!
-        Log.d("vittoz","${navController.currentDestination!!.id} vs detail ${R.id.nav_item_detail}")
         if(navController.currentDestination!!.id==R.id.nav_item_detail){//arrivo da item detail
             navController.navigate(R.id.action_nav_item_detail_to_nav_home)
         }
