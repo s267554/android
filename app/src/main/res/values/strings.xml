@@ -53,6 +53,6 @@
     <string name="camera_launched">camera launched</string>
     <string name="gallery_launched">gallery launched</string>
     <string name="insert_image_before">insert an image before</string>
-    <string name="profile_updated">profile updaed</string>
+    <string name="profile_updated">profile updated</string>
     <string name="logout">logout</string>
 </resources>

@@ -2,9 +2,20 @@ package it.polito.mad.team19lab2
 
 import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.ktx.storage
+import com.squareup.picasso.Picasso
+import it.polito.mad.team19lab2.data.UserModel
+import it.polito.mad.team19lab2.viewModel.UserViewModel
 import kotlinx.android.synthetic.main.fragment_show_profile.*
 import kotlinx.android.synthetic.main.fragment_show_profile.image_view
 import kotlinx.android.synthetic.main.fragment_show_profile.roundCardView
@@ -13,7 +24,8 @@ import java.io.File
 
 class ShowProfileFragment :Fragment() {
 
-    private var user: UserInfo = UserInfo()
+    private lateinit var user: UserModel
+    lateinit var storage: FirebaseStorage
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_show_profile, container, false)
@@ -22,56 +34,30 @@ class ShowProfileFragment :Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-        //SHARED PREFERENCES
-        val sharedPref = activity?.getSharedPreferences(
-            "it.polito.mad.team19lab2.profile", 0)
-        //read preferences
-        if(sharedPref!=null) {
-            val profile = sharedPref.getString("profile", "notFound")
-            if (profile != "notFound") {
-                val jo = JSONObject(profile)
-                user.fullname = jo.get("FULL_NAME") as String
-                user.nickname = jo.get("NICK_NAME") as String
-                user.email_address = jo.get("EMAIL") as String
-                if(jo.has("LOCATION"))
-                    user.location_area = jo.get("LOCATION") as String
-                if(jo.has("INTERESTS")){
-                val jsoninterests = jo.getJSONArray("INTERESTS")
-                    user.interests.clear()
-                    for (i in 0 until jsoninterests.length())
-                        user.interests.add(jsoninterests.getInt(i))
-                }
-                if(jo.has("RATING"))
-                user.rating = (jo.get("RATING") as Int).toFloat()
-                if(jo.has("IMG"))
-                    user.img = jo.get("IMG") as Int
-            }
-        }
-
+        storage = Firebase.storage
     }
 
 
     override fun onViewCreated (view: View, savedInstanceState : Bundle?){
         super.onViewCreated(view, savedInstanceState)
         val file = File(context?.filesDir, "myimage.png")
-        if (file.exists()) {
-            user.image = BitmapFactory.decodeFile(file.absolutePath)
-        }
-
-        if (user.image == null) {
-            image_view.setImageResource(user.img)
-        }
-        else {
-            image_view.setImageBitmap(user.image)
-        }
-        name_view.text = user.fullname
-        nickname_view.text = user.nickname
-        email_view.text = user.email_address
-        location_view.text = user.location_area
-        interests_view.text = buildInterestsString()
-        // To show a default value
-        ratingBar.rating= 2.5F
         //Round image management
+        val userVm : UserViewModel = ViewModelProvider(this).get(UserViewModel::class.java);
+        userVm.getUser().observe(viewLifecycleOwner, Observer { it ->
+            user = it
+            if (user.imagePath.isNullOrEmpty()) {
+                image_view.setImageResource(R.drawable.avatar_foreground)
+            }
+            else{
+                downloadFile()
+            }
+            name_view.text = user.fullname
+            nickname_view.text = user.nickname
+            email_view.text = user.email
+            location_view.text = user.location
+            interests_view.text = buildInterestsString()
+            ratingBar.rating= user.rating
+        })
         roundCardView.viewTreeObserver.addOnGlobalLayoutListener (object: ViewTreeObserver.OnGlobalLayoutListener{
             override fun onGlobalLayout() {
                 roundCardView.radius =  roundCardView.height.toFloat() / 2.0F
@@ -105,7 +91,14 @@ class ShowProfileFragment :Fragment() {
         val navController = findNavController()
         navController.navigate(R.id.action_showProfileFragment_to_editProfileFragment)
     }
-    //populate and restore bundle do not make the updating visible, only the property are updated
 
+    private fun downloadFile() {
+        val storageRef = storage.reference
+        storageRef.child(user.imagePath).downloadUrl.addOnSuccessListener {
+            Picasso.get().load(it).into(image_view)
+        }.addOnFailureListener {
+            Log.d("image", "error in download image")
+        }
+    }
 
 }
