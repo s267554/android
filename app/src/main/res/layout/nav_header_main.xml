@@ -8,6 +8,7 @@
     android:background="@color/colorPrimaryLight"
     android:gravity="bottom"
     android:orientation="vertical"
+    tools:context=".MainActivity"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
 
@@ -79,5 +80,16 @@
 
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:onClick="signOut"
+        android:text="@string/logout"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,22 +1,32 @@
 package it.polito.mad.team19lab2
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
-import android.widget.*
-import com.google.android.material.navigation.NavigationView
+import android.view.View
+import android.widget.AutoCompleteTextView
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.core.net.toUri
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import androidx.drawerlayout.widget.DrawerLayout
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
-import androidx.core.net.toUri
+import com.firebase.ui.auth.AuthUI
+import com.firebase.ui.auth.IdpResponse
+import com.google.android.material.navigation.NavigationView
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_main.*
 import org.json.JSONObject
 import java.io.File
 
+private const val RC_SIGN_IN=123
 
 class MainActivity : AppCompatActivity() {
 
@@ -24,20 +34,68 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        val toolbar: Toolbar = findViewById(R.id.toolbar)
-        setSupportActionBar(toolbar)
 
-        val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
-        val navView: NavigationView = findViewById(R.id.nav_view)
-        val navController = findNavController(R.id.nav_host_fragment)
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-        appBarConfiguration = AppBarConfiguration(setOf(
-                R.id.nav_home), drawerLayout) // decidiamo le schermate root e connettiamole al drawer
-        setupActionBarWithNavController(navController, appBarConfiguration)//To add navigation support to the default action bar
-        navView.setupWithNavController(navController)
-        //Comment this to avoid the first page is the itemDetail
+        val u=FirebaseAuth.getInstance().currentUser
+        if(u == null) {
+            // Choose authentication providers
+            val providers = arrayListOf(
+                AuthUI.IdpConfig.GoogleBuilder().build()
+            )
+            // Create and launch sign-in intent
+            startActivityForResult(
+                AuthUI.getInstance()
+                    .createSignInIntentBuilder()
+                    .setAvailableProviders(providers)
+                    .setLogo(R.drawable.ic_shop_black_48dp)
+                    .build(),
+                RC_SIGN_IN
+            )
+        }
+        else {
+            setContentView(R.layout.activity_main)
+            val toolbar: Toolbar = findViewById(R.id.toolbar)
+            setSupportActionBar(toolbar)
+
+            val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
+            val navView: NavigationView = findViewById(R.id.nav_view)
+            val navController = findNavController(R.id.nav_host_fragment)
+            // Passing each menu ID as a set of Ids because each
+            // menu should be considered as top level destinations.
+            appBarConfiguration = AppBarConfiguration(
+                setOf(
+                    R.id.nav_home
+                ), drawerLayout
+            )
+            setupActionBarWithNavController(
+                navController,
+                appBarConfiguration
+            )//To add navigation support to the default action bar
+            navView.setupWithNavController(navController)
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == RC_SIGN_IN) {
+            val response = IdpResponse.fromResultIntent(data)
+
+            if (resultCode == Activity.RESULT_OK) {
+                val user = FirebaseAuth.getInstance().currentUser
+                Log.d("signIn", user.toString())
+                setContentView(R.layout.activity_main)
+                val toolbar: Toolbar = findViewById(R.id.toolbar)
+                setSupportActionBar(toolbar)
+                val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
+                val navView: NavigationView = findViewById(R.id.nav_view)
+                val navController = findNavController(R.id.nav_host_fragment)
+                appBarConfiguration = AppBarConfiguration(setOf(
+                    R.id.nav_home), drawerLayout) // decidiamo le schermate root e connettiamole al drawer
+                setupActionBarWithNavController(navController, appBarConfiguration)//To add navigation support to the default action bar
+                navView.setupWithNavController(navController)
+            } else {
+               Log.d("signIn", "Sign in failed")
+            }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -93,7 +151,6 @@ class MainActivity : AppCompatActivity() {
         findViewById<AutoCompleteTextView>(R.id.interestsDropdown)?.setText(interests, false)
     }
 
-
     override fun onBackPressed() {
         val navController = findNavController(R.id.nav_host_fragment)
         //destination means source!
@@ -104,5 +161,15 @@ class MainActivity : AppCompatActivity() {
             super.onBackPressed()
     }
 
+    fun signOut(view: View) {
 
+        AuthUI.getInstance()
+        .signOut(this)
+        .addOnCompleteListener {
+            val i = baseContext.packageManager
+                .getLaunchIntentForPackage(baseContext.packageName)
+            i!!.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            startActivity(i)
+        }
+    }
 }

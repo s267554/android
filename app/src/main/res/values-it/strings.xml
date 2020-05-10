@@ -43,6 +43,7 @@
     <string name="gallery_launched">galleria avviata</string>
     <string name="insert_image_before">prima inserisci un\&apos;immagine</string>
     <string name="profile_updated">profilo aggiornato</string>
+    <string name="logout">logout</string>
 
 
     <string-array name="categories">
