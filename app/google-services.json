@@ -15,6 +15,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "355147955650-a9rv0tie5bbepb52kb1hotil6v5kantf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "it.polito.mad.team19lab2",
+            "certificate_hash": "f7a0f1eaabf1636eb931f942a009262a2a6c67d7"
+          }
+        },
+        {
+          "client_id": "355147955650-nvt3kauugahkmjq5c7vgql1gfjh4qan2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "it.polito.mad.team19lab2",
+            "certificate_hash": "9a9ff796c184a800ff90025b4de8238764464b6f"
+          }
+        },
+        {
           "client_id": "355147955650-rnubbtg3nh6jont1c50gj61r102b84rd.apps.googleusercontent.com",
           "client_type": 3
         }
