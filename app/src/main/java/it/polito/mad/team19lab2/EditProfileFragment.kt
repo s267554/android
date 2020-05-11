@@ -19,6 +19,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -42,7 +43,7 @@ class EditProfileFragment : Fragment() {
     private var REQUEST_CAMERA: Int = 1805
     private var REQUEST_GALLERY: Int = 1715
     private var imageModified=false
-    private lateinit var userVm: UserViewModel
+    private val userVm: UserViewModel by viewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_edit_profile, container, false)
@@ -53,7 +54,6 @@ class EditProfileFragment : Fragment() {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
         storage = Firebase.storage
-        userVm = ViewModelProvider(this).get(UserViewModel::class.java);
     }
 
     /*
@@ -398,9 +398,14 @@ class EditProfileFragment : Fragment() {
     private fun downloadFile() {
         val storageRef = storage.reference
         storageRef.child(user.imagePath).downloadUrl.addOnSuccessListener {
-            Picasso.get().load(it).into(image_view)
-            val drawable: BitmapDrawable = image_view.getDrawable() as BitmapDrawable
-            image = drawable.bitmap
+            Picasso.get().load(it).into(image_view, object: com.squareup.picasso.Callback {
+                override fun onSuccess() {
+                    val drawable: BitmapDrawable = image_view.drawable as BitmapDrawable
+                    image = drawable.bitmap
+                }
+                override fun onError(e: java.lang.Exception?) {
+                }
+            })
         }.addOnFailureListener {
             Log.d("image", "error in download image")
         }

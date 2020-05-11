@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
@@ -26,6 +27,7 @@ class ShowProfileFragment :Fragment() {
 
     private lateinit var user: UserModel
     lateinit var storage: FirebaseStorage
+    private val userVm: UserViewModel by viewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_show_profile, container, false)
@@ -37,12 +39,8 @@ class ShowProfileFragment :Fragment() {
         storage = Firebase.storage
     }
 
-
     override fun onViewCreated (view: View, savedInstanceState : Bundle?){
         super.onViewCreated(view, savedInstanceState)
-        val file = File(context?.filesDir, "myimage.png")
-        //Round image management
-        val userVm : UserViewModel = ViewModelProvider(this).get(UserViewModel::class.java);
         userVm.getUser().observe(viewLifecycleOwner, Observer { it ->
             user = it
             if (user.imagePath.isNullOrEmpty()) {
@@ -100,5 +98,4 @@ class ShowProfileFragment :Fragment() {
             Log.d("image", "error in download image")
         }
     }
-
 }

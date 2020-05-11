@@ -118,8 +118,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        //SHARED PREFERENCES
-
+        //REPLACE WITH VIEW MODEL
+    /*
         val sharedPref = getSharedPreferences(
             "it.polito.mad.team19lab2.profile", 0)
         if(sharedPref!=null) {
@@ -134,6 +134,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+     */
     }
 
 

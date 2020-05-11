@@ -113,8 +113,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:contentDescription="@string/profile_image"
-                        android:scaleType="centerCrop"
-                        app:srcCompat="@drawable/avatar_foreground" />
+                        android:scaleType="centerCrop" />
 
                 </androidx.cardview.widget.CardView>
 
