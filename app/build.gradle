@@ -1,3 +1,6 @@
+ext {
+    var = 'src/mykey.jks'
+}
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
@@ -6,7 +9,7 @@ apply plugin: 'com.google.gms.google-services'
 android {
     signingConfigs {
         debug {
-            storeFile file('/home/filippo/AndroidStudioProjects/team19lab2/app/src/mykey.jks')
+            storeFile file(var)
             storePassword 'android'
             keyAlias = 'key0'
             keyPassword 'android'
