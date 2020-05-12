@@ -93,7 +93,7 @@ class ShowProfileFragment :Fragment() {
     private fun downloadFile() {
         val storageRef = storage.reference
         storageRef.child(user.imagePath).downloadUrl.addOnSuccessListener {
-            Picasso.get().load(it).into(image_view)
+            Picasso.get().load(it).noFade().placeholder( R.drawable.progress_animation ).into(image_view)
         }.addOnFailureListener {
             Log.d("image", "error in download image")
         }

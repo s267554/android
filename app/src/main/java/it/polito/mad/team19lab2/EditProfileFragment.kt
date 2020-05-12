@@ -398,7 +398,7 @@ class EditProfileFragment : Fragment() {
     private fun downloadFile() {
         val storageRef = storage.reference
         storageRef.child(user.imagePath).downloadUrl.addOnSuccessListener {
-            Picasso.get().load(it).into(image_view, object: com.squareup.picasso.Callback {
+            Picasso.get().load(it).noFade().placeholder( R.drawable.progress_animation ).into(image_view, object: com.squareup.picasso.Callback {
                 override fun onSuccess() {
                     val drawable: BitmapDrawable = image_view.drawable as BitmapDrawable
                     image = drawable.bitmap
