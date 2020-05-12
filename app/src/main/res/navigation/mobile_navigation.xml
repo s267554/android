@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_home">
+    app:startDestination="@id/nav_home">
 
     <fragment
         android:id="@+id/nav_home"
@@ -78,5 +78,13 @@
             app:destination="@id/showProfileFragment"
             app:popUpTo="@id/showProfileFragment"
             app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/onSaleListFragment"
+        android:name="it.polito.mad.team19lab2.OnSaleListFragment"
+        android:label="OnSaleListFragment" >
+        <action
+            android:id="@+id/action_onSaleListFragment_to_nav_item_detail"
+            app:destination="@id/nav_item_detail" />
     </fragment>
 </navigation>
