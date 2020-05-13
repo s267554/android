@@ -30,8 +30,35 @@ class UserViewModel: ViewModel() {
                 return@EventListener
             }
             if (value != null) {
-                Log.d(TAG, value.toString())
+                Log.d(TAG, value.toString()+"xiao")
                 liveUser.value = value.toObject(UserModel::class.java)
+            }
+        })
+        return liveUser
+    }
+
+    fun getOrCreateUser(): MutableLiveData<UserModel>{
+        userRepository.getUser().addSnapshotListener(EventListener<DocumentSnapshot> { value, e ->
+            if (e != null) {
+                Log.e(TAG, "Listen failed.", e)
+                liveUser.value = null
+                return@EventListener
+            }
+            if (value != null) {
+                if(value.exists())
+                    liveUser.value = value.toObject(UserModel::class.java)
+                else{
+                    userRepository.createUser().addSnapshotListener(EventListener<DocumentSnapshot> { value, e ->
+                        if (e != null) {
+                            Log.e(TAG, "Listen failed.", e)
+                            liveUser.value = null
+                            return@EventListener
+                        }
+                        if (value != null) {
+                            liveUser.value = value.toObject(UserModel::class.java)
+                        }
+                    })
+                }
             }
         })
         return liveUser

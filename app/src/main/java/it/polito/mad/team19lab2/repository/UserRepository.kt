@@ -27,4 +27,10 @@ class UserRepository {
         return documentReference
     }
 
+    fun createUser(): DocumentReference {
+        var documentReference = firestoreDB.collection("utenti").document(user!!.email.toString())
+        documentReference.set(UserModel(user!!.email.toString()))
+        return documentReference
+    }
+
 }

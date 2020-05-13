@@ -9,10 +9,13 @@ import android.view.View
 import android.widget.AutoCompleteTextView
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.net.toUri
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
@@ -22,15 +25,16 @@ import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
+import it.polito.mad.team19lab2.viewModel.UserViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import org.json.JSONObject
 import java.io.File
-
 private const val RC_SIGN_IN=123
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
+    private val userVm: UserViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,7 +59,6 @@ class MainActivity : AppCompatActivity() {
             setContentView(R.layout.activity_main)
             val toolbar: Toolbar = findViewById(R.id.toolbar)
             setSupportActionBar(toolbar)
-
             val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
             val navView: NavigationView = findViewById(R.id.nav_view)
             val navController = findNavController(R.id.nav_host_fragment)
@@ -71,6 +74,11 @@ class MainActivity : AppCompatActivity() {
                 appBarConfiguration
             )//To add navigation support to the default action bar
             navView.setupWithNavController(navController)
+            userVm.getOrCreateUser().observe(this, Observer{
+                nav_view.getHeaderView(0).findViewById<TextView>(R.id.header_title_textView).text = it.fullname
+                nav_view.getHeaderView(0).findViewById<TextView>(R.id.header_subtitle_textView).text = it.nickname
+                //download image
+            })
         }
     }
 
@@ -78,10 +86,7 @@ class MainActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == RC_SIGN_IN) {
             val response = IdpResponse.fromResultIntent(data)
-
             if (resultCode == Activity.RESULT_OK) {
-                val user = FirebaseAuth.getInstance().currentUser
-                Log.d("signIn", user.toString())
                 setContentView(R.layout.activity_main)
                 val toolbar: Toolbar = findViewById(R.id.toolbar)
                 setSupportActionBar(toolbar)
@@ -92,6 +97,11 @@ class MainActivity : AppCompatActivity() {
                     R.id.nav_home), drawerLayout) // decidiamo le schermate root e connettiamole al drawer
                 setupActionBarWithNavController(navController, appBarConfiguration)//To add navigation support to the default action bar
                 navView.setupWithNavController(navController)
+                userVm.getOrCreateUser().observe(this, Observer {
+                    nav_view.getHeaderView(0).findViewById<TextView>(R.id.header_title_textView).text = it.fullname
+                    nav_view.getHeaderView(0).findViewById<TextView>(R.id.header_subtitle_textView).text = it.nickname
+                    // download image
+                })
             } else {
                Log.d("signIn", "Sign in failed")
             }
