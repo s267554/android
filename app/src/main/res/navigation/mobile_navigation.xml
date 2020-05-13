@@ -3,27 +3,30 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_home">
+    app:startDestination="@id/nav_home">
 
     <fragment
         android:id="@+id/nav_home"
-        android:name="it.polito.mad.team19lab2.ItemListFragment"
-        android:label="@string/menu_home"
-        tools:layout="@layout/fragment_item_list">
+        android:name="it.polito.mad.team19lab2.OnSaleListFragment"
+        android:label="@string/menu_on_sale"
+        tools:layout="@layout/fragment_onsale_list"
+        tools:ignore="ExtraText">
+        //android:name="it.polito.mad.team19lab2.ItemListFragment"
+        // android:label="@string/menu_home"
+        //tools:layout="@layout/fragment_item_list">
         <argument
             android:name="item_id1"
             app:argType="string" />
         <action
-            android:id="@+id/action_nav_home_to_itemDetailsFragment"
-            app:destination="@id/nav_item_detail"
-            app:launchSingleTop="false" />
-        <action
             android:id="@+id/action_nav_home_to_showProfileFragment"
-            app:destination="@id/showProfileFragment"
+            app:destination="@id/nav_show_profile"
             app:popUpToInclusive="false" />
         <action
-            android:id="@+id/action_nav_home_to_nav_edit_item"
-            app:destination="@id/nav_edit_item" />
+            android:id="@+id/action_nav_home_to_nav_my_advertisement"
+            app:destination="@id/nav_my_advertisement" />
+        <action
+            android:id="@+id/action_nav_home_to_nav_on_sale"
+            app:destination="@id/nav_on_sale" />
     </fragment>
     <fragment
         android:id="@+id/nav_item_detail"
@@ -37,10 +40,9 @@
             app:destination="@id/nav_edit_item"
             app:launchSingleTop="true" />
         <action
-            android:id="@+id/action_nav_item_detail_to_nav_home"
-            app:destination="@id/nav_home"
-            app:popUpTo="@id/nav_home"
-            app:popUpToInclusive="true" />
+            android:id="@+id/action_nav_item_detail_to_nav_my_advertisement"
+            app:destination="@id/nav_my_advertisement" />
+
     </fragment>
     <fragment
         android:id="@+id/nav_edit_item"
@@ -51,32 +53,50 @@
             android:name="item_id1"
             app:argType="string" />
         <action
-            android:id="@+id/action_nav_edit_item_to_nav_home"
-            app:destination="@id/nav_home"
-            app:popUpTo="@id/nav_home"
-            app:popUpToInclusive="true" />
-        <action
             android:id="@+id/action_nav_edit_item_to_nav_item_detail"
             app:destination="@id/nav_item_detail"
             app:popUpTo="@id/nav_item_detail"
             app:popUpToInclusive="true" />
     </fragment>
     <fragment
-        android:id="@+id/showProfileFragment"
+        android:id="@+id/nav_show_profile"
         android:name="it.polito.mad.team19lab2.ShowProfileFragment"
         android:label="@string/profile_bar">
         <action
             android:id="@+id/action_showProfileFragment_to_editProfileFragment"
-            app:destination="@id/editProfileFragment" />
+            app:destination="@id/nav_edit_profile" />
     </fragment>
     <fragment
-        android:id="@+id/editProfileFragment"
+        android:id="@+id/nav_edit_profile"
         android:name="it.polito.mad.team19lab2.EditProfileFragment"
         android:label="@string/profile_edit_bar">
         <action
             android:id="@+id/action_editProfileFragment_to_showProfileFragment"
-            app:destination="@id/showProfileFragment"
-            app:popUpTo="@id/showProfileFragment"
+            app:destination="@id/nav_show_profile"
+            app:popUpTo="@id/nav_show_profile"
             app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_my_advertisement"
+        android:name="it.polito.mad.team19lab2.ItemListFragment"
+        android:label="ItemListFragment" >
+        <action
+            android:id="@+id/action_nav_my_advertisement_to_nav_item_detail"
+            app:destination="@id/nav_item_detail" />
+        <action
+            android:id="@+id/action_nav_my_advertisement_to_nav_edit_item"
+            app:destination="@id/nav_edit_item" />
+        <action
+            android:id="@+id/action_nav_my_advertisement_to_nav_home"
+            app:destination="@id/nav_home" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_on_sale"
+        android:name="it.polito.mad.team19lab2.ItemDetailsFragment"
+        android:label="@string/item_deatails_bar">
+
+        <action
+            android:id="@+id/action_nav_on_sale_to_nav_home"
+            app:destination="@id/nav_home" />
     </fragment>
 </navigation>

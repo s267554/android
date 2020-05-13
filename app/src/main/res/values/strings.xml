@@ -7,7 +7,8 @@
 
     <string name="menu_home">Advertisements</string>
     <string name="menu_profile">Profile</string>
-    <string name="menu_advertisements">Advertisements</string>
+    <string name="menu_advertisements">My advertisements</string>
+    <string name="menu_on_sale">On sale advertisements</string>
 
     <string name="description">Description</string>
     <string name="category">Category</string>

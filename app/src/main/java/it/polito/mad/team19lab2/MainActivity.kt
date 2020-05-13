@@ -108,11 +108,25 @@ class MainActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment)
         //destination means source!
-        if(navController.currentDestination!!.id==R.id.nav_item_detail){//arrivo da item detail
-            navController.navigate(R.id.action_nav_item_detail_to_nav_home)
-            return false
+        when(navController.currentDestination?.id){
+            R.id.nav_item_detail ->{
+                navController.navigate(R.id.action_nav_item_detail_to_nav_my_advertisement)
+                return false
+            }
+            R.id.nav_on_sale -> {
+                navController.navigate(R.id.action_nav_on_sale_to_nav_home)
+                return false
+                }
+            R.id.nav_my_advertisement ->{
+                navController.navigate(R.id.action_nav_my_advertisement_to_nav_home)
+                return false
+            }
         }
-
+        /*
+        if(navController.currentDestination!!.id==R.id.nav_item_detail){//arrivo da item detail
+            navController.navigate(R.id.action_nav_item_detail_to_nav_my_advertisement)
+            return false
+        }*/
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
@@ -151,16 +165,30 @@ class MainActivity : AppCompatActivity() {
         }
         findViewById<AutoCompleteTextView>(R.id.interestsDropdown)?.setText(interests, false)
     }
-
     override fun onBackPressed() {
         val navController = findNavController(R.id.nav_host_fragment)
         //destination means source!
-        if(navController.currentDestination!!.id==R.id.nav_item_detail){//arrivo da item detail
-            navController.navigate(R.id.action_nav_item_detail_to_nav_home)
+        when(navController.currentDestination?.id){
+            R.id.nav_item_detail ->
+                navController.navigate(R.id.action_nav_item_detail_to_nav_my_advertisement)
+            R.id.nav_on_sale ->
+                navController.navigate(R.id.action_nav_on_sale_to_nav_home)
+            R.id.nav_my_advertisement ->
+                navController.navigate(R.id.action_nav_my_advertisement_to_nav_home)
+            R.id.nav_home -> {
+                // Se sono in home mi chiude l'app, anche se ho il menù aperto
+                finish()
+            }
+            else ->{
+                super.onBackPressed()
+            }
         }
-        else
-            super.onBackPressed()
-    }
+//        if(navController.currentDestination!!.id==R.id.nav_item_detail){//arrivo da item detail
+//            navController.navigate(R.id.action_nav_item_detail_to_nav_my_advertisement)
+//        }
+//        else
+//            super.onBackPressed()
+        }
 
     fun signOut(view: View) {
 
