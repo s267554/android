@@ -4,10 +4,13 @@ import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.*
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.ms.square.android.expandabletextview.ExpandableTextView
 import kotlinx.android.synthetic.main.item_details_fragment.*
 import kotlinx.android.synthetic.main.item_details_fragment.image_view
@@ -23,7 +26,11 @@ class ItemDetailsFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
+        var currentDest = findNavController().currentDestination?.id
+        if (currentDest == R.id.nav_on_sale )
+            setHasOptionsMenu(false)
+        else
+            setHasOptionsMenu(true)
     }
 
     override fun onCreateView(
@@ -42,8 +49,9 @@ class ItemDetailsFragment : Fragment() {
                 roundCardView.viewTreeObserver.removeOnGlobalLayoutListener(this)
             }
         })
-
-        id_item = arguments?.getString("item_id1").toString()
+        if (arguments != null){
+            id_item = arguments?.getString("item_id1").toString()
+        }
         val sharedPref = activity?.getSharedPreferences(
             "it.polito.mad.team19lab2.items", Context.MODE_PRIVATE)
         if (sharedPref != null) {
@@ -103,6 +111,5 @@ class ItemDetailsFragment : Fragment() {
         super.onSaveInstanceState(outState)
         populateBundle(outState)
     }
-
 
 }

@@ -66,7 +66,11 @@ class ItemListFragment : Fragment() {
         }
 
         val fab: FloatingActionButton = view.findViewById(R.id.fab)
-        fab.setOnClickListener {  it.findNavController().navigate(R.id.action_nav_home_to_nav_edit_item, bundleOf("item_id1" to UUID.randomUUID().toString(),"deep_link" to true))
+        val bundle = bundleOf(
+            "item_id1" to UUID.randomUUID().toString(),"deep_link" to true,
+            "sourceFragment" to R.id.action_nav_my_advertisement_to_nav_edit_item
+        )
+        fab.setOnClickListener {  it.findNavController().navigate(R.id.action_nav_my_advertisement_to_nav_edit_item, bundle)
         }
 
         if(dataset.count() != 0)

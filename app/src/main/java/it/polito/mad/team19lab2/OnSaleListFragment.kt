@@ -17,6 +17,7 @@ class OnSaleListFragment: Fragment(){
         super.onCreate(savedInstanceState)
 
         //Creation of 20 Fake Item
+        //TODO this is executed every time the app is launched. To be implemented with real items
         val i: Int=0
         for(i in 0..20){
             val item = ItemInfo()

@@ -22,7 +22,11 @@ class MyItemRecyclerViewAdapter(
     init {
         mOnClickListener = View.OnClickListener { v ->
             val item = v.tag as ItemInfo
-            v.findNavController().navigate(R.id.action_nav_home_to_itemDetailsFragment, bundleOf("item_id1" to item.itemId))
+            val bundle = bundleOf(
+                "item_id1" to item.itemId,
+                "source_fragment" to R.id.action_nav_my_advertisement_to_nav_item_detail
+            )
+            v.findNavController().navigate(R.id.action_nav_my_advertisement_to_nav_item_detail, bundle)
         }
     }
 
@@ -44,7 +48,7 @@ class MyItemRecyclerViewAdapter(
             setOnClickListener(mOnClickListener)
         }
 
-        holder.mEditButton.setOnClickListener {it.findNavController().navigate(R.id.action_nav_home_to_nav_edit_item,
+        holder.mEditButton.setOnClickListener {it.findNavController().navigate(R.id.action_nav_my_advertisement_to_nav_edit_item,
             bundleOf("item_id1" to item.itemId, "deep_link" to true, "edit" to true ))}
     }
 

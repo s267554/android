@@ -7,7 +7,8 @@
 
         <string name="menu_home">Annunci</string>
         <string name="menu_profile">Profilo</string>
-        <string name="menu_advertisements">Annunci</string>
+        <string name="menu_advertisements">I miei annunci</string>
+        <string name="menu_on_sale">Annunci market</string>
 
         <string name="description">Descrizione</string>
         <string name="category">Categoria</string>

@@ -311,15 +311,14 @@ class EditItemFragment : Fragment() {
             else
                 msg=resources.getString(R.string.item_create_message)
             Toast.makeText(context,msg, Toast.LENGTH_SHORT).show()
-            findNavController().navigate(R.id.action_nav_edit_item_to_nav_home, bundleOf("item_id1" to id_item))
+            val bundle = bundleOf("item_id1" to id_item)
+            findNavController().navigate(R.id.action_nav_edit_item_to_nav_item_detail, bundle)
         }
         else {
             val  msg= resources.getString(R.string.item_update_message)
             Toast.makeText(context,msg, Toast.LENGTH_SHORT).show()
-            findNavController().navigate(
-                R.id.action_nav_edit_item_to_nav_item_detail,
-                bundleOf("item_id1" to id_item)
-            )
+            val bundle = bundleOf("item_id1" to id_item)
+            findNavController().navigate(R.id.action_nav_edit_item_to_nav_item_detail, bundle)
         }
 
     }
