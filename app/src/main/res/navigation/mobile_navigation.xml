@@ -27,6 +27,9 @@
         <action
             android:id="@+id/action_nav_home_to_nav_on_sale"
             app:destination="@id/nav_on_sale" />
+        <action
+            android:id="@+id/action_nav_home_to_nav_edit_profile"
+            app:destination="@id/nav_edit_profile" />
     </fragment>
     <fragment
         android:id="@+id/nav_item_detail"

@@ -77,6 +77,8 @@ class MainActivity : AppCompatActivity() {
             userVm.getOrCreateUser().observe(this, Observer{
                 nav_view.getHeaderView(0).findViewById<TextView>(R.id.header_title_textView).text = it.fullname
                 nav_view.getHeaderView(0).findViewById<TextView>(R.id.header_subtitle_textView).text = it.nickname
+                if(it.fullname.isNullOrEmpty() || it.nickname.isNullOrEmpty())
+                    navController.navigate(R.id.action_nav_home_to_nav_edit_profile)
                 //download image
             })
         }
@@ -100,6 +102,8 @@ class MainActivity : AppCompatActivity() {
                 userVm.getOrCreateUser().observe(this, Observer {
                     nav_view.getHeaderView(0).findViewById<TextView>(R.id.header_title_textView).text = it.fullname
                     nav_view.getHeaderView(0).findViewById<TextView>(R.id.header_subtitle_textView).text = it.nickname
+                    if(it.fullname.isNullOrEmpty() || it.nickname.isNullOrEmpty())
+                        navController.navigate(R.id.action_nav_home_to_nav_edit_profile)
                     // download image
                 })
             } else {
