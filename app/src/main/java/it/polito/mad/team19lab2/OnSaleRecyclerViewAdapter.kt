@@ -8,10 +8,11 @@ import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import it.polito.mad.team19lab2.data.ItemModel
 
 import kotlinx.android.synthetic.main.onsale_item_card_view.view.*
 
-class OnSaleRecyclerViewAdapter (val onSaleItems: ArrayList<ItemInfo>):
+class OnSaleRecyclerViewAdapter(val onSaleItems: ArrayList<ItemModel>):
 RecyclerView.Adapter<OnSaleRecyclerViewAdapter.ViewHolder> ( ){
 
     override fun getItemCount() = onSaleItems.size
@@ -19,8 +20,8 @@ RecyclerView.Adapter<OnSaleRecyclerViewAdapter.ViewHolder> ( ){
 
     init {
         onSaleCL = View.OnClickListener { v ->
-            val item = v.tag as ItemInfo
-            val bundle = bundleOf("item_id1" to item.itemId)
+            val item = v.tag as ItemModel
+            val bundle = bundleOf("item_id1" to item.id)
             v.findNavController().navigate(R.id.action_nav_home_to_nav_on_sale, bundle)
         }
     }
@@ -44,11 +45,13 @@ RecyclerView.Adapter<OnSaleRecyclerViewAdapter.ViewHolder> ( ){
         val itemPrice: TextView = cv.content
         val itemImage: ImageView = cv.item_image_preview
 
-        fun bind(item: ItemInfo){
+        fun bind(item: ItemModel){
             itemTitle.text = item.title
             itemPrice.text = "€ " + item.price.toString()
-            if(item.image != null)
-                itemImage.setImageBitmap(item.image)
+            if(item.imagePath != null)
+                itemImage.setImageResource(R.drawable.account_icon_foreground)
+            else
+                itemImage.setImageResource(R.drawable.sport_category_foreground)
         }
     }
 }

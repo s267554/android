@@ -17,7 +17,6 @@ class UserRepository {
 
     fun saveUser(user: UserModel): Task<Void> {
         var documentReference = firestoreDB.collection("utenti").document(user.id)
-        Log.d(TAG, documentReference.toString())
         return documentReference.set(user)
     }
 

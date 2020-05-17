@@ -9,21 +9,23 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.navigation.findNavController
+import it.polito.mad.team19lab2.data.ItemModel
 
 import kotlinx.android.synthetic.main.fragment_item.view.*
+import java.util.ArrayList
 
 
 class MyItemRecyclerViewAdapter(
-    private val mValues: ArrayList<ItemInfo>
+    private val mValues: ArrayList<ItemModel>
 ) : RecyclerView.Adapter<MyItemRecyclerViewAdapter.ViewHolder>() {
 
     private val mOnClickListener: View.OnClickListener
 
     init {
         mOnClickListener = View.OnClickListener { v ->
-            val item = v.tag as ItemInfo
+            val item = v.tag as ItemModel
             val bundle = bundleOf(
-                "item_id1" to item.itemId,
+                "item_id1" to item.id,
                 "source_fragment" to R.id.action_nav_my_advertisement_to_nav_item_detail
             )
             v.findNavController().navigate(R.id.action_nav_my_advertisement_to_nav_item_detail, bundle)
@@ -37,11 +39,14 @@ class MyItemRecyclerViewAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = mValues[position]
+        val item = mValues[position] as ItemModel
         holder.mIdView.text = item.title
         holder.mContentView.text = "€ " + item.price.toString()
-        if(item.image!=null)
-            holder.mImage.setImageBitmap(item.image)
+        if(item.imagePath!=null)
+            holder.mImage.setImageResource(R.drawable.account_icon_foreground)
+        else{
+            holder.mImage.setImageResource(R.drawable.sport_category_foreground)
+        }
 
         with(holder.mView) {
             tag = item
@@ -49,7 +54,7 @@ class MyItemRecyclerViewAdapter(
         }
 
         holder.mEditButton.setOnClickListener {it.findNavController().navigate(R.id.action_nav_my_advertisement_to_nav_edit_item,
-            bundleOf("item_id1" to item.itemId, "deep_link" to true, "edit" to true ))}
+            bundleOf("item_id1" to item.id, "deep_link" to true, "edit" to true ))}
     }
 
     override fun getItemCount(): Int = mValues.size

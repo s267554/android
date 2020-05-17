@@ -6,21 +6,34 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Matrix
+import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.text.Editable
 import android.text.InputFilter
 import android.text.TextWatcher
+import android.util.Log
 import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.AutoCompleteTextView
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.storage.FirebaseStorage
+import com.squareup.picasso.Picasso
+import it.polito.mad.team19lab2.data.ItemModel
+import it.polito.mad.team19lab2.viewModel.ItemViewModel
 import kotlinx.android.synthetic.main.fragment_edit_item.*
+import kotlinx.android.synthetic.main.fragment_edit_item.imageEdit
+import kotlinx.android.synthetic.main.fragment_edit_item.image_view
+import kotlinx.android.synthetic.main.fragment_edit_item.roundCardView
+import kotlinx.android.synthetic.main.fragment_edit_profile.*
 import org.json.JSONObject
+import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -28,14 +41,18 @@ import java.util.*
 
 
 class EditItemFragment : Fragment() {
-    private var item: ItemInfo = ItemInfo()
+    private lateinit var item: ItemModel
     private var REQUESTCAMERA: Int = 1805
     private var REQUESTGALLERY: Int = 1715
     private var imageModified = false
-    private var id_item: String = ""
+    private lateinit var idItem: String
     private var year: Int = 0
     private var month: Int = 0
     private var day: Int=0
+    private val itemVm: ItemViewModel by viewModels()
+    private lateinit var image: Bitmap
+    lateinit var storage: FirebaseStorage
+    var user = FirebaseAuth.getInstance().currentUser
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,29 +69,7 @@ class EditItemFragment : Fragment() {
     override fun onViewCreated (view: View, savedInstanceState : Bundle?){
         super.onViewCreated(view, savedInstanceState)
         activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
-
-        id_item = arguments?.getString("item_id1").toString()
-        val sharedPref = activity?.getSharedPreferences(
-            "it.polito.mad.team19lab2.items", Context.MODE_PRIVATE)
-        if (sharedPref != null) {
-            val currentItem = sharedPref.getString(id_item, "notFound")
-            if (currentItem != "notFound") {
-                val jo = JSONObject(currentItem)
-                item.title = jo.get("TITLE").toString()
-                item.description = jo.get("DESCRIPTION").toString()
-                item.location = jo.get("LOCATION").toString()
-                item.price = jo.get("PRICE").toString().toFloat()
-                item.expiryDate = jo.get("DATE").toString()
-                item.category = jo.get("CATEGORY").toString()
-                item.subCategory=jo.get("SUBCATEGORY").toString()
-            }
-        }
-
-        val file = File(activity?.applicationContext?.filesDir, "$id_item.png")
-        if(file.exists()) {
-            item.image = MediaStore.Images.Media.getBitmap(activity?.contentResolver, Uri.fromFile(file))
-            image_view.setImageBitmap(item.image)
-        }
+        idItem = arguments?.getString("item_id1").toString()
         //Round image management
         roundCardView.viewTreeObserver.addOnGlobalLayoutListener (object: ViewTreeObserver.OnGlobalLayoutListener{
             override fun onGlobalLayout() {
@@ -82,34 +77,53 @@ class EditItemFragment : Fragment() {
                 roundCardView.viewTreeObserver.removeOnGlobalLayoutListener(this)
             }
         })
-
-        val items = resources.getStringArray(R.array.categories).toMutableList()
-        titleEditText.setText(item.title)
-        descriptionEditText.setText(item.description)
-        locationEditText.setText(item.location)
-        priceEditText.setText(item.price.toString())
-        dateEditText.setText(item.expiryDate)
+        val itemsCategory = resources.getStringArray(R.array.categories).toMutableList()
         val categoryEditText = view.findViewById<AutoCompleteTextView>(R.id.categoryDropdown)
+        if(idItem !== "-1") {
+            itemVm.getItem(idItem).observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+                item = it
+                titleEditText.setText(item.title)
+                descriptionEditText.setText(item.description)
+                locationEditText.setText(item.location)
+                priceEditText.setText(item.price.toString())
+                dateEditText.setText(item.expiryDate)
+                categoryEditText.setText(item.category, false)
+                if (item.imagePath.isNullOrEmpty()) {
+                    image_view.setImageResource(R.drawable.sport_category_foreground)
+                } else {
+                    downloadFile()
+                }
+                //VALIDATION
+                if (item.title.isEmpty())
+                    titleTextField.error = getString(R.string.notEmpty)
+                if (item.location.isEmpty())
+                    locationTextField.error = getString(R.string.notEmpty)
+                if (item.price.isNaN())
+                    priceTextField.error = getString(R.string.notEmpty)
+                if (item.expiryDate.isEmpty())
+                    dateTextField.error = getString(R.string.notEmpty)
+                if (item.category.isEmpty()) {
+                    categoryTextField.error = getString(R.string.notEmpty)
+                } else {
+                    if (item.category != "other") {
+                        subCategoryTextField.visibility = View.VISIBLE
+                        manageSubDropdown(item.category, itemsCategory)
+                        subCategoryDropdown.setText(item.subcategory, false)
+                    }
+                }
+            })
+        }
+        else {
+                item = ItemModel()
+                item.id = "${System.currentTimeMillis()}-${user?.uid ?: ""}"
+                item.userId= user?.uid ?: ""
+                titleTextField.error = getString(R.string.notEmpty)
+                locationTextField.error = getString(R.string.notEmpty)
+                priceTextField.error = getString(R.string.notEmpty)
+                dateTextField.error = getString(R.string.notEmpty)
+                categoryTextField.error = getString(R.string.notEmpty)
+        }
 
-        //VALIDATION
-        if(item.title.isEmpty())
-            titleTextField.error = getString(R.string.notEmpty)
-        if(item.location.isEmpty())
-            locationTextField.error = getString(R.string.notEmpty)
-        if(item.price.isNaN())
-            priceTextField.error = getString(R.string.notEmpty)
-        if(item.expiryDate.isEmpty())
-            dateTextField.error = getString(R.string.notEmpty)
-        if(item.category.isEmpty()) {
-            categoryTextField.error = getString(R.string.notEmpty)
-        }
-        else{
-            if(item.category != "other") {
-                subCategoryTextField.visibility = View.VISIBLE
-                manageSubDropdown(item.category, items)
-                subCategoryDropdown.setText(item.subCategory, false)
-            }
-        }
         titleEditText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
                 if (p0 != null) {
@@ -195,9 +209,8 @@ class EditItemFragment : Fragment() {
             datePickerDialog?.show()
         }
         //SPINNER MANAGEMENT
-        val adapter = DropdownAdapter(requireContext(), R.layout.list_item, items)
+        val adapter = DropdownAdapter(requireContext(), R.layout.list_item, itemsCategory)
         categoryEditText?.setAdapter(adapter)
-        categoryEditText.setText(item.category, false)
         categoryEditText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
                 if (p0 != null) {
@@ -206,7 +219,7 @@ class EditItemFragment : Fragment() {
                         subCategoryTextField.visibility=View.GONE
                     } else {
                         categoryTextField.error = null
-                        manageSubDropdown(p0.toString(), items)
+                        manageSubDropdown(p0.toString(), itemsCategory)
                     }
                 }
             }
@@ -248,7 +261,7 @@ class EditItemFragment : Fragment() {
         super.onSaveInstanceState(outState)
         if(imageModified){
             outState.apply {
-                putParcelable("group19.lab2.TMPIMG", item.image)
+                putParcelable("group19.lab2.TMPIMG", image)
             }
         }
     }
@@ -259,7 +272,7 @@ class EditItemFragment : Fragment() {
             val bm: Bitmap? = savedInstanceState.getParcelable("group19.lab2.TMPIMG")
             if(bm != null) {
                 image_view.setImageBitmap(bm)
-                item.image = bm
+                image = bm
             }
             imageModified = true
         }
@@ -275,35 +288,41 @@ class EditItemFragment : Fragment() {
             Toast.makeText(context,resources.getString(R.string.insert_all_required_fields),Toast.LENGTH_SHORT).show()
             return
         }
-        // Update or create the image
-        if(imageModified && item.image!=null){
-            val fileForBundle = File(activity?.applicationContext?.filesDir, "$id_item.png")
-            try {
-                FileOutputStream(fileForBundle.absoluteFile).use { out ->
-                    item.image!!.compress(Bitmap.CompressFormat.PNG, 100, out)
-                }
-            } catch (e: IOException) {
-                e.printStackTrace()
-            }
-            item.path = "${activity?.applicationContext?.filesDir.toString()}$id_item.png"
+        if(idItem!=="-1"){
+            item.id = idItem
         }
+        item.title=titleEditText.text.toString()
+        item.description=descriptionEditText.text.toString()
+        item.location = locationEditText.text.toString()
+        item.price = priceEditText.text.toString().toFloat()
+        item.expiryDate = dateEditText.text.toString()
+        item.category = categoryDropdown.text.toString()
+        item.subcategory = subCategoryDropdown.text.toString()
 
-        // Update or create Shared Prefs
-        var category=categoryDropdown.text.toString()
-        val sharedPref = activity?.getSharedPreferences(
-            "it.polito.mad.team19lab2.items", Context.MODE_PRIVATE)
-        val jo = JSONObject()
-        jo.put("TITLE",titleEditText.text.toString())
-        jo.put("DESCRIPTION",descriptionEditText.text.toString())
-        jo.put("LOCATION",locationEditText.text.toString())
-        jo.put("PRICE",priceEditText.text.toString())
-        jo.put("DATE",dateEditText.text.toString())
-        jo.put("CATEGORY", categoryDropdown.text.toString())
-        jo.put("SUBCATEGORY", subCategoryDropdown.text.toString())
-        with (sharedPref!!.edit()) {
-            putString(id_item, jo.toString())
-            commit()
+        // Update or create the image
+        if(imageModified && image!=null) {
+            val itemPictureRef=storage.reference.child("itemPicture/${idItem}")
+            val path="itemPicture/${idItem}"
+            item.imagePath = path
+            val baos = ByteArrayOutputStream()
+            image.compress(Bitmap.CompressFormat.JPEG, 20, baos)
+            val data = baos.toByteArray()
+            var uploadTask = itemPictureRef.putBytes(data)
+            uploadTask.addOnFailureListener {
+                Log.e("profilePicture", "Error in upload image")
+            }.addOnSuccessListener {
+                Log.d("profilePicture", "ProfilePicture loaded correctly")
+                itemVm.saveItem(item)
+                navigateAfterSave()
+            }
         }
+        else {
+            itemVm.saveItem(item)
+            navigateAfterSave()
+        }
+    }
+
+    private fun navigateAfterSave(){
         if(arguments?.getBoolean("deep_link")==true){
             val msg:String?
             if(arguments?.getBoolean("edit")==true)
@@ -311,16 +330,15 @@ class EditItemFragment : Fragment() {
             else
                 msg=resources.getString(R.string.item_create_message)
             Toast.makeText(context,msg, Toast.LENGTH_SHORT).show()
-            val bundle = bundleOf("item_id1" to id_item)
+            val bundle = bundleOf("item_id1" to item.id)
             findNavController().navigate(R.id.action_nav_edit_item_to_nav_item_detail, bundle)
         }
         else {
             val  msg= resources.getString(R.string.item_update_message)
             Toast.makeText(context,msg, Toast.LENGTH_SHORT).show()
-            val bundle = bundleOf("item_id1" to id_item)
+            val bundle = bundleOf("item_id1" to item.id)
             findNavController().navigate(R.id.action_nav_edit_item_to_nav_item_detail, bundle)
         }
-
     }
 
     private fun populateBundle(b:Bundle){
@@ -374,15 +392,15 @@ class EditItemFragment : Fragment() {
             when (requestCode) {
                 REQUESTCAMERA -> {
                     val bitmapImage: Bitmap = (data.extras?.get("data")) as Bitmap
-                    item.image = bitmapImage
-                    image_view.setImageBitmap(item.image)
+                    image = bitmapImage
+                    image_view.setImageBitmap(image)
                     imageModified = true
                 }
                 REQUESTGALLERY -> {
                     val uri: Uri? = data.data
                     if (uri != null) {
-                        item.image = MediaStore.Images.Media.getBitmap(activity?.contentResolver, uri)
-                        image_view.setImageBitmap(item.image)
+                        image = MediaStore.Images.Media.getBitmap(activity?.contentResolver, uri)
+                        image_view.setImageBitmap(image)
                         imageModified = true
                     }
                 }
@@ -401,14 +419,14 @@ class EditItemFragment : Fragment() {
     }
 
     private fun rotateBitmap() {
-        if(item.image == null){
+        if(image == null){
             Toast.makeText(activity?.applicationContext,resources.getString(R.string.insert_image_before),Toast.LENGTH_SHORT).show()
             return
         }
-        val rotatedBitmap: Bitmap = rotateImage(item.image!!, 90)
+        val rotatedBitmap: Bitmap = rotateImage(image!!, 90)
         imageModified=true
         image_view.setImageBitmap(rotatedBitmap)
-        item.image = rotatedBitmap
+        image = rotatedBitmap
     }
 
     private fun manageSubDropdown(chosenCategory: String, categories : MutableList<String>){
@@ -437,5 +455,21 @@ class EditItemFragment : Fragment() {
     private fun hideKeyboardFrom(context: Context, view: View) {
         val imm: InputMethodManager = context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(view.windowToken, 0)
+    }
+
+    private fun downloadFile() {
+        val storageRef = storage.reference
+        storageRef.child(item.imagePath).downloadUrl.addOnSuccessListener {
+            Picasso.get().load(it).noFade().placeholder( R.drawable.progress_animation ).into(image_view, object: com.squareup.picasso.Callback {
+                override fun onSuccess() {
+                    val drawable: BitmapDrawable = image_view.drawable as BitmapDrawable
+                    image = drawable.bitmap
+                }
+                override fun onError(e: java.lang.Exception?) {
+                }
+            })
+        }.addOnFailureListener {
+            Log.d("image", "error in download image")
+        }
     }
 }
