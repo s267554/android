@@ -38,7 +38,7 @@ class ItemListFragment : Fragment() {
 
 
         //todo change with getMyItems!!
-        itemListVm.getAllItems().observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+        itemListVm.getMyItems().observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             dataset= it as ArrayList<ItemModel>
             with(recycler) {
                 layoutManager = LinearLayoutManager(context)
