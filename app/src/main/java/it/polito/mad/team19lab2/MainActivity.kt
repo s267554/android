@@ -22,6 +22,10 @@ import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.ktx.storage
+import com.squareup.picasso.Picasso
 import it.polito.mad.team19lab2.ui.StateVO
 import it.polito.mad.team19lab2.viewModel.UserViewModel
 import kotlinx.android.synthetic.main.activity_main.*
@@ -31,11 +35,12 @@ private const val RC_SIGN_IN=123
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
+    lateinit var storage: FirebaseStorage
     private val userVm: UserViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        storage = Firebase.storage
         val u=FirebaseAuth.getInstance().currentUser
         if(u == null) {
             // Choose authentication providers
@@ -71,11 +76,21 @@ class MainActivity : AppCompatActivity() {
                 appBarConfiguration
             )//To add navigation support to the default action bar
             navView.setupWithNavController(navController)
-            userVm.getOrCreateUser().observe(this, Observer{
-                nav_view.getHeaderView(0).findViewById<TextView>(R.id.header_title_textView).text = it.fullname
-                nav_view.getHeaderView(0).findViewById<TextView>(R.id.header_subtitle_textView).text = it.nickname
-
-                //download image
+            userVm.getOrCreateUser().observe(this, Observer{ item ->
+                nav_view.getHeaderView(0).findViewById<TextView>(R.id.header_title_textView).text = item.fullname
+                nav_view.getHeaderView(0).findViewById<TextView>(R.id.header_subtitle_textView).text = item.nickname
+                val storageRef = storage.reference
+                storageRef.child(item.imagePath).downloadUrl.addOnSuccessListener {
+                    Picasso.get().load(it).noFade().placeholder(R.drawable.progress_animation)
+                        .into(nav_view.getHeaderView(0).findViewById(R.id.header_imageView), object : com.squareup.picasso.Callback {
+                            override fun onSuccess() {
+                            }
+                            override fun onError(e: java.lang.Exception?) {
+                            }
+                        })
+                }.addOnFailureListener {
+                    Log.d("image", "error in download image")
+                }
             })
         }
     }
@@ -95,9 +110,21 @@ class MainActivity : AppCompatActivity() {
                     R.id.nav_home), drawerLayout) // decidiamo le schermate root e connettiamole al drawer
                 setupActionBarWithNavController(navController, appBarConfiguration)//To add navigation support to the default action bar
                 navView.setupWithNavController(navController)
-                userVm.getOrCreateUser().observe(this, Observer {
-                    nav_view.getHeaderView(0).findViewById<TextView>(R.id.header_title_textView).text = it.fullname
-                    nav_view.getHeaderView(0).findViewById<TextView>(R.id.header_subtitle_textView).text = it.nickname
+                userVm.getOrCreateUser().observe(this, Observer { item ->
+                    nav_view.getHeaderView(0).findViewById<TextView>(R.id.header_title_textView).text = item.fullname
+                    nav_view.getHeaderView(0).findViewById<TextView>(R.id.header_subtitle_textView).text = item.nickname
+                    val storageRef = storage.reference
+                    storageRef.child(item.imagePath).downloadUrl.addOnSuccessListener {
+                        Picasso.get().load(it).noFade().placeholder(R.drawable.progress_animation)
+                            .into(nav_view.getHeaderView(0).findViewById(R.id.header_imageView), object : com.squareup.picasso.Callback {
+                                override fun onSuccess() {
+                                }
+                                override fun onError(e: java.lang.Exception?) {
+                                }
+                            })
+                    }.addOnFailureListener {
+                        Log.d("image", "error in download image")
+                    }
                     // download image
                 })
             } else {

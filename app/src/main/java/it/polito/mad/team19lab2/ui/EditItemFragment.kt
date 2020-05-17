@@ -118,6 +118,7 @@ class EditItemFragment : Fragment() {
                 item = ItemModel()
                 item.id = "${System.currentTimeMillis()}-${user?.uid ?: ""}"
                 item.userId= user?.uid ?: ""
+                image_view.setImageResource(R.drawable.sport_category_foreground)
                 titleTextField.error = getString(R.string.notEmpty)
                 locationTextField.error = getString(R.string.notEmpty)
                 priceTextField.error = getString(R.string.notEmpty)

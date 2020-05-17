@@ -44,6 +44,7 @@ class EditProfileFragment : Fragment() {
     private var REQUEST_CAMERA: Int = 1805
     private var REQUEST_GALLERY: Int = 1715
     private var imageModified=false
+    private var screenRotation = false
     private val userVm: UserViewModel by viewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,savedInstanceState: Bundle?): View? {
@@ -57,30 +58,69 @@ class EditProfileFragment : Fragment() {
         storage = Firebase.storage
     }
 
-    /*
+
     override fun onSaveInstanceState(outState: Bundle) {
-        //super.onSaveInstanceState(outState)
-        /*
+        super.onSaveInstanceState(outState)
+        Log.d("SCREEN_ROTATION", "onSaveInstanceState")
         val interestsRecover= mutableListOf<Int>()
         for(i in listVOs.indices)
             if(listVOs[i].isSelected)
                 interestsRecover.add(i)
         outState.putIntArray("group19.lab2.INTERESTS",interestsRecover.toIntArray())
-        if(imageModified){
-            outState.putParcelable("group19.lab2.IMG", user.image)
+        if(image != null){
+            outState.putParcelable("group19.lab2.IMG", image)
             outState.putBoolean("group19.lab2.IMGFLAG", imageModified)
         }
-        */
     }
 
-    override fun onViewStateRestored(savedInstanceState: Bundle?) {
-        //super.onViewStateRestored(savedInstanceState)
-        /*
-        if(savedInstanceState!=null) {
-
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_UNCHANGED)
+        Log.d("SCREEN_ROTATION", "onViewCreated")
+        if(savedInstanceState==null) {
+            userVm.getUser().observe(viewLifecycleOwner, Observer { it ->
+                user = it
+                fullNameProfileEditText.setText(user.fullname)
+                nicknameProfileEditText.setText(user.nickname)
+                emailProfileEditText.setText(user.email)
+                locationProfileEditText.setText(user.location)
+                //IMAGE
+                if (user.imagePath.isNullOrEmpty()) {
+                    image_view.setImageResource(R.drawable.avatar_foreground)
+                } else {
+                    downloadFile()
+                }
+                //SPINNER
+                val selectInterests =
+                    this.resources.getStringArray(R.array.categories).toMutableList()
+                listVOs.clear()
+                var k = 0
+                for (i in 0 until selectInterests.size) {
+                    val stateVO = StateVO()
+                    stateVO.title = selectInterests[i]
+                    stateVO.isSelected = false
+                    if (k < user.interests.size && i == user.interests[k]) {
+                        k++
+                        stateVO.isSelected = true
+                    }
+                    listVOs.add(stateVO)
+                }
+                (requireContext() as MainActivity).setInterestsDropdown(listVOs as ArrayList<StateVO>)
+                val adapter =
+                    MyAdapter(
+                        requireContext(),
+                        0,
+                        listVOs
+                    )
+                interestsDropdown.setAdapter(adapter)
+            })
+        }
+        else{
+            Log.d("SCREEN_ROTATION", "onViewCreated with saved instance state")
             val interestsRestored =
                 savedInstanceState.getIntArray("group19.lab2.INTERESTS")!!.toMutableList()
-            val selectInterests = this.resources.getStringArray(R.array.categories).toMutableList()
+            val selectInterests =
+                this.resources.getStringArray(R.array.categories).toMutableList()
             listVOs.clear()
             var k = 0
             for (i in 0 until selectInterests.size) {
@@ -94,51 +134,6 @@ class EditProfileFragment : Fragment() {
                 listVOs.add(stateVO)
             }
             (requireContext() as MainActivity).setInterestsDropdown(listVOs as ArrayList<StateVO>)
-            val adapter = MyAdapter(requireContext(), 0, listVOs)
-            interestsDropdown.setAdapter(adapter)
-            val imageRestored : Bitmap? =savedInstanceState.getParcelable("group19.lab2.IMG")
-            if(imageRestored != null){
-                u.image=imageRestored
-                image_view.setImageBitmap(imageRestored)
-                imageModified = savedInstanceState.getBoolean("group19.lab2.IMGFLAG")
-            }
-        }
-         */
-    }
-
-     */
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_UNCHANGED)
-        userVm.getUser().observe(viewLifecycleOwner, Observer { it ->
-            user = it
-            fullNameProfileEditText.setText(user.fullname)
-            nicknameProfileEditText.setText(user.nickname)
-            emailProfileEditText.setText(user.email)
-            locationProfileEditText.setText(user.location)
-            //IMAGE
-            if (user.imagePath.isNullOrEmpty()) {
-                image_view.setImageResource(R.drawable.avatar_foreground)
-            }
-            else{
-                downloadFile()
-            }
-            //SPINNER
-            val selectInterests=this.resources.getStringArray(R.array.categories).toMutableList()
-            listVOs.clear()
-            var k = 0
-            for (i in 0 until selectInterests.size) {
-                val stateVO = StateVO()
-                stateVO.title = selectInterests[i]
-                stateVO.isSelected = false
-                if(k < user.interests.size&&i == user.interests[k]){
-                    k++
-                    stateVO.isSelected = true
-                }
-                listVOs.add(stateVO)
-            }
-            (requireContext() as MainActivity).setInterestsDropdown(listVOs as ArrayList<StateVO>)
             val adapter =
                 MyAdapter(
                     requireContext(),
@@ -146,7 +141,13 @@ class EditProfileFragment : Fragment() {
                     listVOs
                 )
             interestsDropdown.setAdapter(adapter)
-        })
+            val imageRestored: Bitmap? = savedInstanceState.getParcelable("group19.lab2.IMG")
+            if (imageRestored != null) {
+                image = imageRestored
+                image_view.setImageBitmap(imageRestored)
+                imageModified = savedInstanceState.getBoolean("group19.lab2.IMGFLAG")
+            }
+        }
         registerForContextMenu(imageEdit)
         imageRotateProfile.setOnClickListener{
             rotateBitmap()
@@ -250,6 +251,9 @@ class EditProfileFragment : Fragment() {
         if(!isValidEmail()){
             Toast.makeText(context,resources.getString(R.string.invalidEmail),Toast.LENGTH_SHORT).show()
             return
+        }
+        if(!this::user.isInitialized){
+            user = UserModel()
         }
         user.fullname = fullNameProfileEditText.text.toString()
         user.nickname = nicknameProfileEditText.text.toString()

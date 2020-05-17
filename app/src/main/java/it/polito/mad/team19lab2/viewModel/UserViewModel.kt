@@ -16,8 +16,7 @@ class UserViewModel: ViewModel() {
     var liveUser: MutableLiveData<UserModel> = MutableLiveData()
 
     fun saveUser(user: UserModel){
-        Log.d(TAG, user.toString())
-        userRepository.saveUser(user).addOnFailureListener {
+        userRepository.saveProfile(user).addOnFailureListener {
             Log.e(TAG, "Failed to save User!")
         }
     }

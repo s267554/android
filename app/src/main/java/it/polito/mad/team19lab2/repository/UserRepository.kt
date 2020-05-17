@@ -15,9 +15,10 @@ class UserRepository {
     var firestoreDB = FirebaseFirestore.getInstance()
     var user = FirebaseAuth.getInstance().currentUser
 
-    fun saveUser(user: UserModel): Task<Void> {
-        var documentReference = firestoreDB.collection("utenti").document(user.id)
-        return documentReference.set(user)
+    fun saveProfile(profile: UserModel): Task<Void> {
+        profile.id=user!!.uid
+        var documentReference = firestoreDB.collection("utenti").document(profile.id)
+        return documentReference.set(profile)
     }
 
     fun getUser(): DocumentReference {
