@@ -7,11 +7,11 @@
 
     <fragment
         android:id="@+id/nav_home"
-        android:name="it.polito.mad.team19lab2.OnSaleListFragment"
+        android:name="it.polito.mad.team19lab2.ui.OnSaleListFragment"
         android:label="@string/menu_on_sale"
         tools:layout="@layout/fragment_onsale_list"
         tools:ignore="ExtraText">
-        //android:name="it.polito.mad.team19lab2.ItemListFragment"
+        //android:name="it.polito.mad.team19lab2.ui.ItemListFragment"
         // android:label="@string/menu_home"
         //tools:layout="@layout/fragment_item_list">
         <argument
@@ -33,7 +33,7 @@
     </fragment>
     <fragment
         android:id="@+id/nav_item_detail"
-        android:name="it.polito.mad.team19lab2.ItemDetailsFragment"
+        android:name="it.polito.mad.team19lab2.ui.ItemDetailsFragment"
         android:label="@string/item_deatails_bar">
         <argument
             android:name="item_id1"
@@ -49,7 +49,7 @@
     </fragment>
     <fragment
         android:id="@+id/nav_edit_item"
-        android:name="it.polito.mad.team19lab2.EditItemFragment"
+        android:name="it.polito.mad.team19lab2.ui.EditItemFragment"
         android:label="@string/item_edit_bar"
         tools:layout="@layout/fragment_edit_item">
         <argument
@@ -63,7 +63,7 @@
     </fragment>
     <fragment
         android:id="@+id/nav_show_profile"
-        android:name="it.polito.mad.team19lab2.ShowProfileFragment"
+        android:name="it.polito.mad.team19lab2.ui.ShowProfileFragment"
         android:label="@string/profile_bar">
         <action
             android:id="@+id/action_showProfileFragment_to_editProfileFragment"
@@ -71,7 +71,7 @@
     </fragment>
     <fragment
         android:id="@+id/nav_edit_profile"
-        android:name="it.polito.mad.team19lab2.EditProfileFragment"
+        android:name="it.polito.mad.team19lab2.ui.EditProfileFragment"
         android:label="@string/profile_edit_bar">
         <action
             android:id="@+id/action_editProfileFragment_to_showProfileFragment"
@@ -81,7 +81,7 @@
     </fragment>
     <fragment
         android:id="@+id/nav_my_advertisement"
-        android:name="it.polito.mad.team19lab2.ItemListFragment"
+        android:name="it.polito.mad.team19lab2.ui.ItemListFragment"
         android:label="ItemListFragment" >
         <action
             android:id="@+id/action_nav_my_advertisement_to_nav_item_detail"
@@ -95,7 +95,7 @@
     </fragment>
     <fragment
         android:id="@+id/nav_on_sale"
-        android:name="it.polito.mad.team19lab2.ItemDetailsFragment"
+        android:name="it.polito.mad.team19lab2.ui.ItemDetailsFragment"
         android:label="@string/item_deatails_bar">
 
         <action

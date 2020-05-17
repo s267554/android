@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        tools:context=".ItemDetailsFragment">
+        tools:context=".ui.ItemDetailsFragment">
 
         <TextView
             android:id="@+id/priceTextView"
@@ -82,8 +82,7 @@
                         android:id="@+id/image_view"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:scaleType="centerCrop"
-                        app:srcCompat="@drawable/sport_category_foreground" />
+                        android:scaleType="centerCrop" />
 
                 </androidx.cardview.widget.CardView>
             </androidx.constraintlayout.widget.ConstraintLayout>

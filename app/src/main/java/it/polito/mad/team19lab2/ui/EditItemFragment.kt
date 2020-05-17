@@ -1,4 +1,4 @@
-package it.polito.mad.team19lab2
+package it.polito.mad.team19lab2.ui
 
 import android.app.Activity
 import android.app.DatePickerDialog
@@ -27,18 +27,16 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
 import com.squareup.picasso.Picasso
+import it.polito.mad.team19lab2.utilities.DropdownAdapter
+import it.polito.mad.team19lab2.utilities.PriceInputFilter
+import it.polito.mad.team19lab2.R
 import it.polito.mad.team19lab2.data.ItemModel
 import it.polito.mad.team19lab2.viewModel.ItemViewModel
 import kotlinx.android.synthetic.main.fragment_edit_item.*
 import kotlinx.android.synthetic.main.fragment_edit_item.imageEdit
 import kotlinx.android.synthetic.main.fragment_edit_item.image_view
 import kotlinx.android.synthetic.main.fragment_edit_item.roundCardView
-import kotlinx.android.synthetic.main.fragment_edit_profile.*
-import org.json.JSONObject
 import java.io.ByteArrayOutputStream
-import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
 import java.util.*
 
 
@@ -212,7 +210,11 @@ class EditItemFragment : Fragment() {
             datePickerDialog?.show()
         }
         //SPINNER MANAGEMENT
-        val adapter = DropdownAdapter(requireContext(), R.layout.list_item, itemsCategory)
+        val adapter = DropdownAdapter(
+            requireContext(),
+            R.layout.list_item,
+            itemsCategory
+        )
         categoryEditText?.setAdapter(adapter)
         categoryEditText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
@@ -244,7 +246,12 @@ class EditItemFragment : Fragment() {
         }
 
         //PRICE MANAGEMENT
-        val inputFilter =  arrayOf<InputFilter>(PriceInputFilter(10,2))
+        val inputFilter =  arrayOf<InputFilter>(
+            PriceInputFilter(
+                10,
+                2
+            )
+        )
         priceEditText.filters = inputFilter
     }
 
@@ -443,7 +450,12 @@ class EditItemFragment : Fragment() {
             if(chosenCategory == category){
                 val subId = resources.getIdentifier("sub${index}", "array", context?.packageName)
                 val subcategories=resources.getStringArray(subId).toMutableList()
-                val subAdapter= DropdownAdapter(requireContext(), R.layout.list_item, subcategories)
+                val subAdapter=
+                    DropdownAdapter(
+                        requireContext(),
+                        R.layout.list_item,
+                        subcategories
+                    )
                 subCategoryDropdown.setText("")
                 subCategoryDropdown?.setAdapter(subAdapter)
                 subCategoryTextField.visibility=View.VISIBLE
@@ -463,7 +475,7 @@ class EditItemFragment : Fragment() {
     private fun downloadFile() {
         val storageRef = storage.reference
         storageRef.child(item.imagePath).downloadUrl.addOnSuccessListener {
-            Picasso.get().load(it).noFade().placeholder( R.drawable.progress_animation ).into(image_view, object: com.squareup.picasso.Callback {
+            Picasso.get().load(it).noFade().placeholder(R.drawable.progress_animation).into(image_view, object: com.squareup.picasso.Callback {
                 override fun onSuccess() {
                     val drawable: BitmapDrawable = image_view.drawable as BitmapDrawable
                     image = drawable.bitmap

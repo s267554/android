@@ -1,4 +1,4 @@
-package it.polito.mad.team19lab2
+package it.polito.mad.team19lab2.ui
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.CheckBox
 import android.widget.TextView
+import it.polito.mad.team19lab2.MainActivity
+import it.polito.mad.team19lab2.R
 
 class MyAdapter(
     context: Context,

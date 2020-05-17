@@ -1,4 +1,4 @@
-package it.polito.mad.team19lab2
+package it.polito.mad.team19lab2.utilities
 
 import android.text.InputFilter
 import android.text.Spanned

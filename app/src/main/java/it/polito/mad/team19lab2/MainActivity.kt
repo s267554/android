@@ -7,14 +7,11 @@ import android.util.Log
 import android.view.Menu
 import android.view.View
 import android.widget.AutoCompleteTextView
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.core.net.toUri
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -25,10 +22,10 @@ import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
+import it.polito.mad.team19lab2.ui.StateVO
 import it.polito.mad.team19lab2.viewModel.UserViewModel
 import kotlinx.android.synthetic.main.activity_main.*
-import org.json.JSONObject
-import java.io.File
+
 private const val RC_SIGN_IN=123
 
 class MainActivity : AppCompatActivity() {

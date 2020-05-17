@@ -1,9 +1,6 @@
-package it.polito.mad.team19lab2
+package it.polito.mad.team19lab2.ui
 
-import android.content.Context
-import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.util.Log
 import android.view.*
 import androidx.core.os.bundleOf
@@ -16,14 +13,12 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
 import com.ms.square.android.expandabletextview.ExpandableTextView
 import com.squareup.picasso.Picasso
+import it.polito.mad.team19lab2.R
 import it.polito.mad.team19lab2.data.ItemModel
 import it.polito.mad.team19lab2.viewModel.ItemViewModel
-import kotlinx.android.synthetic.main.fragment_show_profile.*
 import kotlinx.android.synthetic.main.item_details_fragment.*
 import kotlinx.android.synthetic.main.item_details_fragment.image_view
 import kotlinx.android.synthetic.main.item_details_fragment.roundCardView
-import org.json.JSONObject
-import java.io.File
 
 
 class ItemDetailsFragment : Fragment() {
@@ -37,7 +32,7 @@ class ItemDetailsFragment : Fragment() {
         super.onCreate(savedInstanceState)
         storage = Firebase.storage
         var currentDest = findNavController().currentDestination?.id
-        if (currentDest == R.id.nav_on_sale )
+        if (currentDest == R.id.nav_on_sale)
             setHasOptionsMenu(false)
         else
             setHasOptionsMenu(true)
@@ -97,7 +92,7 @@ class ItemDetailsFragment : Fragment() {
     private fun downloadFile() {
         val storageRef = storage.reference
         storageRef.child(item.imagePath).downloadUrl.addOnSuccessListener {
-            Picasso.get().load(it).noFade().placeholder( R.drawable.progress_animation ).into(image_view)
+            Picasso.get().load(it).noFade().placeholder(R.drawable.progress_animation).into(image_view)
         }.addOnFailureListener {
             Log.d("image", "error in download image")
         }

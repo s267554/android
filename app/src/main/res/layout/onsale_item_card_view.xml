@@ -51,10 +51,9 @@
 
             <ImageView
                 android:id="@+id/item_image_preview"
-                android:layout_width="match_parent"
+                android:layout_width="105dp"
                 android:layout_height="match_parent"
-                android:scaleType="centerCrop"
-                app:srcCompat="@drawable/sport_category_foreground" />
+                android:scaleType="centerCrop" />
 
         </com.google.android.material.card.MaterialCardView>
 

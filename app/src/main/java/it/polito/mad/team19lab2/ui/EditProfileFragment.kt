@@ -1,4 +1,4 @@
-package it.polito.mad.team19lab2
+package it.polito.mad.team19lab2.ui
 
 import android.app.Activity
 import android.content.Context
@@ -21,13 +21,14 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
 import com.squareup.picasso.Picasso
+import it.polito.mad.team19lab2.MainActivity
+import it.polito.mad.team19lab2.R
 import it.polito.mad.team19lab2.data.UserModel
 import it.polito.mad.team19lab2.viewModel.UserViewModel
 import kotlinx.android.synthetic.main.fragment_edit_profile.*
@@ -138,7 +139,12 @@ class EditProfileFragment : Fragment() {
                 listVOs.add(stateVO)
             }
             (requireContext() as MainActivity).setInterestsDropdown(listVOs as ArrayList<StateVO>)
-            val adapter = MyAdapter(requireContext(), 0, listVOs)
+            val adapter =
+                MyAdapter(
+                    requireContext(),
+                    0,
+                    listVOs
+                )
             interestsDropdown.setAdapter(adapter)
         })
         registerForContextMenu(imageEdit)
@@ -398,7 +404,7 @@ class EditProfileFragment : Fragment() {
     private fun downloadFile() {
         val storageRef = storage.reference
         storageRef.child(user.imagePath).downloadUrl.addOnSuccessListener {
-            Picasso.get().load(it).noFade().placeholder( R.drawable.progress_animation ).into(image_view, object: com.squareup.picasso.Callback {
+            Picasso.get().load(it).noFade().placeholder(R.drawable.progress_animation).into(image_view, object: com.squareup.picasso.Callback {
                 override fun onSuccess() {
                     val drawable: BitmapDrawable = image_view.drawable as BitmapDrawable
                     image = drawable.bitmap

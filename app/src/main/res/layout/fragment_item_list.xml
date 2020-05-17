@@ -36,7 +36,7 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         app:layoutManager="LinearLayoutManager"
-        tools:context=".ItemListFragment"
+        tools:context=".ui.ItemListFragment"
         tools:listitem="@layout/fragment_item">
     </androidx.recyclerview.widget.RecyclerView>
 </RelativeLayout>

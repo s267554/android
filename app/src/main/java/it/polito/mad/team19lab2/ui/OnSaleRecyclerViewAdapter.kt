@@ -1,4 +1,4 @@
-package it.polito.mad.team19lab2
+package it.polito.mad.team19lab2.ui
 
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import it.polito.mad.team19lab2.R
 import it.polito.mad.team19lab2.data.ItemModel
 
 import kotlinx.android.synthetic.main.onsale_item_card_view.view.*
@@ -26,13 +27,13 @@ RecyclerView.Adapter<OnSaleRecyclerViewAdapter.ViewHolder> ( ){
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OnSaleRecyclerViewAdapter.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val vh = LayoutInflater.from(parent.context)
             .inflate(R.layout.onsale_item_card_view, parent, false)
         return ViewHolder(vh)
     }
 
-    override fun onBindViewHolder(holder: OnSaleRecyclerViewAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(onSaleItems[position])
         with(holder.cv){
             tag = onSaleItems[position]

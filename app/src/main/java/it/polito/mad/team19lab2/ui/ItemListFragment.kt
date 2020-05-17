@@ -1,4 +1,4 @@
-package it.polito.mad.team19lab2
+package it.polito.mad.team19lab2.ui
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -12,6 +12,7 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import it.polito.mad.team19lab2.R
 import it.polito.mad.team19lab2.data.ItemModel
 import it.polito.mad.team19lab2.viewModel.ItemListViewModel
 
@@ -41,7 +42,8 @@ class ItemListFragment : Fragment() {
             dataset= it as ArrayList<ItemModel>
             with(recycler) {
                 layoutManager = LinearLayoutManager(context)
-                adapter = MyItemRecyclerViewAdapter(dataset)
+                adapter =
+                    MyItemRecyclerViewAdapter(dataset)
             }
             if(dataset.count() != 0)
                 view.findViewById<TextView>(R.id.empty_list)?.visibility = View.INVISIBLE
