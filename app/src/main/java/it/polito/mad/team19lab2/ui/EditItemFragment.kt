@@ -5,6 +5,7 @@ import android.app.DatePickerDialog
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
@@ -14,6 +15,7 @@ import android.text.Editable
 import android.text.InputFilter
 import android.text.TextWatcher
 import android.util.Log
+import android.util.LruCache
 import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.AutoCompleteTextView
@@ -27,15 +29,13 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
 import com.squareup.picasso.Picasso
-import it.polito.mad.team19lab2.utilities.DropdownAdapter
-import it.polito.mad.team19lab2.utilities.PriceInputFilter
 import it.polito.mad.team19lab2.R
 import it.polito.mad.team19lab2.data.ItemModel
+import it.polito.mad.team19lab2.utilities.DropdownAdapter
+import it.polito.mad.team19lab2.utilities.PriceInputFilter
 import it.polito.mad.team19lab2.viewModel.ItemViewModel
 import kotlinx.android.synthetic.main.fragment_edit_item.*
-import kotlinx.android.synthetic.main.fragment_edit_item.imageEdit
-import kotlinx.android.synthetic.main.fragment_edit_item.image_view
-import kotlinx.android.synthetic.main.fragment_edit_item.roundCardView
+import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.util.*
 
@@ -53,6 +53,16 @@ class EditItemFragment : Fragment() {
     private lateinit var image: Bitmap
     lateinit var storage: FirebaseStorage
     var user = FirebaseAuth.getInstance().currentUser
+
+    companion object {
+        private val maxMemory : Long = Runtime.getRuntime().maxMemory() / 1024;
+        private val cacheSize = (maxMemory/4).toInt()
+        private val mMemoryCache = object : LruCache<String, Bitmap>(cacheSize) {
+            override fun sizeOf(key: String?, bitmap: Bitmap): Int {
+                return bitmap.byteCount / 1024
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,52 +90,52 @@ class EditItemFragment : Fragment() {
         })
         val itemsCategory = resources.getStringArray(R.array.categories).toMutableList()
         val categoryEditText = view.findViewById<AutoCompleteTextView>(R.id.categoryDropdown)
-        if(idItem !== "-1") {
-            itemVm.getItem(idItem).observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-                item = it
-                titleEditText.setText(item.title)
-                descriptionEditText.setText(item.description)
-                locationEditText.setText(item.location)
-                priceEditText.setText(item.price.toString())
-                dateEditText.setText(item.expiryDate)
-                categoryEditText.setText(item.category, false)
-                if (item.imagePath.isNullOrEmpty()) {
-                    image_view.setImageResource(R.drawable.sport_category_foreground)
-                } else {
-                    downloadFile()
-                }
-                //VALIDATION
-                if (item.title.isEmpty())
-                    titleTextField.error = getString(R.string.notEmpty)
-                if (item.location.isEmpty())
-                    locationTextField.error = getString(R.string.notEmpty)
-                if (item.price.isNaN())
-                    priceTextField.error = getString(R.string.notEmpty)
-                if (item.expiryDate.isEmpty())
-                    dateTextField.error = getString(R.string.notEmpty)
-                if (item.category.isEmpty()) {
-                    categoryTextField.error = getString(R.string.notEmpty)
-                } else {
-                    if (item.category != "other") {
-                        subCategoryTextField.visibility = View.VISIBLE
-                        manageSubDropdown(item.category, itemsCategory)
-                        subCategoryDropdown.setText(item.subcategory, false)
+        if(savedInstanceState==null) {
+            if (idItem !== "-1") {
+                itemVm.getItem(idItem).observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+                    item = it
+                    titleEditText.setText(item.title)
+                    descriptionEditText.setText(item.description)
+                    locationEditText.setText(item.location)
+                    priceEditText.setText(item.price.toString())
+                    dateEditText.setText(item.expiryDate)
+                    categoryEditText.setText(item.category, false)
+                    if (item.imagePath.isNullOrEmpty()) {
+                        image_view.setImageResource(R.drawable.sport_category_foreground)
+                    } else {
+                        downloadFile()
                     }
-                }
-            })
-        }
-        else {
+                    //VALIDATION
+                    if (item.title.isEmpty())
+                        titleTextField.error = getString(R.string.notEmpty)
+                    if (item.location.isEmpty())
+                        locationTextField.error = getString(R.string.notEmpty)
+                    if (item.price.isNaN())
+                        priceTextField.error = getString(R.string.notEmpty)
+                    if (item.expiryDate.isEmpty())
+                        dateTextField.error = getString(R.string.notEmpty)
+                    if (item.category.isEmpty()) {
+                        categoryTextField.error = getString(R.string.notEmpty)
+                    } else {
+                        if (item.category != "other") {
+                            subCategoryTextField.visibility = View.VISIBLE
+                            manageSubDropdown(item.category, itemsCategory)
+                            subCategoryDropdown.setText(item.subcategory, false)
+                        }
+                    }
+                })
+            } else {
                 item = ItemModel()
                 item.id = "${System.currentTimeMillis()}-${user?.uid ?: ""}"
-                item.userId= user?.uid ?: ""
+                item.userId = user?.uid ?: ""
                 image_view.setImageResource(R.drawable.sport_category_foreground)
                 titleTextField.error = getString(R.string.notEmpty)
                 locationTextField.error = getString(R.string.notEmpty)
                 priceTextField.error = getString(R.string.notEmpty)
                 dateTextField.error = getString(R.string.notEmpty)
                 categoryTextField.error = getString(R.string.notEmpty)
+            }
         }
-
         titleEditText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
                 if (p0 != null) {
@@ -256,8 +266,6 @@ class EditItemFragment : Fragment() {
         priceEditText.filters = inputFilter
     }
 
-    companion object;
-
     override fun onCreateOptionsMenu(menu: Menu, menuInflater: MenuInflater) {
         menuInflater.inflate(R.menu.item_edit_menu, menu)
     }
@@ -270,22 +278,43 @@ class EditItemFragment : Fragment() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        if(imageModified){
-            outState.apply {
-                putParcelable("group19.lab2.TMPIMG", image)
-            }
+        if(this::image.isInitialized){
+            //val stream = ByteArrayOutputStream()
+            //image.compress(Bitmap.CompressFormat.PNG, 100, stream)
+            //val bytes = stream.toByteArray()
+            //val decoded: Bitmap = BitmapFactory.decodeStream(ByteArrayInputStream(bytes))
+            addBitmapToMemoryCache("TMPIMG", image)
+            //outState.putParcelable("group19.lab2.TMPIMG", image)
+            outState.putBoolean("group19.lab2.IMGFLAG", imageModified)
         }
+        if(this::item.isInitialized)
+            outState.putParcelable("group19.lab2.ITEM", item)
+    }
+
+    private fun addBitmapToMemoryCache(key: String?, bitmap: Bitmap?) {
+        mMemoryCache!!.put(key, bitmap)
+    }
+
+    private fun getBitmapFromMemCache(key: String?): Bitmap? {
+        return mMemoryCache!!.get(key)
     }
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
         if (savedInstanceState != null){
-            val bm: Bitmap? = savedInstanceState.getParcelable("group19.lab2.TMPIMG")
-            if(bm != null) {
-                image_view.setImageBitmap(bm)
-                image = bm
-            }
-            imageModified = true
+            getBitmapFromMemCache("TMPIMG").run {
+                Log.d("IMAGE", this.toString())
+                if (this != null) {
+                    image = this
+                    image_view.setImageBitmap(this)
+                    imageModified = savedInstanceState.getBoolean("group19.lab2.IMGFLAG")
+                }
+                else{
+                    image_view.setImageResource(R.drawable.sport_category_foreground)
+                }
+                item= savedInstanceState.getParcelable("group19.lab2.ITEM")!!
+                return
+            }//savedInstanceState.getParcelable("group19.lab2.TMPIMG")
         }
     }
 
@@ -411,6 +440,9 @@ class EditItemFragment : Fragment() {
                     val uri: Uri? = data.data
                     if (uri != null) {
                         image = MediaStore.Images.Media.getBitmap(activity?.contentResolver, uri)
+                        if(image.byteCount > 1000000){
+
+                        }
                         image_view.setImageBitmap(image)
                         imageModified = true
                     }

@@ -1,5 +1,9 @@
 package it.polito.mad.team19lab2.data
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
+@Parcelize
 data class ItemModel (
     var id: String,
     var title: String,
@@ -12,6 +16,6 @@ data class ItemModel (
     var price: Float,
     var sold: Boolean,
     var userId: String
-) {
+) : Parcelable{
     constructor() : this("","","","","","","","", 0.0F, false, "")
 }

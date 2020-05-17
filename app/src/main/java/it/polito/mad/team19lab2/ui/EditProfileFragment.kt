@@ -13,6 +13,7 @@ import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.util.LruCache
 import android.util.Patterns
 import android.view.*
 import android.view.inputmethod.InputMethodManager
@@ -51,6 +52,16 @@ class EditProfileFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_edit_profile, container, false)
     }
 
+    companion object {
+        private val maxMemory : Long = Runtime.getRuntime().maxMemory() / 1024;
+        private val cacheSize = (maxMemory/4).toInt()
+        private val mMemoryCache = object : LruCache<String, Bitmap>(cacheSize) {
+            override fun sizeOf(key: String?, bitmap: Bitmap): Int {
+                return bitmap.byteCount / 1024
+            }
+        }
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,7 +80,7 @@ class EditProfileFragment : Fragment() {
         outState.putIntArray("group19.lab2.INTERESTS",interestsRecover.toIntArray())
         outState.putParcelable("group19.lab2.USER", user)
         if(this::image.isInitialized){
-            outState.putParcelable("group19.lab2.IMG", image)
+            addBitmapToMemoryCache("IMG", image)
             outState.putBoolean("group19.lab2.IMGFLAG", imageModified)
         }
     }
@@ -100,13 +111,21 @@ class EditProfileFragment : Fragment() {
                     listVOs
                 )
             interestsDropdown.setAdapter(adapter)
-            val imageRestored: Bitmap? = savedInstanceState.getParcelable("group19.lab2.IMG")
+            val imageRestored: Bitmap? = getBitmapFromMemCache("IMG")
             if (imageRestored != null) {
                 image = imageRestored
                 image_view.setImageBitmap(imageRestored)
                 imageModified = savedInstanceState.getBoolean("group19.lab2.IMGFLAG")
             }
         }
+    }
+
+    private fun addBitmapToMemoryCache(key: String?, bitmap: Bitmap?) {
+        mMemoryCache.put(key, bitmap)
+    }
+
+    private fun getBitmapFromMemCache(key: String?): Bitmap? {
+        return mMemoryCache.get(key)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

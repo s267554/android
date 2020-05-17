@@ -30,7 +30,6 @@ import com.squareup.picasso.Picasso
 import it.polito.mad.team19lab2.ui.StateVO
 import it.polito.mad.team19lab2.viewModel.UserViewModel
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.fragment_edit_profile.*
 
 private const val RC_SIGN_IN=123
 
