@@ -8,6 +8,7 @@ import android.graphics.Matrix
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Bundle
+import android.os.Parcel
 import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
@@ -44,7 +45,6 @@ class EditProfileFragment : Fragment() {
     private var REQUEST_CAMERA: Int = 1805
     private var REQUEST_GALLERY: Int = 1715
     private var imageModified=false
-    private var screenRotation = false
     private val userVm: UserViewModel by viewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,savedInstanceState: Bundle?): View? {
@@ -67,6 +67,7 @@ class EditProfileFragment : Fragment() {
             if(listVOs[i].isSelected)
                 interestsRecover.add(i)
         outState.putIntArray("group19.lab2.INTERESTS",interestsRecover.toIntArray())
+        outState.putParcelable("group19.lab2.USER", user)
         if(this::image.isInitialized){
             outState.putParcelable("group19.lab2.IMG", image)
             outState.putBoolean("group19.lab2.IMGFLAG", imageModified)
@@ -76,8 +77,8 @@ class EditProfileFragment : Fragment() {
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
         if(savedInstanceState!=null) {
-            val interestsRestored =
-                savedInstanceState.getIntArray("group19.lab2.INTERESTS")!!.toMutableList()
+            user = savedInstanceState.getParcelable("group19.lab2.USER")!!
+            val interestsRestored = savedInstanceState.getIntArray("group19.lab2.INTERESTS")!!.toMutableList()
             val selectInterests = this.resources.getStringArray(R.array.categories).toMutableList()
             listVOs.clear()
             var k = 0
@@ -99,6 +100,12 @@ class EditProfileFragment : Fragment() {
                     listVOs
                 )
             interestsDropdown.setAdapter(adapter)
+            val imageRestored: Bitmap? = savedInstanceState.getParcelable("group19.lab2.IMG")
+            if (imageRestored != null) {
+                image = imageRestored
+                image_view.setImageBitmap(imageRestored)
+                imageModified = savedInstanceState.getBoolean("group19.lab2.IMGFLAG")
+            }
         }
     }
 
@@ -135,14 +142,6 @@ class EditProfileFragment : Fragment() {
                 }
                 (requireContext() as MainActivity).setInterestsDropdown(listVOs as ArrayList<StateVO>)
             })
-        }
-        else{
-            val imageRestored: Bitmap? = savedInstanceState.getParcelable("group19.lab2.IMG")
-            if (imageRestored != null) {
-                image = imageRestored
-                image_view.setImageBitmap(imageRestored)
-                imageModified = savedInstanceState.getBoolean("group19.lab2.IMGFLAG")
-            }
         }
         registerForContextMenu(imageEdit)
         imageRotateProfile.setOnClickListener{
@@ -245,6 +244,7 @@ class EditProfileFragment : Fragment() {
 
     private fun saveProfile(){
         context?.let { view?.let { it1 -> hideKeyboardFrom(it, it1) } }
+        Log.d("IMAGE", image.toString())
         val navigationView = requireActivity().findViewById<View>(R.id.nav_view) as NavigationView
         val headerView = navigationView.getHeaderView(0)
         if(fullNameProfileEditText.text.toString().isEmpty() || nicknameProfileEditText.text.toString().isEmpty()){
@@ -268,10 +268,11 @@ class EditProfileFragment : Fragment() {
                 interests.add(i)
         if (interests.isNotEmpty())
             user.interests = interests
-        if(imageModified && image!=null) {
+        Log.d("IMAGE", imageModified.toString())
+        if(this::image.isInitialized && imageModified) {
                 headerView.findViewById<ImageView>(R.id.header_imageView).setImageBitmap(image)
-                val profilePictureRef=storage.reference.child("profilePicture/${user.nickname}")
-                val path="profilePicture/${user.nickname}"
+                val profilePictureRef=storage.reference.child("profilePicture/${user.id}")
+                val path="profilePicture/${user.id}"
                 user.imagePath = path
                 val baos = ByteArrayOutputStream()
                 image.compress(Bitmap.CompressFormat.JPEG, 20, baos)
@@ -297,10 +298,6 @@ class EditProfileFragment : Fragment() {
         }
         else {
             userVm.saveUser(user)
-            headerView.findViewById<TextView>(R.id.header_title_textView).text =
-                nicknameProfileEditText.text
-            headerView.findViewById<TextView>(R.id.header_subtitle_textView).text =
-                fullNameProfileEditText.text
             Toast.makeText(
                 context,
                 resources.getString(R.string.profile_updated),
@@ -393,7 +390,7 @@ class EditProfileFragment : Fragment() {
     }
 
     private fun rotateBitmap() {
-        if(image == null){
+        if(!this::image.isInitialized){
             Toast.makeText(activity?.applicationContext,resources.getString(R.string.insert_image_before),Toast.LENGTH_SHORT).show()
             return
         }

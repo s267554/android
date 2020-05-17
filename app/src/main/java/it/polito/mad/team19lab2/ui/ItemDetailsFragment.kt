@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
@@ -27,15 +28,11 @@ class ItemDetailsFragment : Fragment() {
     lateinit var storage: FirebaseStorage
     private val itemVm: ItemViewModel by viewModels()
     private lateinit var idItem : String
+    private var user = FirebaseAuth.getInstance().currentUser
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         storage = Firebase.storage
-        var currentDest = findNavController().currentDestination?.id
-        if (currentDest == R.id.nav_on_sale)
-            setHasOptionsMenu(false)
-        else
-            setHasOptionsMenu(true)
     }
 
     override fun onCreateView(
@@ -59,6 +56,18 @@ class ItemDetailsFragment : Fragment() {
         }
         itemVm.getItem(idItem).observe(viewLifecycleOwner, Observer {
             item = it
+            Log.d("USER", it.userId)
+            Log.d("USER", user?.uid)
+            if(it.userId == user?.uid ?: ""){
+                //CASE I AM THE USER
+                Log.d("USER", "i'm the user")
+                setHasOptionsMenu(true)
+            }
+            else{
+                //CASE I AM NOT THE USER
+                Log.d("USER", "i'm not the user")
+                setHasOptionsMenu(false)
+            }
             if(item.imagePath.isNullOrEmpty()){
                 image_view.setImageResource(R.drawable.sport_category_foreground)
             }

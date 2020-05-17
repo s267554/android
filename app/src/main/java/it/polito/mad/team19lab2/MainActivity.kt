@@ -208,7 +208,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-        interestsDropdown.setText(interests, false)
+        findViewById<AutoCompleteTextView>(R.id.interestsDropdown).setText(interests, false)
     }
 
     override fun onBackPressed() {
