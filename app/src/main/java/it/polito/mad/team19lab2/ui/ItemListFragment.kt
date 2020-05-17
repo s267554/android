@@ -35,9 +35,6 @@ class ItemListFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_item_list, container, false)
 
         val recycler: RecyclerView = view.findViewById(R.id.list)
-
-
-        //todo change with getMyItems!!
         itemListVm.getMyItems().observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             dataset= it as ArrayList<ItemModel>
             with(recycler) {
