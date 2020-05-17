@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.View
 import android.widget.AutoCompleteTextView
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -29,6 +30,7 @@ import com.squareup.picasso.Picasso
 import it.polito.mad.team19lab2.ui.StateVO
 import it.polito.mad.team19lab2.viewModel.UserViewModel
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_edit_profile.*
 
 private const val RC_SIGN_IN=123
 
@@ -79,17 +81,25 @@ class MainActivity : AppCompatActivity() {
             userVm.getOrCreateUser().observe(this, Observer{ item ->
                 nav_view.getHeaderView(0).findViewById<TextView>(R.id.header_title_textView).text = item.fullname
                 nav_view.getHeaderView(0).findViewById<TextView>(R.id.header_subtitle_textView).text = item.nickname
-                val storageRef = storage.reference
-                storageRef.child(item.imagePath).downloadUrl.addOnSuccessListener {
-                    Picasso.get().load(it).noFade().placeholder(R.drawable.progress_animation)
-                        .into(nav_view.getHeaderView(0).findViewById(R.id.header_imageView), object : com.squareup.picasso.Callback {
-                            override fun onSuccess() {
-                            }
-                            override fun onError(e: java.lang.Exception?) {
-                            }
-                        })
-                }.addOnFailureListener {
-                    Log.d("image", "error in download image")
+                if(!item.imagePath.isNullOrEmpty()) {
+                    val storageRef = storage.reference
+                    storageRef.child(item.imagePath).downloadUrl.addOnSuccessListener {
+                        Picasso.get().load(it).noFade().placeholder(R.drawable.progress_animation)
+                            .into(
+                                nav_view.getHeaderView(0).findViewById(R.id.header_imageView),
+                                object : com.squareup.picasso.Callback {
+                                    override fun onSuccess() {
+                                    }
+
+                                    override fun onError(e: java.lang.Exception?) {
+                                    }
+                                })
+                    }.addOnFailureListener {
+                        Log.d("image", "error in download image")
+                    }
+                }
+                else{
+                    nav_view.getHeaderView(0).findViewById<ImageView>(R.id.header_imageView).setImageBitmap(null)
                 }
             })
         }
@@ -198,8 +208,9 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-        findViewById<AutoCompleteTextView>(R.id.interestsDropdown)?.setText(interests, false)
+        interestsDropdown.setText(interests, false)
     }
+
     override fun onBackPressed() {
         val navController = findNavController(R.id.nav_host_fragment)
         //destination means source!

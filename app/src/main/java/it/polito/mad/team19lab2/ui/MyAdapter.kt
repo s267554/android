@@ -1,6 +1,7 @@
 package it.polito.mad.team19lab2.ui
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,6 +30,7 @@ class MyAdapter(
     }
 
     private fun getCustomView(position: Int, convertView: View?): View {//creo i view holder
+        Log.d("MY_ADAPTER", "getCustomView")
         var convertView: View? = convertView
         val holder: ViewHolder
         if (convertView == null) {

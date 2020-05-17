@@ -67,9 +67,38 @@ class EditProfileFragment : Fragment() {
             if(listVOs[i].isSelected)
                 interestsRecover.add(i)
         outState.putIntArray("group19.lab2.INTERESTS",interestsRecover.toIntArray())
-        if(image != null){
+        if(this::image.isInitialized){
             outState.putParcelable("group19.lab2.IMG", image)
             outState.putBoolean("group19.lab2.IMGFLAG", imageModified)
+        }
+    }
+
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+        if(savedInstanceState!=null) {
+            val interestsRestored =
+                savedInstanceState.getIntArray("group19.lab2.INTERESTS")!!.toMutableList()
+            val selectInterests = this.resources.getStringArray(R.array.categories).toMutableList()
+            listVOs.clear()
+            var k = 0
+            for (i in 0 until selectInterests.size) {
+                val stateVO = StateVO()
+                stateVO.title = selectInterests[i]
+                stateVO.isSelected = false
+                if (k < interestsRestored.size && i == interestsRestored[k]) {
+                    k++
+                    stateVO.isSelected = true
+                }
+                listVOs.add(stateVO)
+            }
+            (requireContext() as MainActivity).setInterestsDropdown(listVOs as ArrayList<StateVO>)
+            val adapter =
+                MyAdapter(
+                    requireContext(),
+                    0,
+                    listVOs
+                )
+            interestsDropdown.setAdapter(adapter)
         }
     }
 
@@ -91,8 +120,7 @@ class EditProfileFragment : Fragment() {
                     downloadFile()
                 }
                 //SPINNER
-                val selectInterests =
-                    this.resources.getStringArray(R.array.categories).toMutableList()
+                val selectInterests = this.resources.getStringArray(R.array.categories).toMutableList()
                 listVOs.clear()
                 var k = 0
                 for (i in 0 until selectInterests.size) {
@@ -106,41 +134,9 @@ class EditProfileFragment : Fragment() {
                     listVOs.add(stateVO)
                 }
                 (requireContext() as MainActivity).setInterestsDropdown(listVOs as ArrayList<StateVO>)
-                val adapter =
-                    MyAdapter(
-                        requireContext(),
-                        0,
-                        listVOs
-                    )
-                interestsDropdown.setAdapter(adapter)
             })
         }
         else{
-            Log.d("SCREEN_ROTATION", "onViewCreated with saved instance state")
-            val interestsRestored =
-                savedInstanceState.getIntArray("group19.lab2.INTERESTS")!!.toMutableList()
-            val selectInterests =
-                this.resources.getStringArray(R.array.categories).toMutableList()
-            listVOs.clear()
-            var k = 0
-            for (i in 0 until selectInterests.size) {
-                val stateVO = StateVO()
-                stateVO.title = selectInterests[i]
-                stateVO.isSelected = false
-                if (k < interestsRestored.size && i == interestsRestored[k]) {
-                    k++
-                    stateVO.isSelected = true
-                }
-                listVOs.add(stateVO)
-            }
-            (requireContext() as MainActivity).setInterestsDropdown(listVOs as ArrayList<StateVO>)
-            val adapter =
-                MyAdapter(
-                    requireContext(),
-                    0,
-                    listVOs
-                )
-            interestsDropdown.setAdapter(adapter)
             val imageRestored: Bitmap? = savedInstanceState.getParcelable("group19.lab2.IMG")
             if (imageRestored != null) {
                 image = imageRestored
@@ -161,6 +157,13 @@ class EditProfileFragment : Fragment() {
                 roundCardView.viewTreeObserver.removeOnGlobalLayoutListener(this)
             }
         })
+        val adapter =
+            MyAdapter(
+                requireContext(),
+                0,
+                listVOs
+            )
+        interestsDropdown.setAdapter(adapter)
         imageEdit.setOnClickListener {
             Toast.makeText(context, resources.getString(R.string.keep_pressed), Toast.LENGTH_SHORT).show()
         }
