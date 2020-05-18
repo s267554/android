@@ -1,6 +1,5 @@
 package it.polito.mad.team19lab2.viewModel
 
-import android.content.ClipData
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -30,7 +29,7 @@ class ItemListViewModel : ViewModel() {
         return liveItems
     }
 
-    fun takeLiveItemsFromQuery(q:Query, test:Boolean){
+    fun takeLiveItemsFromQuery(q:Query, clear:Boolean){
         q.addSnapshotListener(EventListener<QuerySnapshot> { value, e ->
             if (e != null) {
                 Log.d(TAG, "Listen failed.", e)
@@ -41,11 +40,10 @@ class ItemListViewModel : ViewModel() {
                 Log.d(TAG,doc.toString())
                 var item = doc.toObject(ItemModel::class.java)
                 itemsList.add(item)
-
             }
-            var testArray=ArrayList(itemsList)
-            liveItems.value = testArray
-            if(test)
+            var tmpArray=ArrayList(itemsList)
+            liveItems.value = tmpArray
+            if(clear)
                 itemsList.clear()
         })
     }

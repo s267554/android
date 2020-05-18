@@ -279,10 +279,6 @@ class EditItemFragment : Fragment() {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         if(this::image.isInitialized){
-            //val stream = ByteArrayOutputStream()
-            //image.compress(Bitmap.CompressFormat.PNG, 100, stream)
-            //val bytes = stream.toByteArray()
-            //val decoded: Bitmap = BitmapFactory.decodeStream(ByteArrayInputStream(bytes))
             addBitmapToMemoryCache("TMPIMG", image)
             //outState.putParcelable("group19.lab2.TMPIMG", image)
             outState.putBoolean("group19.lab2.IMGFLAG", imageModified)
@@ -473,7 +469,7 @@ class EditItemFragment : Fragment() {
     }
 
     private fun manageSubDropdown(chosenCategory: String, categories : MutableList<String>){
-        if(chosenCategory =="other"){
+        if(chosenCategory == "other"){
             subCategoryDropdown.setText("")
             subCategoryTextField.visibility=View.GONE
             return
@@ -510,10 +506,12 @@ class EditItemFragment : Fragment() {
         storageRef.child(item.imagePath).downloadUrl.addOnSuccessListener {
             Picasso.get().load(it).noFade().placeholder(R.drawable.progress_animation).into(image_view, object: com.squareup.picasso.Callback {
                 override fun onSuccess() {
-                    val drawable: BitmapDrawable = image_view.drawable as BitmapDrawable
-                    image = drawable.bitmap
+                    val drawable: BitmapDrawable? = image_view?.drawable as BitmapDrawable?
+                    if(drawable!=null)
+                        image = drawable.bitmap!!
                 }
                 override fun onError(e: java.lang.Exception?) {
+                    Log.e("IMAGE","something went wrong")
                 }
             })
         }.addOnFailureListener {

@@ -263,7 +263,6 @@ class EditProfileFragment : Fragment() {
 
     private fun saveProfile(){
         context?.let { view?.let { it1 -> hideKeyboardFrom(it, it1) } }
-        Log.d("IMAGE", image.toString())
         val navigationView = requireActivity().findViewById<View>(R.id.nav_view) as NavigationView
         val headerView = navigationView.getHeaderView(0)
         if(fullNameProfileEditText.text.toString().isEmpty() || nicknameProfileEditText.text.toString().isEmpty()){
@@ -429,8 +428,9 @@ class EditProfileFragment : Fragment() {
         storageRef.child(user.imagePath).downloadUrl.addOnSuccessListener {
             Picasso.get().load(it).noFade().placeholder(R.drawable.progress_animation).into(image_view, object: com.squareup.picasso.Callback {
                 override fun onSuccess() {
-                    val drawable: BitmapDrawable = image_view.drawable as BitmapDrawable
-                    image = drawable.bitmap
+                    val drawable: BitmapDrawable? = image_view?.drawable as BitmapDrawable?
+                    if(drawable!=null)
+                        image = drawable.bitmap
                 }
                 override fun onError(e: java.lang.Exception?) {
                 }
