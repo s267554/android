@@ -15,21 +15,22 @@ class ItemListViewModel : ViewModel() {
     var TAG = "ITEM_LIST_VIEW_MODEL"
     var liveItems : MutableLiveData<List<ItemModel>> = MutableLiveData()
     private var itemsList : MutableList<ItemModel> = mutableListOf()
+    private var flag=0;
 
     fun getAllItems(): MutableLiveData<List<ItemModel>>{
         itemsList.clear()
-        takeLiveItemsFromQuery(itemListRepository.getHigherItems(), false)
-        takeLiveItemsFromQuery(itemListRepository.getLowerItems(), true)
+        takeLiveItemsOnSaleFromQuery(itemListRepository.getHigherItems())
+        takeLiveItemsOnSaleFromQuery(itemListRepository.getLowerItems())
         return liveItems
     }
 
     fun getMyItems(): MutableLiveData<List<ItemModel>>{
         itemsList.clear()
-        takeLiveItemsFromQuery(itemListRepository.getMyItems(), true)
+        takeLiveItemsFromQuery(itemListRepository.getMyItems())
         return liveItems
     }
 
-    fun takeLiveItemsFromQuery(q:Query, clear:Boolean){
+    private fun takeLiveItemsFromQuery(q:Query){
         q.addSnapshotListener(EventListener<QuerySnapshot> { value, e ->
             if (e != null) {
                 Log.d(TAG, "Listen failed.", e)
@@ -43,9 +44,33 @@ class ItemListViewModel : ViewModel() {
             }
             var tmpArray=ArrayList(itemsList)
             liveItems.value = tmpArray
-            if(clear)
-                itemsList.clear()
+            itemsList.clear()
         })
     }
+
+    private fun takeLiveItemsOnSaleFromQuery(q:Query){
+        q.addSnapshotListener(EventListener<QuerySnapshot> { value, e ->
+            if (e != null) {
+                Log.d(TAG, "Listen failed.", e)
+                liveItems.value = null
+                return@EventListener
+            }
+            for (doc in value!!) {
+                Log.d(TAG,doc.toString())
+                var item = doc.toObject(ItemModel::class.java)
+                itemsList.add(item)
+            }
+            var tmpArray=ArrayList(itemsList)
+            liveItems.value = tmpArray
+            if(flag==1) {
+                flag=0
+                itemsList.clear()
+            }
+            else{
+                flag=1
+            }
+        })
+    }
+
 
 }
