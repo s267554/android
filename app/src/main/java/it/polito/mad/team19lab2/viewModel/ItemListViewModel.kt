@@ -19,30 +19,34 @@ class ItemListViewModel : ViewModel() {
 
     fun getAllItems(): MutableLiveData<List<ItemModel>>{
         itemsList.clear()
-        takeLiveItemsFromQuery(itemListRepository.getHigherItems())
-        takeLiveItemsFromQuery(itemListRepository.getLowerItems())
+        takeLiveItemsFromQuery(itemListRepository.getHigherItems(), false)
+        takeLiveItemsFromQuery(itemListRepository.getLowerItems(), true)
         return liveItems
     }
 
     fun getMyItems(): MutableLiveData<List<ItemModel>>{
         itemsList.clear()
-        takeLiveItemsFromQuery(itemListRepository.getMyItems())
+        takeLiveItemsFromQuery(itemListRepository.getMyItems(), true)
         return liveItems
     }
 
-    fun takeLiveItemsFromQuery(q:Query){
+    fun takeLiveItemsFromQuery(q:Query, test:Boolean){
         q.addSnapshotListener(EventListener<QuerySnapshot> { value, e ->
-        if (e != null) {
-            Log.d(TAG, "Listen failed.", e)
-            liveItems.value = null
-            return@EventListener
-        }
-        for (doc in value!!) {
-            Log.d(TAG,doc.toString())
-            var item = doc.toObject(ItemModel::class.java)
-            itemsList.add(item)
-        }
-        liveItems.value = itemsList
+            if (e != null) {
+                Log.d(TAG, "Listen failed.", e)
+                liveItems.value = null
+                return@EventListener
+            }
+            for (doc in value!!) {
+                Log.d(TAG,doc.toString())
+                var item = doc.toObject(ItemModel::class.java)
+                itemsList.add(item)
+
+            }
+            var testArray=ArrayList(itemsList)
+            liveItems.value = testArray
+            if(test)
+                itemsList.clear()
         })
     }
 
