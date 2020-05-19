@@ -33,14 +33,16 @@ class ItemListRepository {
         var q=firestoreDB.collection("items")
             .whereGreaterThan("userId", myId)
         if(!title.isNullOrEmpty())
-            q.whereEqualTo("title", title);
+            q=q.whereEqualTo("title", title);
         if(!price.isNullOrEmpty())
-            q.whereEqualTo("price", price);
+            q=q.whereEqualTo("price", price);
         if(!category.isNullOrEmpty())
-            q.whereEqualTo("category", category);
+            q=q.whereEqualTo("category", category);
         if(!location.isNullOrEmpty())
-            q.whereEqualTo("location", location);
+            q=q.whereEqualTo("location", location);
         return q
+
+
     }
 
     fun getLowerItemsWithQuery(
@@ -49,7 +51,17 @@ class ItemListRepository {
         price: String?,
         location: String?
     ): Query {
-        return firestoreDB.collection("items")
+
+        var q=firestoreDB.collection("items")
             .whereLessThan("userId", myId)
+        if(!title.isNullOrEmpty())
+            q=q.whereEqualTo("title", title);
+        if(!price.isNullOrEmpty())
+            q=q.whereEqualTo("price", price);
+        if(!category.isNullOrEmpty())
+            q=q.whereEqualTo("category", category);
+        if(!location.isNullOrEmpty())
+            q=q.whereEqualTo("location", location);
+        return q
     }
 }

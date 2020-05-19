@@ -55,8 +55,9 @@ class ItemListViewModel : ViewModel() {
                 liveItems.value = null
                 return@EventListener
             }
+            Log.d("vittoz",value?.size().toString())
             for (doc in value!!) {
-                Log.d(TAG,doc.toString())
+                Log.d("vittoz",doc.toString())
                 var item = doc.toObject(ItemModel::class.java)
                 itemsList.add(item)
             }

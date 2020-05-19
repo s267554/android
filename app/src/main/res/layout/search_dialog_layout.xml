@@ -3,15 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:layout_marginBottom="16dp"
     android:fillViewport="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         android:touchscreenBlocksFocus="false"
         tools:context=".ui.ItemDetailsFragment">
 
@@ -42,7 +43,7 @@
                 android:maxLength="25"
                 android:maxLines="1"
                 android:singleLine="true"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -140,6 +141,16 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
         </com.google.android.material.textfield.TextInputLayout>
+
+        <SeekBar
+            android:id="@+id/seekBar2"
+            style="@style/Widget.AppCompat.SeekBar.Discrete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:max="10"
+            android:progress="3"
+            tools:layout_editor_absoluteX="148dp"
+            tools:layout_editor_absoluteY="663dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

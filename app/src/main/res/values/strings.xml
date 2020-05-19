@@ -56,4 +56,5 @@
     <string name="insert_image_before">insert an image before</string>
     <string name="profile_updated">profile updated</string>
     <string name="logout">logout</string>
+    <string name="search">Search</string>
 </resources>

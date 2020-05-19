@@ -79,7 +79,9 @@ class SearchDialogFragment: AppCompatDialogFragment(){
                     DialogInterface.OnClickListener { dialog, id ->
                         listener.onDialogNegativeClick(this)
                     })
-            view.findViewById<EditText>(R.id.titleSearchText).setText(R.string.app_name)
+            .setIcon(R.drawable.ic_search_black_24dp)
+            .setTitle(R.string.search)
+            view.findViewById<EditText>(R.id.titleSearchText).setText("Cat")
             builder.create()
         } ?: throw IllegalStateException("Activity cannot be null")
     }

@@ -7,6 +7,8 @@ import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import it.polito.mad.team19lab2.R
@@ -17,8 +19,12 @@ import it.polito.mad.team19lab2.viewModel.ItemListViewModel
 class OnSaleListFragment: Fragment(),SearchDialogFragment.NoticeDialogListener{
 
     private var onSaleArray = ArrayList<ItemModel>()
+    private var onSearchArray = ArrayList<ItemModel>()
     private val itemListVm: ItemListViewModel by viewModels()
-
+    lateinit var liveList:MutableLiveData<List<ItemModel>>
+    lateinit var r: RecyclerView
+    lateinit var emptyList:TextView
+    private var search:Boolean =false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
@@ -30,10 +36,12 @@ class OnSaleListFragment: Fragment(),SearchDialogFragment.NoticeDialogListener{
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_onsale_list, container, false)
-        val r: RecyclerView = view.findViewById(R.id.onsale_list)
-
-        itemListVm.getAllItems().observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-            onSaleArray= it as ArrayList<ItemModel>
+        r= view.findViewById(R.id.onsale_list)
+        emptyList=view.findViewById<TextView>(R.id.empty_list)
+        itemListVm.getAllItems().observe(viewLifecycleOwner, Observer {
+            if(!search){
+                Log.d("vittoz", "all observer: "+it.toString())
+                onSaleArray= it as ArrayList<ItemModel>
             with(r) {
                 layoutManager = LinearLayoutManager(context)
                 adapter = OnSaleRecyclerViewAdapter(
@@ -42,18 +50,20 @@ class OnSaleListFragment: Fragment(),SearchDialogFragment.NoticeDialogListener{
             }
 
             if (onSaleArray.count() != 0)
-                view.findViewById<TextView>(R.id.empty_list)?.visibility = View.INVISIBLE
+                emptyList.visibility = View.INVISIBLE
+            }
         })
-
         return view
     }
 
+
+
     override fun onCreateOptionsMenu(menu: Menu, menuInflater: MenuInflater) {
-        menuInflater.inflate(R.menu.item_edit_menu, menu)
+        menuInflater.inflate(R.menu.on_sale_fragment_menu, menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if(item.itemId == R.id.save_item_action){
+        if(item.itemId == R.id.search_item_action){
             val d=SearchDialogFragment();
             d.show(childFragmentManager,"search dialog")
         }
@@ -67,11 +77,26 @@ class OnSaleListFragment: Fragment(),SearchDialogFragment.NoticeDialogListener{
         location: String?
     ) {
         Log.d(" vittoz query param","${title+"  "+category+"  "+price+"  "+location}")
+        search=true
         itemListVm.getQueryItems(title,category,price,location)
+            .observe(viewLifecycleOwner, Observer {
+            if(search) {
+                onSearchArray = it as ArrayList<ItemModel>
+                Log.d("vittoz", "search observer: "+it.toString())
+                with(r) {
+                    layoutManager = LinearLayoutManager(context)
+                    adapter = OnSaleRecyclerViewAdapter(
+                        onSearchArray
+                    )
+                }
+                if (onSearchArray.count() != 0)
+                    emptyList.visibility = View.INVISIBLE
+            }
+            })
+        r.adapter?.notifyDataSetChanged()
     }
 
     override fun onDialogNegativeClick(dialog: DialogFragment) {
-        TODO("Not yet implemented")
     }
 
 
