@@ -1,5 +1,6 @@
 package it.polito.mad.team19lab2.ui
 
+import android.content.ClipData
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -18,8 +19,6 @@ import it.polito.mad.team19lab2.R
 import it.polito.mad.team19lab2.data.ItemModel
 import it.polito.mad.team19lab2.viewModel.ItemViewModel
 import kotlinx.android.synthetic.main.item_details_fragment.*
-import kotlinx.android.synthetic.main.item_details_fragment.image_view
-import kotlinx.android.synthetic.main.item_details_fragment.roundCardView
 
 
 class ItemDetailsFragment : Fragment() {
@@ -106,5 +105,4 @@ class ItemDetailsFragment : Fragment() {
             Log.d("image", "error in download image")
         }
     }
-
 }
