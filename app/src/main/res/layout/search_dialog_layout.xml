@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="16dp"
+    android:fillViewport="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:touchscreenBlocksFocus="false"
+        tools:context=".ui.ItemDetailsFragment">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/titleSearchField"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/title"
+            app:boxBackgroundColor="@color/category_icon_background"
+            app:boxStrokeColor="@color/colorPrimary"
+            app:counterEnabled="true"
+            app:counterMaxLength="25"
+            app:errorEnabled="true"
+            app:hintAnimationEnabled="true"
+            app:hintEnabled="true"
+            app:hintTextAppearance="@style/TextAppearance.AppCompat.Small"
+            app:hintTextColor="@color/colorPrimary"
+            app:layout_constraintBottom_toTopOf="@+id/categorySearchField"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/titleSearchText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:maxLength="25"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/categorySearchField"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/category"
+            app:boxBackgroundColor="@color/category_icon_background"
+            app:boxStrokeColor="@color/colorPrimary"
+            app:counterEnabled="false"
+            app:errorEnabled="true"
+            app:hintAnimationEnabled="true"
+            app:hintEnabled="true"
+            app:hintTextAppearance="@style/TextAppearance.AppCompat.Small"
+            app:hintTextColor="@color/colorPrimary"
+            app:layout_constraintBottom_toTopOf="@+id/priceSearchField"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/titleSearchField"
+            app:startIconDrawable="@drawable/category_icon_edit"
+            app:startIconTint="@color/colorPrimary">
+
+            <AutoCompleteTextView
+                android:id="@+id/categorySearchDropdown"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:inputType="none|textNoSuggestions"
+                android:textIsSelectable="false" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/priceSearchField"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/price"
+            app:boxBackgroundColor="@color/category_icon_background"
+            app:boxStrokeColor="@color/colorPrimary"
+            app:counterEnabled="false"
+            app:errorEnabled="true"
+            app:hintAnimationEnabled="true"
+            app:hintEnabled="true"
+            app:hintTextAppearance="@style/TextAppearance.AppCompat.Small"
+            app:hintTextColor="@color/colorPrimary"
+            app:layout_constraintBottom_toTopOf="@+id/locationSearchField"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/categorySearchField"
+            app:startIconDrawable="@drawable/price_icon_edit"
+            app:startIconTint="@color/colorPrimary">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/priceSearchText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:enabled="true"
+                android:inputType="numberDecimal"
+                android:maxLength="20"
+                android:singleLine="true"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/locationSearchField"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/location"
+            app:boxBackgroundColor="@color/category_icon_background"
+            app:boxStrokeColor="@color/colorPrimary"
+            app:counterEnabled="false"
+            app:errorEnabled="true"
+            app:hintAnimationEnabled="true"
+            app:hintEnabled="true"
+            app:hintTextAppearance="@style/TextAppearance.AppCompat.Small"
+            app:hintTextColor="@color/colorPrimary"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/priceSearchField"
+            app:startIconDrawable="@drawable/location_icon_edit"
+            app:startIconTint="@color/colorPrimary">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/locationSearchText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:enabled="true"
+                android:inputType="text"
+                android:maxLength="20"
+                android:singleLine="true"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

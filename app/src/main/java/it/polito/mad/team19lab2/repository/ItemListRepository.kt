@@ -1,11 +1,8 @@
 package it.polito.mad.team19lab2.repository
 
-import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
-import com.google.firebase.firestore.QuerySnapshot
 
 class ItemListRepository {
 
@@ -25,5 +22,34 @@ class ItemListRepository {
     fun getMyItems(): Query {
         return firestoreDB.collection("items")
             .whereEqualTo("userId", myId)
+    }
+
+    fun getHigherItemsWithQuery(
+        title: String?,
+        category: String?,
+        price: String?,
+        location: String?
+    ): Query {
+        var q=firestoreDB.collection("items")
+            .whereGreaterThan("userId", myId)
+        if(!title.isNullOrEmpty())
+            q.whereEqualTo("title", title);
+        if(!price.isNullOrEmpty())
+            q.whereEqualTo("price", price);
+        if(!category.isNullOrEmpty())
+            q.whereEqualTo("category", category);
+        if(!location.isNullOrEmpty())
+            q.whereEqualTo("location", location);
+        return q
+    }
+
+    fun getLowerItemsWithQuery(
+        title: String?,
+        category: String?,
+        price: String?,
+        location: String?
+    ): Query {
+        return firestoreDB.collection("items")
+            .whereLessThan("userId", myId)
     }
 }

@@ -5,7 +5,6 @@ import android.app.DatePickerDialog
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
@@ -35,7 +34,6 @@ import it.polito.mad.team19lab2.utilities.DropdownAdapter
 import it.polito.mad.team19lab2.utilities.PriceInputFilter
 import it.polito.mad.team19lab2.viewModel.ItemViewModel
 import kotlinx.android.synthetic.main.fragment_edit_item.*
-import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.util.*
 
@@ -89,15 +87,15 @@ class EditItemFragment : Fragment() {
             }
         })
         val itemsCategory = resources.getStringArray(R.array.categories).toMutableList()
-        val categoryEditText = view.findViewById<AutoCompleteTextView>(R.id.categoryDropdown)
+        val categoryEditText = view.findViewById<AutoCompleteTextView>(R.id.categorySearchDropdown)
         if(savedInstanceState==null) {
             if (idItem !== "-1") {
                 itemVm.getItem(idItem).observe(viewLifecycleOwner, androidx.lifecycle.Observer {
                     item = it
-                    titleEditText.setText(item.title)
+                    titleSearchText.setText(item.title)
                     descriptionEditText.setText(item.description)
-                    locationEditText.setText(item.location)
-                    priceEditText.setText(item.price.toString())
+                    locationSearchText.setText(item.location)
+                    priceSearchText.setText(item.price.toString())
                     dateEditText.setText(item.expiryDate)
                     categoryEditText.setText(item.category, false)
                     if (item.imagePath.isNullOrEmpty()) {
@@ -107,20 +105,20 @@ class EditItemFragment : Fragment() {
                     }
                     //VALIDATION
                     if (item.title.isEmpty())
-                        titleTextField.error = getString(R.string.notEmpty)
+                        titleSearchField.error = getString(R.string.notEmpty)
                     if (item.location.isEmpty())
-                        locationTextField.error = getString(R.string.notEmpty)
+                        locationSearchField.error = getString(R.string.notEmpty)
                     if (item.price.isNaN())
-                        priceTextField.error = getString(R.string.notEmpty)
+                        priceSearchField.error = getString(R.string.notEmpty)
                     if (item.expiryDate.isEmpty())
                         dateTextField.error = getString(R.string.notEmpty)
                     if (item.category.isEmpty()) {
-                        categoryTextField.error = getString(R.string.notEmpty)
+                        categorySearchField.error = getString(R.string.notEmpty)
                     } else {
                         if (item.category != "other") {
-                            subCategoryTextField.visibility = View.VISIBLE
+                            subCategorySearchField.visibility = View.VISIBLE
                             manageSubDropdown(item.category, itemsCategory)
-                            subCategoryDropdown.setText(item.subcategory, false)
+                            subCategorySearchDropdown.setText(item.subcategory, false)
                         }
                     }
                 })
@@ -129,18 +127,18 @@ class EditItemFragment : Fragment() {
                 item.id = "${System.currentTimeMillis()}-${user?.uid ?: ""}"
                 item.userId = user?.uid ?: ""
                 image_view.setImageResource(R.drawable.sport_category_foreground)
-                titleTextField.error = getString(R.string.notEmpty)
-                locationTextField.error = getString(R.string.notEmpty)
-                priceTextField.error = getString(R.string.notEmpty)
+                titleSearchField.error = getString(R.string.notEmpty)
+                locationSearchField.error = getString(R.string.notEmpty)
+                priceSearchField.error = getString(R.string.notEmpty)
                 dateTextField.error = getString(R.string.notEmpty)
-                categoryTextField.error = getString(R.string.notEmpty)
+                categorySearchField.error = getString(R.string.notEmpty)
             }
         }
-        titleEditText.addTextChangedListener(object : TextWatcher {
+        titleSearchText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
                 if (p0 != null) {
                     if(p0.isEmpty() || p0.isBlank()){
-                        titleTextField.error = getString(R.string.notEmpty)
+                        titleSearchField.error = getString(R.string.notEmpty)
                     }
                 }
             }
@@ -148,14 +146,14 @@ class EditItemFragment : Fragment() {
             }
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 if(!p0.isNullOrBlank() && !p0.isNullOrEmpty())
-                    titleTextField.error = null
+                    titleSearchField.error = null
             }
         })
-        priceEditText.addTextChangedListener(object : TextWatcher {
+        priceSearchText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
                 if (p0 != null) {
                     if(p0.isEmpty() || p0.isBlank()){
-                        priceTextField.error = getString(R.string.notEmpty)
+                        priceSearchField.error = getString(R.string.notEmpty)
                     }
                 }
             }
@@ -163,14 +161,14 @@ class EditItemFragment : Fragment() {
             }
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 if(!p0.isNullOrBlank() && !p0.isNullOrEmpty())
-                    priceTextField.error = null
+                    priceSearchField.error = null
             }
         })
-        locationEditText.addTextChangedListener(object : TextWatcher {
+        locationSearchText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
                 if (p0 != null) {
                     if(p0.isEmpty() || p0.isBlank()){
-                        locationTextField.error = getString(R.string.notEmpty)
+                        locationSearchField.error = getString(R.string.notEmpty)
                     }
                 }
             }
@@ -178,7 +176,7 @@ class EditItemFragment : Fragment() {
             }
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 if(!p0.isNullOrBlank() && !p0.isNullOrEmpty())
-                    locationTextField.error = null
+                    locationSearchField.error = null
             }
         })
         dateEditText.addTextChangedListener(object : TextWatcher {
@@ -231,10 +229,10 @@ class EditItemFragment : Fragment() {
             override fun afterTextChanged(p0: Editable?) {
                 if (p0 != null) {
                     if (p0.isEmpty() || p0.isBlank()) {
-                        categoryTextField.error = getString(R.string.notEmpty)
-                        subCategoryTextField.visibility=View.GONE
+                        categorySearchField.error = getString(R.string.notEmpty)
+                        subCategorySearchField.visibility=View.GONE
                     } else {
-                        categoryTextField.error = null
+                        categorySearchField.error = null
                         manageSubDropdown(p0.toString(), itemsCategory)
                     }
                 }
@@ -263,7 +261,7 @@ class EditItemFragment : Fragment() {
                 2
             )
         )
-        priceEditText.filters = inputFilter
+        priceSearchText.filters = inputFilter
     }
 
     override fun onCreateOptionsMenu(menu: Menu, menuInflater: MenuInflater) {
@@ -318,22 +316,22 @@ class EditItemFragment : Fragment() {
         //force close keyborard
         context?.let { view?.let { it1 -> hideKeyboardFrom(it, it1) } }
         //check validity of fields
-        if(categoryDropdown.text.isNullOrBlank() || dateEditText.text.isNullOrBlank()
-            || priceEditText.text.isNullOrBlank() || titleEditText.text.isNullOrBlank()
-            || locationEditText.text.isNullOrBlank()){
+        if(categorySearchDropdown.text.isNullOrBlank() || dateEditText.text.isNullOrBlank()
+            || priceSearchText.text.isNullOrBlank() || titleSearchText.text.isNullOrBlank()
+            || locationSearchText.text.isNullOrBlank()){
             Toast.makeText(context,resources.getString(R.string.insert_all_required_fields),Toast.LENGTH_SHORT).show()
             return
         }
         if(idItem!=="-1"){
             item.id = idItem
         }
-        item.title=titleEditText.text.toString()
+        item.title=titleSearchText.text.toString()
         item.description=descriptionEditText.text.toString()
-        item.location = locationEditText.text.toString()
-        item.price = priceEditText.text.toString().toFloat()
+        item.location = locationSearchText.text.toString()
+        item.price = priceSearchText.text.toString().toFloat()
         item.expiryDate = dateEditText.text.toString()
-        item.category = categoryDropdown.text.toString()
-        item.subcategory = subCategoryDropdown.text.toString()
+        item.category = categorySearchDropdown.text.toString()
+        item.subcategory = subCategorySearchDropdown.text.toString()
 
         // Update or create the image
         if(imageModified && image!=null) {
@@ -378,11 +376,11 @@ class EditItemFragment : Fragment() {
     }
 
     private fun populateBundle(b:Bundle){
-        b.putString("group19.lab2.TITLE", titleEditText.text.toString())
+        b.putString("group19.lab2.TITLE", titleSearchText.text.toString())
         b.putString("group19.lab2.DESCRIPTION", descriptionEditText.text.toString())
         b.putString("group19.lab2.CATEGORY",item.category)
-        b.putString("group19.lab2.LOCATION",locationEditText.text.toString())
-        b.putFloat("group19.lab2.PRICE", priceEditText.text.toString().toFloat())
+        b.putString("group19.lab2.LOCATION",locationSearchText.text.toString())
+        b.putFloat("group19.lab2.PRICE", priceSearchText.text.toString().toFloat())
         b.putString("group19.lab2.EXPIRY_DATE", dateEditText.text.toString())
     }
 
@@ -470,8 +468,8 @@ class EditItemFragment : Fragment() {
 
     private fun manageSubDropdown(chosenCategory: String, categories : MutableList<String>){
         if(chosenCategory == "other"){
-            subCategoryDropdown.setText("")
-            subCategoryTextField.visibility=View.GONE
+            subCategorySearchDropdown.setText("")
+            subCategorySearchField.visibility=View.GONE
             return
         }
         var index = 1
@@ -485,15 +483,15 @@ class EditItemFragment : Fragment() {
                         R.layout.list_item,
                         subcategories
                     )
-                subCategoryDropdown.setText("")
-                subCategoryDropdown?.setAdapter(subAdapter)
-                subCategoryTextField.visibility=View.VISIBLE
+                subCategorySearchDropdown.setText("")
+                subCategorySearchDropdown?.setAdapter(subAdapter)
+                subCategorySearchField.visibility=View.VISIBLE
                 return
             }
             index++
         }
-        subCategoryDropdown.setText("")
-        subCategoryTextField.visibility=View.GONE
+        subCategorySearchDropdown.setText("")
+        subCategorySearchField.visibility=View.GONE
     }
 
     private fun hideKeyboardFrom(context: Context, view: View) {

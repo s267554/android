@@ -72,5 +72,12 @@ class ItemListViewModel : ViewModel() {
         })
     }
 
+    fun getQueryItems(title: String?, category: String?, price: String?, location: String?): MutableLiveData<List<ItemModel>> {
+        itemsList.clear()
+        takeLiveItemsOnSaleFromQuery(itemListRepository.getHigherItemsWithQuery(title,category,price,location))
+        takeLiveItemsOnSaleFromQuery(itemListRepository.getLowerItemsWithQuery(title,category,price,location))
+        return liveItems
+    }
+
 
 }

@@ -13,7 +13,7 @@
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="5dp"
-        app:layout_constraintBottom_toTopOf="@+id/priceTextField"
+        app:layout_constraintBottom_toTopOf="@+id/priceSearchField"
         app:layout_constraintEnd_toStartOf="@+id/profilePictureGuideline"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -68,7 +68,7 @@
 
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/priceTextField"
+        android:id="@+id/priceSearchField"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -92,7 +92,7 @@
         app:startIconTint="@color/colorPrimary">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/priceEditText"
+            android:id="@+id/priceSearchText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:enabled="true"
@@ -130,7 +130,7 @@
             android:orientation="vertical">
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/titleTextField"
+                android:id="@+id/titleSearchField"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -149,7 +149,7 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/titleEditText"
+                    android:id="@+id/titleSearchText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="text"
@@ -178,7 +178,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/titleTextField">
+                app:layout_constraintTop_toBottomOf="@+id/titleSearchField">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/descriptionEditText"
@@ -191,7 +191,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/categoryTextField"
+                android:id="@+id/categorySearchField"
                 style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -213,7 +213,7 @@
                 app:startIconTint="@color/colorPrimary">
 
                 <AutoCompleteTextView
-                    android:id="@+id/categoryDropdown"
+                    android:id="@+id/categorySearchDropdown"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:focusable="false"
@@ -223,7 +223,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/subCategoryTextField"
+                android:id="@+id/subCategorySearchField"
                 style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -241,12 +241,12 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/categoryTextField"
+                app:layout_constraintTop_toBottomOf="@+id/categorySearchField"
                 app:startIconDrawable="@drawable/category_icon_edit"
                 app:startIconTint="@color/colorPrimary">
 
                 <AutoCompleteTextView
-                    android:id="@+id/subCategoryDropdown"
+                    android:id="@+id/subCategorySearchDropdown"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:focusable="false"
@@ -256,7 +256,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/locationTextField"
+                android:id="@+id/locationSearchField"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -272,12 +272,12 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/subCategoryTextField"
+                app:layout_constraintTop_toBottomOf="@+id/subCategorySearchField"
                 app:startIconDrawable="@drawable/location_icon_edit"
                 app:startIconTint="@color/colorPrimary">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/locationEditText"
+                    android:id="@+id/locationSearchText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="text"
@@ -304,7 +304,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/locationTextField"
+                app:layout_constraintTop_toBottomOf="@+id/locationSearchField"
                 app:startIconDrawable="@drawable/date_icon_edit"
                 app:startIconTint="@color/colorPrimary">
 
