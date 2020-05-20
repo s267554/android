@@ -23,7 +23,6 @@
             android:contentDescription="@string/nickname"
             android:cropToPadding="false"
             app:layout_constraintBottom_toTopOf="@+id/emailIcon"
-            app:layout_constraintEnd_toEndOf="@+id/nameIcon"
             app:layout_constraintStart_toStartOf="@+id/nameIcon"
             app:layout_constraintTop_toBottomOf="@+id/nameIcon"
             app:srcCompat="@mipmap/nickname_icon_round" />
@@ -36,7 +35,6 @@
             android:contentDescription="@string/location"
             android:cropToPadding="false"
             app:layout_constraintBottom_toTopOf="@+id/interestsIcon"
-            app:layout_constraintEnd_toEndOf="@+id/emailIcon"
             app:layout_constraintStart_toStartOf="@+id/emailIcon"
             app:layout_constraintTop_toBottomOf="@+id/emailIcon"
             app:srcCompat="@mipmap/location_icon_round" />
@@ -48,7 +46,6 @@
             android:layout_marginTop="16dp"
             android:contentDescription="@string/interests"
             android:cropToPadding="false"
-            app:layout_constraintEnd_toEndOf="@+id/locationIcon"
             app:layout_constraintStart_toStartOf="@+id/locationIcon"
             app:layout_constraintTop_toBottomOf="@+id/locationIcon"
             app:srcCompat="@mipmap/interests_icon_round" />
@@ -74,8 +71,6 @@
             android:contentDescription="@string/email"
             android:cropToPadding="false"
             app:layout_constraintBottom_toTopOf="@+id/locationIcon"
-            app:layout_constraintEnd_toEndOf="@+id/nicknameIcon"
-            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="@+id/nicknameIcon"
             app:layout_constraintTop_toBottomOf="@+id/nicknameIcon"
             app:srcCompat="@mipmap/email_icon_round" />
@@ -162,7 +157,7 @@
             android:text="@string/interests"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/textView5"
+            app:layout_constraintStart_toStartOf="@+id/textView2"
             app:layout_constraintTop_toTopOf="@+id/interestsIcon" />
 
         <TextView

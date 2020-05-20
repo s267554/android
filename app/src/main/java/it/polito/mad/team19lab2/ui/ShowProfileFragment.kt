@@ -3,10 +3,12 @@ package it.polito.mad.team19lab2.ui
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
@@ -21,8 +23,10 @@ import kotlinx.android.synthetic.main.fragment_show_profile.roundCardView
 class ShowProfileFragment :Fragment() {
 
     private lateinit var user: UserModel
+    private var currentUser = FirebaseAuth.getInstance().currentUser
     lateinit var storage: FirebaseStorage
     private val userVm: UserViewModel by viewModels()
+    private lateinit var userId: String
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_show_profile, container, false)
@@ -30,13 +34,17 @@ class ShowProfileFragment :Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
         storage = Firebase.storage
     }
 
     override fun onViewCreated (view: View, savedInstanceState : Bundle?){
         super.onViewCreated(view, savedInstanceState)
-        userVm.getUser().observe(viewLifecycleOwner, Observer { it ->
+        userId = if (arguments != null){
+            arguments?.getString("user_id").toString()
+        } else{
+            currentUser?.uid ?: ""
+        }
+        userVm.getUser(userId).observe(viewLifecycleOwner, Observer { it ->
             user = it
             if (user.imagePath.isNullOrEmpty()) {
                 image_view.setImageResource(R.drawable.avatar_foreground)
@@ -46,10 +54,22 @@ class ShowProfileFragment :Fragment() {
             }
             name_view.text = user.fullname
             nickname_view.text = user.nickname
-            email_view.text = user.email
-            location_view.text = user.location
             interests_view.text = buildInterestsString()
             ratingBar.rating= user.rating
+            if(user.id == currentUser?.uid ?: ""){
+                setHasOptionsMenu(true)
+                email_view.text = user.email
+                location_view.text = user.location
+            }
+            else{
+                setHasOptionsMenu(false)
+                textView4.visibility=View.GONE
+                textView5.visibility=View.GONE
+                emailIcon.visibility=View.GONE
+                email_view.visibility=View.GONE
+                locationIcon.visibility=View.GONE
+                location_view.visibility=View.GONE
+            }
         })
         roundCardView.viewTreeObserver.addOnGlobalLayoutListener (object: ViewTreeObserver.OnGlobalLayoutListener{
             override fun onGlobalLayout() {
@@ -82,7 +102,7 @@ class ShowProfileFragment :Fragment() {
 
     private fun editProfile(){
         val navController = findNavController()
-        navController.navigate(R.id.action_showProfileFragment_to_editProfileFragment)
+        navController.navigate(R.id.action_showProfileFragment_to_editProfileFragment,  bundleOf("user_id" to userId))
     }
 
     private fun downloadFile() {

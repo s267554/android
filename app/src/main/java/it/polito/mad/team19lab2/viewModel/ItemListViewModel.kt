@@ -71,6 +71,4 @@ class ItemListViewModel : ViewModel() {
             }
         })
     }
-
-
 }

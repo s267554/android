@@ -8,7 +8,6 @@ import android.graphics.Matrix
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Bundle
-import android.os.Parcel
 import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
@@ -47,6 +46,7 @@ class EditProfileFragment : Fragment() {
     private var REQUEST_GALLERY: Int = 1715
     private var imageModified=false
     private val userVm: UserViewModel by viewModels()
+    private lateinit var userId : String
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_edit_profile, container, false)
@@ -131,9 +131,9 @@ class EditProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_UNCHANGED)
-        Log.d("SCREEN_ROTATION", "onViewCreated")
+        userId = arguments?.getString("user_id").toString()
         if(savedInstanceState==null) {
-            userVm.getUser().observe(viewLifecycleOwner, Observer { it ->
+            userVm.getUser(userId).observe(viewLifecycleOwner, Observer { it ->
                 user = it
                 fullNameProfileEditText.setText(user.fullname)
                 nicknameProfileEditText.setText(user.nickname)
