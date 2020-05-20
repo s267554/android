@@ -22,7 +22,7 @@ import it.polito.mad.team19lab2.utilities.DropdownAdapter
 import it.polito.mad.team19lab2.utilities.PriceInputFilter
 import kotlinx.android.synthetic.main.fragment_edit_item.*
 
-class SearchDialogFragment: AppCompatDialogFragment(){
+class SearchDialogFragment(var title: String?=null,var category: String?=null,var max:String?=null,var min:String?=null,var location: String?=null): AppCompatDialogFragment(){
 
     // Use this instance of the interface to deliver action events
     internal lateinit var listener: NoticeDialogListener
@@ -33,6 +33,8 @@ class SearchDialogFragment: AppCompatDialogFragment(){
     lateinit var  minprice :TextInputEditText
     lateinit var  maxprice :TextInputEditText
     lateinit var categoryTextField:TextInputLayout
+    lateinit var locationEditText:TextInputEditText
+    lateinit var titleTextview:TextInputEditText
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
@@ -49,7 +51,18 @@ class SearchDialogFragment: AppCompatDialogFragment(){
             minprice = view.findViewById(R.id.minpriceEditText)
             maxprice = view.findViewById(R.id.maxpriceEditText)
             categoryTextField = view.findViewById(R.id.categorySearchField)
-
+            locationEditText=view.findViewById(R.id.locationSearchText)
+            titleTextview=view.findViewById(R.id.titleSearchText)
+            if(!title.isNullOrEmpty())
+                titleTextview.setText(title)
+            if(!category.isNullOrEmpty())
+                categoryEditText.setText(category)
+            if(!min.isNullOrEmpty())
+                minprice.setText(min)
+            if(!max.isNullOrEmpty())
+                maxprice.setText(max)
+            if(!location.isNullOrEmpty())
+                locationEditText.setText(location)
 
             val inputFilter =  arrayOf<InputFilter>(
                 PriceInputFilter(
@@ -73,11 +86,11 @@ class SearchDialogFragment: AppCompatDialogFragment(){
                 // Add action buttons
                 .setPositiveButton("Ok",
                     DialogInterface.OnClickListener { dialog, id ->
-                        val title=view.findViewById<EditText>(R.id.titleSearchText).text?.toString()
-                        val category=view.findViewById<AutoCompleteTextView>(R.id.categorySearchDropdown).text?.toString()
+                        val title=titleTextview.text.toString()
+                        val category=categoryEditText.text?.toString()
                         val minprice=this.minprice.text.toString()
                         val maxprice=this.maxprice.text.toString()
-                        val location=view.findViewById<EditText>(R.id.locationSearchText).text?.toString()
+                        val location=locationEditText.text?.toString()
                         listener.onDialogPositiveClick(title,category,minprice,maxprice,location)
                     })
                 .setNegativeButton("cancel",
@@ -86,7 +99,6 @@ class SearchDialogFragment: AppCompatDialogFragment(){
                     })
             .setIcon(R.drawable.ic_search_black_24dp)
             .setTitle(R.string.search)
-            view.findViewById<EditText>(R.id.titleSearchText).setText("Cat")
             builder.create()
         } ?: throw IllegalStateException("Activity cannot be null")
     }

@@ -37,9 +37,9 @@ class ItemListRepository {
     ): Query {
         var q:Query=firestoreDB.collection("items")
         if(!minprice.isNullOrEmpty())
-            q=q.whereGreaterThan("price", minprice);
+            q=q.whereGreaterThanOrEqualTo("price", minprice.toInt());
         if(!maxprice.isNullOrEmpty())
-            q=q.whereLessThan("price", maxprice);
+            q=q.whereLessThanOrEqualTo("price", maxprice.toInt());
         if(!category.isNullOrEmpty())
             q=q.whereEqualTo("category", category);
         if(!location.isNullOrEmpty())

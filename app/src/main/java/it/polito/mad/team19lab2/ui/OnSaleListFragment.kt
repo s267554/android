@@ -13,9 +13,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.card.MaterialCardView
 import it.polito.mad.team19lab2.R
 import it.polito.mad.team19lab2.data.ItemModel
 import it.polito.mad.team19lab2.viewModel.ItemListViewModel
+import kotlinx.android.synthetic.main.fragment_onsale_list.*
 
 
 class OnSaleListFragment: Fragment(),SearchDialogFragment.NoticeDialogListener{
@@ -27,9 +29,16 @@ class OnSaleListFragment: Fragment(),SearchDialogFragment.NoticeDialogListener{
     lateinit var liveList:MutableLiveData<List<ItemModel>>
     lateinit var r: RecyclerView
     lateinit var emptyList:TextView
-    lateinit var searchLayout:ConstraintLayout
+    lateinit var searchCard: MaterialCardView
     lateinit var clearBotton: Button
+    lateinit var modifyBotton: Button
     private var search:Boolean =false
+    private var query_title:String?=null
+    private var query_cat:String?=null
+    private var query_min:String?=null
+    private var query_max:String?=null
+    private var query_loc:String?=null
+
     //private var clear=false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,10 +54,22 @@ class OnSaleListFragment: Fragment(),SearchDialogFragment.NoticeDialogListener{
         r= view.findViewById(R.id.onsale_list)
         emptyList=view.findViewById<TextView>(R.id.empty_list)
         clearBotton=view.findViewById(R.id.button_clear_filter)
-        searchLayout=view.findViewById<ConstraintLayout>(R.id.searchConstraintLayout)
+        modifyBotton=view.findViewById(R.id.modify_query_button)
+        searchCard=view.findViewById(R.id.materialCardView2)
+        modifyBotton.setOnClickListener {
+            if(search) {
+                val d = SearchDialogFragment(query_title,query_cat,query_loc,query_min,query_max);
+                d.show(childFragmentManager, "search dialog")
+            }
+        }
         clearBotton.setOnClickListener {
             Log.d("vittoz",search.toString())
             if(search){
+                query_title=null
+                query_cat=null
+                query_loc=null
+                query_min=null
+                query_max=null
                 search=false
                 //clear=true
                 itemListVm.getAllItems().observe(viewLifecycleOwner, Observer {
@@ -66,10 +87,12 @@ class OnSaleListFragment: Fragment(),SearchDialogFragment.NoticeDialogListener{
 
                             if (onSaleArray.count() != 0)
                                 emptyList.visibility = View.GONE
+                            else
+                                emptyList.visibility = View.VISIBLE
                         }
                     }
                 })
-                searchLayout.visibility=View.GONE
+                searchCard.visibility=View.GONE
             }
         }
         itemListVm.getAllItems().observe(viewLifecycleOwner, Observer {
@@ -86,6 +109,8 @@ class OnSaleListFragment: Fragment(),SearchDialogFragment.NoticeDialogListener{
             if (onSaleArray.count() != 0)
                 emptyList.visibility = View.GONE
             }
+            else
+                emptyList.visibility = View.VISIBLE
         })
         return view
     }
@@ -111,33 +136,70 @@ class OnSaleListFragment: Fragment(),SearchDialogFragment.NoticeDialogListener{
         maxprice: String?,
         location: String?
     ) {
-        Log.d(" vittoz query param","${title+"  "+category+"  "+minprice+"  "+maxprice+"  "+location}")
-        search=true
+        Log.d(" vittoz query param", title+"  "+category+"  "+minprice+"  "+maxprice+"  "+location)
         var m1=minprice
         var m2=maxprice
         if(!minprice.isNullOrEmpty())
             if(minprice.toInt()<=0)
                 m1=null
+            else
+                search=true
         if(!maxprice.isNullOrEmpty())
             if(maxprice.toInt()>=999999)
                 m2=null
+            else
+                search=true
+        if(!title.isNullOrEmpty()){
+            searchCard.findViewById<TextView>(R.id.textViewTitle).text= "'$title'"
+            search=true
+        }
+        if(!category.isNullOrEmpty()) {
+            searchCard.findViewById<TextView>(R.id.textViewCat).text = "IN $category"
+            search=true
+        }
+        if(!location.isNullOrEmpty()) {
+            searchCard.findViewById<TextView>(R.id.textViewloc).text = "@ $location"
+            search=true
+        }
+        var s=""
+        if(!m1.isNullOrEmpty()){
+            s=resources.getString(R.string.from)+m1+"€ "
+        }
+        else
+            s=resources.getString(R.string.from)+"0€ "
+        if(!m2.isNullOrEmpty()){
+            s=s+resources.getString(R.string.upTo)+m2+ "€"
+        }
+        else
+            s=s+resources.getString(R.string.upUnbound)
+        if(search) {
+            query_title=title
+            query_cat=category
+            query_loc=location
+            query_min=m1
+            query_max=m2
 
-        itemListVm.getQueryItems(title,category,m1,m2,location)
-            .observe(viewLifecycleOwner, Observer {
-            if(search) {
-                onSearchArray = it as ArrayList<ItemModel>
-                Log.d("vittoz", "search observer: "+onSearchArray.toString())
-                with(r) {
-                    layoutManager = LinearLayoutManager(context)
-                    adapter = OnSaleRecyclerViewAdapter(
-                        onSearchArray
-                    )
-                }
-                if (onSearchArray.count() != 0)
-                    emptyList.visibility = View.GONE
-            }
-            })
-        searchLayout.visibility=View.VISIBLE
+            searchCard.findViewById<TextView>(R.id.textViewPrice).text = s
+
+            itemListVm.getQueryItems(title, category, m1, m2, location)
+                .observe(viewLifecycleOwner, Observer {
+                    if (search) {
+                        onSearchArray = it as ArrayList<ItemModel>
+                        Log.d("vittoz", "search observer: " + onSearchArray.toString())
+                        with(r) {
+                            layoutManager = LinearLayoutManager(context)
+                            adapter = OnSaleRecyclerViewAdapter(
+                                onSearchArray
+                            )
+                        }
+                        if (onSearchArray.count() != 0)
+                            emptyList.visibility = View.GONE
+                        else
+                            emptyList.visibility = View.VISIBLE
+                    }
+                })
+            searchCard.visibility = View.VISIBLE
+        }
         //r.adapter?.notifyDataSetChanged()
     }
 
