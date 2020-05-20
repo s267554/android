@@ -25,7 +25,7 @@ class ItemListRepository {
     }
 
     fun getAllItems(): Query {
-        return firestoreDB.collection("items")
+        return firestoreDB.collection("items").whereEqualTo("state", "Available")
     }
 
     fun getItemsWithQuery(

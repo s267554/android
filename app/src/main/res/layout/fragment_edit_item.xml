@@ -317,7 +317,7 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/dateTextField"
-            app:startIconDrawable="@drawable/category_icon_edit"
+            app:startIconDrawable="@drawable/ic_item_state_48dp"
             app:startIconTint="@color/colorPrimary">
 
             <AutoCompleteTextView
