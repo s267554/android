@@ -1,14 +1,18 @@
 package it.polito.mad.team19lab2.ui
 
+import InterestedUsersRecycleViewAdapter
 import android.content.ClipData
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
+import com.firebase.ui.auth.data.model.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
@@ -17,6 +21,7 @@ import com.ms.square.android.expandabletextview.ExpandableTextView
 import com.squareup.picasso.Picasso
 import it.polito.mad.team19lab2.R
 import it.polito.mad.team19lab2.data.ItemModel
+import it.polito.mad.team19lab2.data.UserShortModel
 import it.polito.mad.team19lab2.viewModel.ItemViewModel
 import kotlinx.android.synthetic.main.item_details_fragment.*
 
@@ -28,6 +33,7 @@ class ItemDetailsFragment : Fragment() {
     private val itemVm: ItemViewModel by viewModels()
     private lateinit var idItem : String
     private var user = FirebaseAuth.getInstance().currentUser
+    private var interestedUsers = ArrayList<UserShortModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,6 +59,8 @@ class ItemDetailsFragment : Fragment() {
         if (arguments != null){
             idItem = arguments?.getString("item_id1").toString()
         }
+        val recycler: RecyclerView = view.findViewById(R.id.userList)
+        var usersLabel = view.findViewById<TextView>(R.id.interestedUsers)
         itemVm.getItem(idItem).observe(viewLifecycleOwner, Observer {
             item = it
             Log.d("USER", it.userId)
@@ -61,9 +69,21 @@ class ItemDetailsFragment : Fragment() {
                 //CASE I AM THE USER
                 Log.d("USER", "i'm the user")
                 setHasOptionsMenu(true)
+                itemVm.getInterestedUsers(idItem).observe(viewLifecycleOwner, Observer {
+                    interestedUsers= it as ArrayList<UserShortModel>
+                    with(recycler) {
+                        layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
+                        adapter =  InterestedUsersRecycleViewAdapter(interestedUsers)
+                    }
+                    if(interestedUsers.size == 0){
+                        usersLabel.visibility=View.GONE
+                    }
+                })
             }
             else{
                 //CASE I AM NOT THE USER
+                userList.visibility=View.GONE
+                usersLabel.visibility=View.GONE
                 Log.d("USER", "i'm not the user")
                 setHasOptionsMenu(false)
             }

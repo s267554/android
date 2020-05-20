@@ -266,5 +266,30 @@
             app:layout_constraintStart_toStartOf="@+id/categoryLabel"
             app:layout_constraintTop_toBottomOf="@+id/categoryTextView" />
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/userList"
+            android:layout_width="0dp"
+            android:name="it.polito.mad.team19lab2.UserFragment"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/interestedUsers"
+            tools:listitem="@layout/fragment_user"
+            tools:context=".ui.ItemDetailsFragment"
+            />
+
+        <TextView
+            android:id="@+id/interestedUsers"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/interestedUsers"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ExpireIcon" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

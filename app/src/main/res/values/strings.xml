@@ -58,4 +58,6 @@
     <string name="logout">logout</string>
     <string name="search">Search</string>
     <string name="clear">clear</string>
+    <string name="interestedUsers">Interested users</string>
+    <string name="view">view</string>
 </resources>
