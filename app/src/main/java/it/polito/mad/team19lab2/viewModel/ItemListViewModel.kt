@@ -59,13 +59,17 @@ class ItemListViewModel : ViewModel() {
             }
             Log.d("vittoz",value?.size().toString())
             for (doc in value!!) {
-                Log.d("vittoz",doc.toString())
                 var item = doc.toObject(ItemModel::class.java)
+
                 if(item.userId!=myId) {
-                    if (title.isNullOrEmpty())
+                    if (title.isNullOrEmpty()){
                         itemsList.add(item)
-                    else if(item.title.contains(title,true))
+                        Log.d("vittoz",item.title)
+                    }
+                    else if(item.title.contains(title,true)){
                         itemsList.add(item)
+                        Log.d("vittoz",item.title)
+                    }
                 }
 
             }

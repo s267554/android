@@ -3,6 +3,7 @@ package it.polito.mad.team19lab2.ui
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
@@ -24,6 +25,7 @@ class OnSaleListFragment: Fragment(),SearchDialogFragment.NoticeDialogListener{
     lateinit var liveList:MutableLiveData<List<ItemModel>>
     lateinit var r: RecyclerView
     lateinit var emptyList:TextView
+    lateinit var clearBotton: Button
     private var search:Boolean =false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,6 +40,29 @@ class OnSaleListFragment: Fragment(),SearchDialogFragment.NoticeDialogListener{
         val view = inflater.inflate(R.layout.fragment_onsale_list, container, false)
         r= view.findViewById(R.id.onsale_list)
         emptyList=view.findViewById<TextView>(R.id.empty_list)
+        clearBotton=view.findViewById(R.id.button_clear_filter)
+        clearBotton.setOnClickListener {
+            Log.d("vittoz",search.toString())
+            if(search){
+                search=false
+                itemListVm.getAllItems().observe(viewLifecycleOwner, Observer {
+                    if(!search){
+                        Log.d("vittoz", "all observer: "+it.toString())
+                        onSaleArray= it as ArrayList<ItemModel>
+                        with(r) {
+                            layoutManager = LinearLayoutManager(context)
+                            adapter = OnSaleRecyclerViewAdapter(
+                                onSaleArray
+                            )
+                        }
+
+                        if (onSaleArray.count() != 0)
+                            emptyList.visibility = View.GONE
+                    }
+                })
+            }
+
+        }
         itemListVm.getAllItems().observe(viewLifecycleOwner, Observer {
             if(!search){
                 Log.d("vittoz", "all observer: "+it.toString())
@@ -50,7 +75,7 @@ class OnSaleListFragment: Fragment(),SearchDialogFragment.NoticeDialogListener{
             }
 
             if (onSaleArray.count() != 0)
-                emptyList.visibility = View.INVISIBLE
+                emptyList.visibility = View.GONE
             }
         })
         return view
@@ -100,10 +125,10 @@ class OnSaleListFragment: Fragment(),SearchDialogFragment.NoticeDialogListener{
                     )
                 }
                 if (onSearchArray.count() != 0)
-                    emptyList.visibility = View.INVISIBLE
+                    emptyList.visibility = View.GONE
             }
             })
-        r.adapter?.notifyDataSetChanged()
+        //r.adapter?.notifyDataSetChanged()
     }
 
     override fun onDialogNegativeClick(dialog: DialogFragment) {
