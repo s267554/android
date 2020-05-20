@@ -54,6 +54,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         storage = Firebase.storage
         val u=FirebaseAuth.getInstance().currentUser
+        Log.d("xxxx", u.toString())
         if(u == null) {
             // Choose authentication providers
             val providers = arrayListOf(
@@ -70,14 +71,14 @@ class MainActivity : AppCompatActivity() {
             )
         }
         else {
+            Log.d("xxx", u.uid)
+            Log.d("xxx", u.email)
             setContentView(R.layout.activity_main)
             val toolbar: Toolbar = findViewById(R.id.toolbar)
             setSupportActionBar(toolbar)
             val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
             val navView: NavigationView = findViewById(R.id.nav_view)
             val navController = findNavController(R.id.nav_host_fragment)
-            // Passing each menu ID as a set of Ids because each
-            // menu should be considered as top level destinations.
             appBarConfiguration = AppBarConfiguration(
                 setOf(
                     R.id.nav_home
@@ -90,10 +91,8 @@ class MainActivity : AppCompatActivity() {
             navView.setupWithNavController(navController)
             userVm.getOrCreateUser().observe(this, Observer{ item ->
                 if(item != null) {
-                    nav_view.getHeaderView(0)
-                        .findViewById<TextView>(R.id.header_title_textView).text = item.fullname
-                    nav_view.getHeaderView(0)
-                        .findViewById<TextView>(R.id.header_subtitle_textView).text = item.nickname
+                    nav_view.getHeaderView(0).findViewById<TextView>(R.id.header_title_textView).text = item.fullname
+                    nav_view.getHeaderView(0).findViewById<TextView>(R.id.header_subtitle_textView).text = item.nickname
                     if (!item.imagePath.isNullOrEmpty()) {
                         val storageRef = storage.reference
                         storageRef.child(item.imagePath).downloadUrl.addOnSuccessListener {
@@ -116,6 +115,9 @@ class MainActivity : AppCompatActivity() {
                             .setImageBitmap(null)
                     }
                 }
+                else{
+                    signOut(view = View(applicationContext))
+                }
             })
         }
         FirebaseInstanceId.getInstance().instanceId
@@ -137,25 +139,24 @@ class MainActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == RC_SIGN_IN) {
+            Log.d("xxxx", resultCode.toString())
             val response = IdpResponse.fromResultIntent(data)
             if (resultCode == Activity.RESULT_OK) {
+                Log.d("xxxx", "result ok")
                 setContentView(R.layout.activity_main)
                 val toolbar: Toolbar = findViewById(R.id.toolbar)
                 setSupportActionBar(toolbar)
                 val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
                 val navView: NavigationView = findViewById(R.id.nav_view)
                 val navController = findNavController(R.id.nav_host_fragment)
-                appBarConfiguration = AppBarConfiguration(setOf(
-                    R.id.nav_home), drawerLayout) // decidiamo le schermate root e connettiamole al drawer
-                setupActionBarWithNavController(navController, appBarConfiguration)//To add navigation support to the default action bar
+                appBarConfiguration = AppBarConfiguration(setOf(R.id.nav_home), drawerLayout)
+                setupActionBarWithNavController(navController, appBarConfiguration)
                 navView.setupWithNavController(navController)
                 userVm.getOrCreateUser().observe(this, Observer { item ->
+                    Log.d("xxxx", item.toString())
                     if(item != null) {
-                        nav_view.getHeaderView(0)
-                            .findViewById<TextView>(R.id.header_title_textView).text = item.fullname
-                        nav_view.getHeaderView(0)
-                            .findViewById<TextView>(R.id.header_subtitle_textView).text =
-                            item.nickname
+                        nav_view.getHeaderView(0).findViewById<TextView>(R.id.header_title_textView).text = item.fullname
+                        nav_view.getHeaderView(0).findViewById<TextView>(R.id.header_subtitle_textView).text = item.nickname
                         val storageRef = storage.reference
                         if (!item.imagePath.isNullOrEmpty()) {
                             storageRef.child(item.imagePath).downloadUrl.addOnSuccessListener {
@@ -217,23 +218,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        //REPLACE WITH VIEW MODEL
-    /*
-        val sharedPref = getSharedPreferences(
-            "it.polito.mad.team19lab2.profile", 0)
-        if(sharedPref!=null) {
-            val profile = sharedPref.getString("profile", "notFound")
-            if (profile != "notFound") {
-                val jo = JSONObject(profile)
-                nav_view.getHeaderView(0).findViewById<TextView>(R.id.header_title_textView).text = jo.getString("FULL_NAME")
-                nav_view.getHeaderView(0).findViewById<TextView>(R.id.header_subtitle_textView).text = jo.get("NICK_NAME") as String
-                val file = File(filesDir, "myimage.png")
-                if (file.exists()) {
-                    nav_view.getHeaderView(0).findViewById<ImageView>(R.id.header_imageView).setImageURI(file.toUri())
-                }
-            }
-        }
-     */
     }
 
 

@@ -23,6 +23,7 @@ class UserViewModel: ViewModel() {
         userRepository.getUser(userId).addSnapshotListener(EventListener<DocumentSnapshot> { value, e ->
             if (e != null) {
                 Log.e(TAG, "Listen failed.", e)
+
                 liveUser.value = null
                 return@EventListener
             }
