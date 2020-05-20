@@ -3,6 +3,7 @@ package it.polito.mad.team19lab2.viewModel
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.EventListener
 import com.google.firebase.firestore.QuerySnapshot
@@ -56,11 +57,11 @@ class ItemListViewModel : ViewModel() {
                 liveItems.value = null
                 return@EventListener
             }
-            Log.d("vittoz",value?.size().toString())
             for (doc in value!!) {
                 var item = doc.toObject(ItemModel::class.java)
 
-                if(item.userId!=myId) {
+                if(item.userId!=myId&&item.expireDatestamp>= Timestamp.now()) {
+                    Log.d("vittoz",item.title+": "+item.expireDatestamp +"vs now: "+Timestamp.now())
                     if (title.isNullOrEmpty()){
                         itemsList.add(item)
                         Log.d("vittoz",item.title)
@@ -69,6 +70,9 @@ class ItemListViewModel : ViewModel() {
                         itemsList.add(item)
                         Log.d("vittoz",item.title)
                     }
+                }
+                else if(item.expireDatestamp> Timestamp.now()){
+                    //change state
                 }
 
             }

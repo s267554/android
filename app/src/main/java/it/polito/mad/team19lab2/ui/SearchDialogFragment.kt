@@ -22,7 +22,7 @@ import it.polito.mad.team19lab2.utilities.DropdownAdapter
 import it.polito.mad.team19lab2.utilities.PriceInputFilter
 import kotlinx.android.synthetic.main.fragment_edit_item.*
 
-class SearchDialogFragment(var title: String?=null,var category: String?=null,var max:String?=null,var min:String?=null,var location: String?=null): AppCompatDialogFragment(){
+class SearchDialogFragment(var title: String?=null,var category: String?=null,var min:String?=null,var max:String?=null,var location: String?=null): AppCompatDialogFragment(){
 
     // Use this instance of the interface to deliver action events
     internal lateinit var listener: NoticeDialogListener

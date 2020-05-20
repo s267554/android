@@ -1,6 +1,7 @@
 package it.polito.mad.team19lab2.data
 
 import android.os.Parcelable
+import com.google.firebase.Timestamp
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
@@ -16,7 +17,8 @@ data class ItemModel (
     var price: Float,
     //var sold: Boolean,
     var state: String,
-    var userId: String
+    var userId: String,
+    var expireDatestamp: Timestamp
 ) : Parcelable{
-    constructor() : this("","","","","","","","", 0.0F, "Available", "")
+    constructor() : this("","","","","","","","", 0.0F, "Available", "",Timestamp(0,0))
 }

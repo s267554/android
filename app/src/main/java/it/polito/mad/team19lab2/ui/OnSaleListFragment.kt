@@ -58,7 +58,7 @@ class OnSaleListFragment: Fragment(),SearchDialogFragment.NoticeDialogListener{
         searchCard=view.findViewById(R.id.materialCardView2)
         modifyBotton.setOnClickListener {
             if(search) {
-                val d = SearchDialogFragment(query_title,query_cat,query_loc,query_min,query_max);
+                val d = SearchDialogFragment(query_title,query_cat,query_min,query_max,query_loc);
                 d.show(childFragmentManager, "search dialog")
             }
         }

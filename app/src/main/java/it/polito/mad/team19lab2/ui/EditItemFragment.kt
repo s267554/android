@@ -17,11 +17,13 @@ import android.util.Log
 import android.util.LruCache
 import android.view.*
 import android.view.inputmethod.InputMethodManager
-import android.widget.*
+import android.widget.AutoCompleteTextView
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
@@ -46,6 +48,7 @@ class EditItemFragment : Fragment() {
     private var year: Int = 0
     private var month: Int = 0
     private var day: Int=0
+    private var timestamp: Timestamp= Timestamp.now()
     private val itemVm: ItemViewModel by viewModels()
     private lateinit var image: Bitmap
     lateinit var storage: FirebaseStorage
@@ -211,14 +214,17 @@ class EditItemFragment : Fragment() {
             val datePickerDialog = activity?.let {
                 DatePickerDialog(
                     it,
-                    DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
+                    DatePickerDialog.OnDateSetListener { picker, year, monthOfYear, dayOfMonth ->
                         val finalMonth=monthOfYear+1
                         val finalDate="$dayOfMonth/$finalMonth/$year"
                         this.year=year
                         this.month=monthOfYear
                         this.day=dayOfMonth
+                        val calendar: Calendar = GregorianCalendar(year, monthOfYear, dayOfMonth+1)
+                        timestamp=Timestamp(Date(calendar.timeInMillis))
                         dateEditText.setText(finalDate)
                     }, year, month, day)
+
             }
             datePickerDialog?.datePicker?.minDate = System.currentTimeMillis() - 1000
             datePickerDialog?.show()
@@ -364,6 +370,7 @@ class EditItemFragment : Fragment() {
         item.category = categoryDropdown.text.toString()
         item.subcategory = subCategoryDropdown.text.toString()
         item.state = stateDropdown.text.toString()
+        item.expireDatestamp=timestamp
 
         // Update or create the image
         if(imageModified && image!=null) {
