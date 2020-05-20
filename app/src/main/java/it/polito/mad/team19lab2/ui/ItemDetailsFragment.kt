@@ -61,7 +61,7 @@ class ItemDetailsFragment : Fragment() {
         }
         val recycler: RecyclerView = view.findViewById(R.id.userList)
         var usersLabel = view.findViewById<TextView>(R.id.interestedUsers)
-        itemVm.getItem(idItem).observe(viewLifecycleOwner, Observer {
+        itemVm.getItem(idItem).observe(viewLifecycleOwner, Observer { it ->
             item = it
             Log.d("USER", it.userId)
             Log.d("USER", user?.uid)
@@ -69,8 +69,9 @@ class ItemDetailsFragment : Fragment() {
                 //CASE I AM THE USER
                 Log.d("USER", "i'm the user")
                 setHasOptionsMenu(true)
-                itemVm.getInterestedUsers(idItem).observe(viewLifecycleOwner, Observer {
-                    interestedUsers= it as ArrayList<UserShortModel>
+                itemVm.getInterestedUsers(idItem).observe(viewLifecycleOwner, Observer { users ->
+                    interestedUsers= users as ArrayList<UserShortModel>
+                    Log.d("userList", users.toString())
                     with(recycler) {
                         layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
                         adapter =  InterestedUsersRecycleViewAdapter(interestedUsers)

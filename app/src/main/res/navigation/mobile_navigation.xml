@@ -45,6 +45,9 @@
         <action
             android:id="@+id/action_nav_item_detail_to_nav_my_advertisement"
             app:destination="@id/nav_my_advertisement" />
+        <action
+            android:id="@+id/action_nav_item_detail_to_nav_show_profile"
+            app:destination="@id/nav_show_profile" />
 
     </fragment>
     <fragment
