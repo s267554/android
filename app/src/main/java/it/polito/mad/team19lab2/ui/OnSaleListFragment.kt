@@ -73,12 +73,22 @@ class OnSaleListFragment: Fragment(),SearchDialogFragment.NoticeDialogListener{
     override fun onDialogPositiveClick(
         title: String?,
         category: String?,
-        price: String?,
+        minprice: String?,
+        maxprice: String?,
         location: String?
     ) {
-        Log.d(" vittoz query param","${title+"  "+category+"  "+price+"  "+location}")
+        Log.d(" vittoz query param","${title+"  "+category+"  "+minprice+"  "+maxprice+"  "+location}")
         search=true
-        itemListVm.getQueryItems(title,category,price,location)
+        var m1=minprice
+        var m2=maxprice
+        if(!minprice.isNullOrEmpty())
+            if(minprice.toInt()<=0)
+                m1=null
+        if(!maxprice.isNullOrEmpty())
+            if(maxprice.toInt()>=999999)
+                m2=null
+
+        itemListVm.getQueryItems(title,category,m1,m2,location)
             .observe(viewLifecycleOwner, Observer {
             if(search) {
                 onSearchArray = it as ArrayList<ItemModel>

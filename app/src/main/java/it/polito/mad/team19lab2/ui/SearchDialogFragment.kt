@@ -6,14 +6,13 @@ import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
-import android.text.Editable
 import android.text.InputFilter
-import android.text.TextWatcher
 import android.view.View
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.AutoCompleteTextView
 import android.widget.EditText
+import android.widget.NumberPicker
 import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.fragment.app.DialogFragment
 import com.google.android.material.textfield.TextInputEditText
@@ -21,6 +20,7 @@ import com.google.android.material.textfield.TextInputLayout
 import it.polito.mad.team19lab2.R
 import it.polito.mad.team19lab2.utilities.DropdownAdapter
 import it.polito.mad.team19lab2.utilities.PriceInputFilter
+import kotlinx.android.synthetic.main.fragment_edit_item.*
 
 class SearchDialogFragment: AppCompatDialogFragment(){
 
@@ -30,7 +30,8 @@ class SearchDialogFragment: AppCompatDialogFragment(){
     //widgets
     lateinit var itemsCategory:MutableList<String>
     lateinit var categoryEditText:AutoCompleteTextView
-    lateinit var  priceEditText :TextInputEditText
+    lateinit var  minprice :TextInputEditText
+    lateinit var  maxprice :TextInputEditText
     lateinit var categoryTextField:TextInputLayout
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -45,35 +46,39 @@ class SearchDialogFragment: AppCompatDialogFragment(){
             activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
             itemsCategory = resources.getStringArray(R.array.categories).toMutableList()
             categoryEditText = view.findViewById(R.id.categorySearchDropdown)
-            priceEditText = view.findViewById(R.id.priceSearchText)
+            minprice = view.findViewById(R.id.minpriceEditText)
+            maxprice = view.findViewById(R.id.maxpriceEditText)
             categoryTextField = view.findViewById(R.id.categorySearchField)
-            val adapter = DropdownAdapter(
-                requireContext(),
-                R.layout.list_item,
-                itemsCategory
-            )
-            categoryEditText?.setAdapter(adapter)
-            //PRICE MANAGEMENT
+
+
             val inputFilter =  arrayOf<InputFilter>(
                 PriceInputFilter(
                     10,
                     2
                 )
             )
-            priceEditText.filters = inputFilter
+            minprice.filters = inputFilter
+            maxprice.filters = inputFilter
 
 
 
 
-        builder.setView(view)
+            val adapter = DropdownAdapter(
+                requireContext(),
+                R.layout.list_item,
+                itemsCategory
+            )
+            categoryEditText?.setAdapter(adapter)
+            builder.setView(view)
                 // Add action buttons
                 .setPositiveButton("Ok",
                     DialogInterface.OnClickListener { dialog, id ->
                         val title=view.findViewById<EditText>(R.id.titleSearchText).text?.toString()
                         val category=view.findViewById<AutoCompleteTextView>(R.id.categorySearchDropdown).text?.toString()
-                        val price=view.findViewById<EditText>(R.id.priceSearchText).text?.toString()
+                        val minprice=this.minprice.text.toString()
+                        val maxprice=this.maxprice.text.toString()
                         val location=view.findViewById<EditText>(R.id.locationSearchText).text?.toString()
-                        listener.onDialogPositiveClick(title,category,price,location)
+                        listener.onDialogPositiveClick(title,category,minprice,maxprice,location)
                     })
                 .setNegativeButton("cancel",
                     DialogInterface.OnClickListener { dialog, id ->
@@ -93,7 +98,8 @@ class SearchDialogFragment: AppCompatDialogFragment(){
         fun onDialogPositiveClick(
             title: String?,
             category: String?,
-            price: String?,
+            minprice: String?,
+            maxprice: String?,
             location: String?
         )
         fun onDialogNegativeClick(dialog: DialogFragment)

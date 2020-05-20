@@ -24,31 +24,30 @@ class ItemListRepository {
             .whereEqualTo("userId", myId)
     }
 
-    fun getHigherItemsWithQuery(
+    fun getItemsWithQuery(
         title: String?,
         category: String?,
-        price: String?,
+        minprice: String?,
+        maxprice: String?,
         location: String?
     ): Query {
-        var q=firestoreDB.collection("items")
-            .whereGreaterThan("userId", myId)
-        if(!title.isNullOrEmpty())
-            q=q.whereEqualTo("title", title);
-        if(!price.isNullOrEmpty())
-            q=q.whereEqualTo("price", price);
+        var q:Query=firestoreDB.collection("items")
+        if(!minprice.isNullOrEmpty())
+            q=q.whereGreaterThan("price", minprice);
+        if(!maxprice.isNullOrEmpty())
+            q=q.whereLessThan("price", maxprice);
         if(!category.isNullOrEmpty())
             q=q.whereEqualTo("category", category);
         if(!location.isNullOrEmpty())
             q=q.whereEqualTo("location", location);
         return q
-
-
     }
 
     fun getLowerItemsWithQuery(
         title: String?,
         category: String?,
-        price: String?,
+        minprice: String?,
+        maxprice: String?,
         location: String?
     ): Query {
 
@@ -56,8 +55,10 @@ class ItemListRepository {
             .whereLessThan("userId", myId)
         if(!title.isNullOrEmpty())
             q=q.whereEqualTo("title", title);
-        if(!price.isNullOrEmpty())
-            q=q.whereEqualTo("price", price);
+        if(!minprice.isNullOrEmpty())
+                q=q.whereGreaterThan("price", minprice);
+        if(!maxprice.isNullOrEmpty())
+            q=q.whereLessThan("price", maxprice);
         if(!category.isNullOrEmpty())
             q=q.whereEqualTo("category", category);
         if(!location.isNullOrEmpty())
