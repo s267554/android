@@ -50,6 +50,7 @@
     <string name="clear">clear</string>
     <string name="interestedUsers">Utenti interessati</string>
     <string name="no_users">Nessun utente interessato</string>
+    <string name="buy">Compra</string>
 
 
     <string-array name="categories">

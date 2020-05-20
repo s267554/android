@@ -12,11 +12,11 @@ class ItemListRepository {
 
     fun getHigherItems(): Query {
         return firestoreDB.collection("items")
-            .whereGreaterThan("userId", myId)
+            .whereGreaterThan("userId", myId).whereGreaterThan("userId", myId).whereEqualTo("state", "Available")
     }
     fun getLowerItems(): Query {
         return firestoreDB.collection("items")
-            .whereLessThan("userId", myId)
+            .whereLessThan("userId", myId).whereGreaterThan("userId", myId).whereEqualTo("state", "Available")
     }
 
     fun getMyItems(): Query {
