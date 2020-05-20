@@ -24,6 +24,10 @@ class ItemListRepository {
             .whereEqualTo("userId", myId)
     }
 
+    fun getAllItems(): Query {
+        return firestoreDB.collection("items")
+    }
+
     fun getItemsWithQuery(
         title: String?,
         category: String?,
