@@ -17,8 +17,7 @@ import android.util.Log
 import android.util.LruCache
 import android.view.*
 import android.view.inputmethod.InputMethodManager
-import android.widget.AutoCompleteTextView
-import android.widget.Toast
+import android.widget.*
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -86,6 +85,11 @@ class EditItemFragment : Fragment() {
                 roundCardView.viewTreeObserver.removeOnGlobalLayoutListener(this)
             }
         })
+
+        //STATE SPINNER
+        val stateSpinner = view.findViewById<AutoCompleteTextView>(R.id.stateDropdown)
+        val stateValue = resources.getStringArray(R.array.item_state).toMutableList()
+        // CATEGORY SPINNER
         val itemsCategory = resources.getStringArray(R.array.categories).toMutableList()
         val categoryEditText = view.findViewById<AutoCompleteTextView>(R.id.categoryDropdown)
         if(savedInstanceState==null) {
@@ -98,6 +102,7 @@ class EditItemFragment : Fragment() {
                     priceEditText.setText(item.price.toString())
                     dateEditText.setText(item.expiryDate)
                     categoryEditText.setText(item.category, false)
+                    stateSpinner.setText(item.state)
                     if (item.imagePath.isNullOrEmpty()) {
                         image_view.setImageResource(R.drawable.sport_category_foreground)
                     } else {
@@ -245,6 +250,32 @@ class EditItemFragment : Fragment() {
             }
         })
 
+        //STATE SPINNER MANAGEMENT
+        val dropAdapter = DropdownAdapter(
+            requireContext(),
+            R.layout.list_item,
+            stateValue
+        )
+        stateSpinner?.setAdapter(dropAdapter)
+        stateSpinner.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(p: Editable?) {
+                if (p != null) {
+                    if (p.isEmpty() || p.isBlank()) {
+                        categoryTextField.error = getString(R.string.notEmpty)
+                    } else {
+                        categoryTextField.error = null
+                    }
+                }
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+        })
+
+
         //IMAGE MANAGEMENT
         registerForContextMenu(imageEdit)
         imageRotate.setOnClickListener{
@@ -332,6 +363,7 @@ class EditItemFragment : Fragment() {
         item.expiryDate = dateEditText.text.toString()
         item.category = categoryDropdown.text.toString()
         item.subcategory = subCategoryDropdown.text.toString()
+        item.state = stateDropdown.text.toString()
 
         // Update or create the image
         if(imageModified && image!=null) {

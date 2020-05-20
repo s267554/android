@@ -24,7 +24,7 @@ class ItemRepository {
     }
 
     fun getInterestedUsers(id : String): Query {
-        var q:Query=firestoreDB.collection("items").document(id).collection("interestedUsers")
-        return  q
+        var q:Query=firestoreDB.collection("items").document(id).collection("users")
+        return q
     }
 }

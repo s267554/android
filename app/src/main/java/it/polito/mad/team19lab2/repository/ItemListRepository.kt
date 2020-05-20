@@ -14,7 +14,6 @@ class ItemListRepository {
         return firestoreDB.collection("items")
             .whereEqualTo("userId", myId)
     }
-
     fun getItemsWithQuery(
         category: String?=null,
         minprice: String?=null,

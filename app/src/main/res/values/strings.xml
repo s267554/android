@@ -40,6 +40,11 @@
         <item>Automotive</item>
         <item>other</item>
     </string-array>
+    <string-array name="item_state">
+        <item>Available</item>
+        <item>Blocked</item>
+        <item>Sold</item>
+    </string-array>
 
     <!-- da ricontrollare-->
     <string name="profile_bar">Profile</string>
@@ -67,5 +72,7 @@
     <string name="upUnbound">"up to unbounded"</string>
     <string name="default_notification_channel_id" />
     <string name="fcm_message" />
+    <string name="no_users">No interested users</string>
+    <string name="buy">Buy this item</string>
 
 </resources>

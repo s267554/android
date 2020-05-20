@@ -2,15 +2,18 @@ package it.polito.mad.team19lab2.ui
 
 import InterestedUsersRecycleViewAdapter
 import android.content.ClipData
+import android.graphics.drawable.Icon
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.auth.data.model.User
 import com.google.firebase.auth.FirebaseAuth
@@ -34,6 +37,7 @@ class ItemDetailsFragment : Fragment() {
     private lateinit var idItem : String
     private var user = FirebaseAuth.getInstance().currentUser
     private var interestedUsers = ArrayList<UserShortModel>()
+    var f: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,6 +73,7 @@ class ItemDetailsFragment : Fragment() {
                 //CASE I AM THE USER
                 Log.d("USER", "i'm the user")
                 setHasOptionsMenu(true)
+                buyButton.visibility = View.GONE
                 itemVm.getInterestedUsers(idItem).observe(viewLifecycleOwner, Observer { users ->
                     interestedUsers= users as ArrayList<UserShortModel>
                     Log.d("userList", users.toString())
@@ -76,8 +81,8 @@ class ItemDetailsFragment : Fragment() {
                         layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
                         adapter =  InterestedUsersRecycleViewAdapter(interestedUsers)
                     }
-                    if(interestedUsers.size == 0){
-                        usersLabel.visibility=View.GONE
+                    if(interestedUsers.size == 0) {
+                        noUsers.visibility = View.VISIBLE
                     }
                 })
             }
@@ -87,6 +92,11 @@ class ItemDetailsFragment : Fragment() {
                 usersLabel.visibility=View.GONE
                 Log.d("USER", "i'm not the user")
                 setHasOptionsMenu(false)
+                buyButton.setOnClickListener {
+                    item.state = "Sold"
+                    itemVm.saveItem(item)
+                    Toast.makeText(this.context, "Item bought", Toast.LENGTH_SHORT).show()
+                }
             }
             if(item.imagePath.isNullOrEmpty()){
                 image_view.setImageResource(R.drawable.sport_category_foreground)
