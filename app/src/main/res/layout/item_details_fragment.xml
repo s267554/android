@@ -284,12 +284,24 @@
             android:id="@+id/interestedUsers"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:text="@string/interestedUsers"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ExpireIcon" />
+            app:layout_constraintTop_toBottomOf="@+id/buyButton" />
+
+        <Button
+            android:id="@+id/buyButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Buy this item"
+            app:layout_constraintBottom_toTopOf="@id/interestedUsers"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/expireTextView" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

@@ -14,8 +14,9 @@ data class ItemModel (
     var location: String,
     var expiryDate: String,
     var price: Float,
-    var sold: Boolean,
+    //var sold: Boolean,
+    var state: String,
     var userId: String
 ) : Parcelable{
-    constructor() : this("","","","","","","","", 0.0F, false, "")
+    constructor() : this("","","","","","","","", 0.0F, "Available", "")
 }

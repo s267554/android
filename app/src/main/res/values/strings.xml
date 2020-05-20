@@ -40,6 +40,11 @@
         <item>Automotive</item>
         <item>other</item>
     </string-array>
+    <string-array name="item_state">
+        <item>Available</item>
+        <item>Blocked</item>
+        <item>Sold</item>
+    </string-array>
 
     <!-- da ricontrollare-->
     <string name="profile_bar">Profile</string>
