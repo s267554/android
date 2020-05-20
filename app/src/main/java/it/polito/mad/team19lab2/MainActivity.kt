@@ -1,9 +1,11 @@
 package it.polito.mad.team19lab2
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
 import android.view.Menu
 import android.view.View
 import android.widget.AutoCompleteTextView
@@ -12,7 +14,10 @@ import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -27,6 +32,7 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
 import com.squareup.picasso.Picasso
+import it.polito.mad.team19lab2.ui.ItemDetailsFragment
 import it.polito.mad.team19lab2.ui.StateVO
 import it.polito.mad.team19lab2.viewModel.UserViewModel
 import kotlinx.android.synthetic.main.activity_main.*
@@ -211,29 +217,36 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        val navController = findNavController(R.id.nav_host_fragment)
-        //destination means source!
+
+            val navController = findNavController(R.id.nav_host_fragment)
+            //destination means source!
+
         when(navController.currentDestination?.id){
-            R.id.nav_item_detail ->
-                navController.navigate(R.id.action_nav_item_detail_to_nav_my_advertisement)
-            R.id.nav_on_sale ->
-                navController.navigate(R.id.action_nav_on_sale_to_nav_home)
-            R.id.nav_my_advertisement ->
-                navController.navigate(R.id.action_nav_my_advertisement_to_nav_home)
-            R.id.nav_home -> {
-                // Se sono in home mi chiude l'app, anche se ho il menù aperto
-                finish()
-            }
-            else ->{
-                super.onBackPressed()
-            }
-        }
-//        if(navController.currentDestination!!.id==R.id.nav_item_detail){//arrivo da item detail
-//            navController.navigate(R.id.action_nav_item_detail_to_nav_my_advertisement)
-//        }
-//        else
-//            super.onBackPressed()
-        }
+                R.id.nav_item_detail ->
+                    navController.navigate(R.id.action_nav_item_detail_to_nav_my_advertisement)
+                R.id.nav_on_sale ->
+                    navController.navigate(R.id.action_nav_on_sale_to_nav_home)
+                R.id.nav_my_advertisement ->
+                    navController.navigate(R.id.action_nav_my_advertisement_to_nav_home)
+                R.id.nav_home -> {
+                    val x = findViewById<DrawerLayout>(R.id.drawer_layout)
+                    if(x.isDrawerOpen(GravityCompat.START))
+                        x.closeDrawers()
+                    else
+                        finish()
+                }
+                else ->
+                    super.onBackPressed()
+             }
+    //        if(navController.currentDestination!!.id==R.id.nav_item_detail){//arrivo da item detail
+    //            navController.navigate(R.id.action_nav_item_detail_to_nav_my_advertisement)
+    //        }
+    //        else
+    //            super.onBackPressed()
+       }
+
+
+
 
     fun signOut(view: View) {
 
