@@ -49,6 +49,7 @@
     <string name="search">Cerca</string>
     <string name="clear">clear</string>
     <string name="interestedUsers">Utenti interessati</string>
+    <string name="no_users">Nessun utente interessato</string>
 
 
     <string-array name="categories">

@@ -77,7 +77,7 @@ class ItemDetailsFragment : Fragment() {
                         adapter =  InterestedUsersRecycleViewAdapter(interestedUsers)
                     }
                     if(interestedUsers.size == 0){
-                        usersLabel.visibility=View.GONE
+                        noUsers.visibility=View.VISIBLE
                     }
                 })
             }

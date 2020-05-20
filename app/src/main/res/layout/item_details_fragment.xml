@@ -268,17 +268,18 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/userList"
-            android:layout_width="0dp"
             android:name="it.polito.mad.team19lab2.UserFragment"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/interestedUsers"
-            tools:listitem="@layout/fragment_user"
             tools:context=".ui.ItemDetailsFragment"
-            />
+            tools:listitem="@layout/fragment_user">
+
+        </androidx.recyclerview.widget.RecyclerView>
 
         <TextView
             android:id="@+id/interestedUsers"
@@ -290,6 +291,17 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ExpireIcon" />
+
+        <TextView
+            android:id="@+id/noUsers"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/no_users"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/interestedUsers" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

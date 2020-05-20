@@ -67,5 +67,6 @@
     <string name="upUnbound">"up to unbounded"</string>
     <string name="default_notification_channel_id" />
     <string name="fcm_message" />
+    <string name="no_users">No interested users</string>
 
 </resources>
