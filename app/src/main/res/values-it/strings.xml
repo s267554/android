@@ -17,6 +17,7 @@
         <string name="location">Luogo</string>
         <string name="expiryDate">Scadenza</string>
         <string name="edit">Modifica</string>
+    <string name="nofilter">nessun filtro</string>
 
         <!-- TODO: Remove or change this placeholder text -->
         <string name="title">Titolo</string>

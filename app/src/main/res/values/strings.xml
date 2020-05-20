@@ -65,4 +65,12 @@
     <string name="clear">clear</string>
     <string name="interestedUsers">Interested users</string>
     <string name="view">view</string>
+    <string name="nofilter">no filter</string>
+    <string name="from">"from "</string>
+    <string name="upTo">"up to "</string>
+    <string name="pUnbound">up to unbounded</string>
+    <string name="upUnbound">"up to unbounded"</string>
+    <string name="default_notification_channel_id" />
+    <string name="fcm_message" />
+
 </resources>

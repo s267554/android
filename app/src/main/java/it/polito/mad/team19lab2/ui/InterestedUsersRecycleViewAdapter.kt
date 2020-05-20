@@ -33,7 +33,7 @@ class InterestedUsersRecycleViewAdapter(
 
         holder.mViewButton.setOnClickListener {
             it.findNavController().navigate(
-                R.id.action_nav_my_advertisement_to_nav_edit_item,
+                R.id.action_nav_item_detail_to_nav_show_profile,
                 bundleOf("user_id" to user.id)
             )
         }

@@ -21,8 +21,9 @@ class ItemListViewModel : ViewModel() {
 
     fun getAllItems(): MutableLiveData<List<ItemModel>>{
         itemsList.clear()
-        takeLiveItemsOnSaleFromQuery(itemListRepository.getHigherItems(),null)
-        takeLiveItemsOnSaleFromQuery(itemListRepository.getLowerItems(),null)
+        //takeLiveItemsOnSaleFromQuery(itemListRepository.getHigherItems(),null)
+        //takeLiveItemsOnSaleFromQuery(itemListRepository.getLowerItems(),null)
+        takeOtherFromQuery(itemListRepository.getAllItems(),null)
         return liveItems
     }
 
@@ -85,9 +86,39 @@ class ItemListViewModel : ViewModel() {
         })
     }
 
+    private fun takeOtherFromQuery(q:Query,title: String?){
+        q.addSnapshotListener(EventListener<QuerySnapshot> { value, e ->
+            if (e != null) {
+                Log.d(TAG, "Listen failed.", e)
+                liveItems.value = null
+                return@EventListener
+            }
+            Log.d("vittoz",value?.size().toString())
+            for (doc in value!!) {
+                var item = doc.toObject(ItemModel::class.java)
+
+                if(item.userId!=myId) {
+                    if (title.isNullOrEmpty()){
+                        itemsList.add(item)
+                        Log.d("vittoz",item.title)
+                    }
+                    else if(item.title.contains(title,true)){
+                        itemsList.add(item)
+                        Log.d("vittoz",item.title)
+                    }
+                }
+
+            }
+            var tmpArray=ArrayList(itemsList)
+            liveItems.value = tmpArray
+            itemsList.clear()
+                    })
+    }
+
+
     fun getQueryItems(title: String?, category: String?, minprice: String?,maxprice: String?, location: String?): MutableLiveData<List<ItemModel>> {
         itemsList.clear()
-        takeLiveItemsOnSaleFromQuery(itemListRepository.getItemsWithQuery(title,category,minprice,maxprice,location),title)
+        takeOtherFromQuery(itemListRepository.getItemsWithQuery(title,category,minprice,maxprice,location),title)
         //takeLiveItemsOnSaleFromQuery(itemListRepository.getLowerItemsWithQuery(title,category,minprice,maxprice,location))
         return liveItems
     }

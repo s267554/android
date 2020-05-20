@@ -65,7 +65,7 @@ class ItemDetailsFragment : Fragment() {
         }
         val recycler: RecyclerView = view.findViewById(R.id.userList)
         var usersLabel = view.findViewById<TextView>(R.id.interestedUsers)
-        itemVm.getItem(idItem).observe(viewLifecycleOwner, Observer {
+        itemVm.getItem(idItem).observe(viewLifecycleOwner, Observer { it ->
             item = it
             Log.d("USER", it.userId)
             Log.d("USER", user?.uid)
@@ -76,14 +76,19 @@ class ItemDetailsFragment : Fragment() {
 
                 buyButton.visibility = View.GONE
                 itemVm.getInterestedUsers(idItem).observe(viewLifecycleOwner, Observer {
-                    interestedUsers= it as ArrayList<UserShortModel>
-                    with(recycler) {
-                        layoutManager = LinearLayoutManager(context)
-                        adapter =  InterestedUsersRecycleViewAdapter(interestedUsers)
-                    }
-                    if(interestedUsers.size == 0){
-                        usersLabel.visibility=View.GONE
-                    }
+                    interestedUsers = it as ArrayList<UserShortModel>
+                    itemVm.getInterestedUsers(idItem)
+                        .observe(viewLifecycleOwner, Observer { users ->
+                            interestedUsers = users as ArrayList<UserShortModel>
+                            Log.d("userList", users.toString())
+                            with(recycler) {
+                                layoutManager = LinearLayoutManager(context)
+                                adapter = InterestedUsersRecycleViewAdapter(interestedUsers)
+                            }
+                            if (interestedUsers.size == 0) {
+                                usersLabel.visibility = View.GONE
+                            }
+                        })
                 })
             }
             else{
