@@ -60,4 +60,6 @@
     <string name="clear">clear</string>
     <string name="interestedUsers">Interested users</string>
     <string name="view">view</string>
+    <string name="default_notification_channel_id" />
+    <string name="fcm_message" />
 </resources>
