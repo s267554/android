@@ -8,6 +8,8 @@ import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import it.polito.mad.team19lab2.data.UserModel
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class UserRepository {
 
@@ -35,7 +37,11 @@ class UserRepository {
 
     fun createUser(): DocumentReference {
         var documentReference = firestoreDB.collection("utenti").document(user!!.uid)
-        documentReference.set(UserModel(user!!.email.toString(), user!!.uid))
+        Log.d("xxxx", "eccomi")
+        var newUser = UserModel(user!!.email.toString(), user!!.uid)
+        newUser.nickname = "avatar${System.currentTimeMillis().toString().subSequence(0,10)}"
+        newUser.fullname = user!!.email?.split("@")?.get(0) ?: "fullname"
+        documentReference.set(newUser)
         return documentReference
     }
 

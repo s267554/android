@@ -96,7 +96,7 @@ class OnSaleListFragment: Fragment(),SearchDialogFragment.NoticeDialogListener{
             }
         }
         itemListVm.getAllItems().observe(viewLifecycleOwner, Observer {
-            if(!search){
+            if(!search && it!=null){
                 onSaleArray= it as ArrayList<ItemModel>
                 Log.d("vittoz", "all observer: "+onSaleArray.toString())
             with(r) {

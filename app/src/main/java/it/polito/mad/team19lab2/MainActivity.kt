@@ -89,27 +89,32 @@ class MainActivity : AppCompatActivity() {
             )//To add navigation support to the default action bar
             navView.setupWithNavController(navController)
             userVm.getOrCreateUser().observe(this, Observer{ item ->
-                nav_view.getHeaderView(0).findViewById<TextView>(R.id.header_title_textView).text = item.fullname
-                nav_view.getHeaderView(0).findViewById<TextView>(R.id.header_subtitle_textView).text = item.nickname
-                if(!item.imagePath.isNullOrEmpty()) {
-                    val storageRef = storage.reference
-                    storageRef.child(item.imagePath).downloadUrl.addOnSuccessListener {
-                        Picasso.get().load(it).noFade().placeholder(R.drawable.progress_animation)
-                            .into(
-                                nav_view.getHeaderView(0).findViewById(R.id.header_imageView),
-                                object : com.squareup.picasso.Callback {
-                                    override fun onSuccess() {
-                                    }
+                if(item != null) {
+                    nav_view.getHeaderView(0)
+                        .findViewById<TextView>(R.id.header_title_textView).text = item.fullname
+                    nav_view.getHeaderView(0)
+                        .findViewById<TextView>(R.id.header_subtitle_textView).text = item.nickname
+                    if (!item.imagePath.isNullOrEmpty()) {
+                        val storageRef = storage.reference
+                        storageRef.child(item.imagePath).downloadUrl.addOnSuccessListener {
+                            Picasso.get().load(it).noFade()
+                                .placeholder(R.drawable.progress_animation)
+                                .into(
+                                    nav_view.getHeaderView(0).findViewById(R.id.header_imageView),
+                                    object : com.squareup.picasso.Callback {
+                                        override fun onSuccess() {
+                                        }
 
-                                    override fun onError(e: java.lang.Exception?) {
-                                    }
-                                })
-                    }.addOnFailureListener {
-                        Log.d("image", "error in download image")
+                                        override fun onError(e: java.lang.Exception?) {
+                                        }
+                                    })
+                        }.addOnFailureListener {
+                            Log.d("image", "error in download image")
+                        }
+                    } else {
+                        nav_view.getHeaderView(0).findViewById<ImageView>(R.id.header_imageView)
+                            .setImageBitmap(null)
                     }
-                }
-                else{
-                    nav_view.getHeaderView(0).findViewById<ImageView>(R.id.header_imageView).setImageBitmap(null)
                 }
             })
         }
@@ -145,21 +150,32 @@ class MainActivity : AppCompatActivity() {
                 setupActionBarWithNavController(navController, appBarConfiguration)//To add navigation support to the default action bar
                 navView.setupWithNavController(navController)
                 userVm.getOrCreateUser().observe(this, Observer { item ->
-                    nav_view.getHeaderView(0).findViewById<TextView>(R.id.header_title_textView).text = item.fullname
-                    nav_view.getHeaderView(0).findViewById<TextView>(R.id.header_subtitle_textView).text = item.nickname
-                    val storageRef = storage.reference
-                    storageRef.child(item.imagePath).downloadUrl.addOnSuccessListener {
-                        Picasso.get().load(it).noFade().placeholder(R.drawable.progress_animation)
-                            .into(nav_view.getHeaderView(0).findViewById(R.id.header_imageView), object : com.squareup.picasso.Callback {
-                                override fun onSuccess() {
-                                }
-                                override fun onError(e: java.lang.Exception?) {
-                                }
-                            })
-                    }.addOnFailureListener {
-                        Log.d("image", "error in download image")
+                    if(item != null) {
+                        nav_view.getHeaderView(0)
+                            .findViewById<TextView>(R.id.header_title_textView).text = item.fullname
+                        nav_view.getHeaderView(0)
+                            .findViewById<TextView>(R.id.header_subtitle_textView).text =
+                            item.nickname
+                        val storageRef = storage.reference
+                        if (!item.imagePath.isNullOrEmpty()) {
+                            storageRef.child(item.imagePath).downloadUrl.addOnSuccessListener {
+                                Picasso.get().load(it).noFade()
+                                    .placeholder(R.drawable.progress_animation)
+                                    .into(
+                                        nav_view.getHeaderView(0)
+                                            .findViewById(R.id.header_imageView),
+                                        object : com.squareup.picasso.Callback {
+                                            override fun onSuccess() {
+                                            }
+
+                                            override fun onError(e: java.lang.Exception?) {
+                                            }
+                                        })
+                            }.addOnFailureListener {
+                                Log.d("image", "error in download image")
+                            }
+                        }
                     }
-                    // download image
                 })
             } else {
                Log.d("signIn", "Sign in failed")
