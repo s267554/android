@@ -1,8 +1,6 @@
 package it.polito.mad.team19lab2.ui
 
 import InterestedUsersRecycleViewAdapter
-import android.content.ClipData
-import android.graphics.drawable.Icon
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -13,9 +11,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.firebase.ui.auth.data.model.User
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
@@ -31,6 +28,7 @@ import kotlinx.android.synthetic.main.item_details_fragment.*
 
 class ItemDetailsFragment : Fragment() {
 
+    private val TAG = "ITEM_DETAIL_FRAGMENT"
     private lateinit var item: ItemModel
     lateinit var storage: FirebaseStorage
     private val itemVm: ItemViewModel by viewModels()
@@ -112,6 +110,13 @@ class ItemDetailsFragment : Fragment() {
             categoryTextView.text = item.category
             subCategoryTextView.text=item.subcategory
         })
+
+        // TODO: if I am already present in users list then change Action Button to "check" symbol
+        val fab: FloatingActionButton = view.findViewById(R.id.fab)
+        fab.setOnClickListener {
+            Log.d(TAG, "iditem: $idItem")
+            itemVm.addInterestedUser(idItem)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, menuInflater: MenuInflater) {

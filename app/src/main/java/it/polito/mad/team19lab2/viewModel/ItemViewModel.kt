@@ -4,7 +4,6 @@ package it.polito.mad.team19lab2.viewModel
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.EventListener
 import com.google.firebase.firestore.Query
@@ -12,11 +11,11 @@ import com.google.firebase.firestore.QuerySnapshot
 import it.polito.mad.team19lab2.data.ItemModel
 import it.polito.mad.team19lab2.data.UserShortModel
 import it.polito.mad.team19lab2.repository.ItemRepository
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
+import it.polito.mad.team19lab2.repository.UserRepository
 
 class ItemViewModel : ViewModel() {
     var itemRepository = ItemRepository()
+    var userRepository = UserRepository()
     var TAG = "ITEM_VIEW_MODEL"
     var liveItem: MutableLiveData<ItemModel> = MutableLiveData()
     var liveUsers : MutableLiveData<List<UserShortModel>> = MutableLiveData()
@@ -65,4 +64,23 @@ class ItemViewModel : ViewModel() {
             userList.clear()
         })
     }
+
+    fun addInterestedUser(iid: String) {
+        // TODO: move some to repository?
+        // TODO: better way to get my own UserShortModel
+        // TODO: switch to coroutines maybe?
+        val query = userRepository.getProfile().get()
+        query.addOnSuccessListener {
+            if (it != null) {
+                Log.d(TAG, "value: $it")
+                val usm = it.toObject(UserShortModel::class.java)
+                Log.d(TAG, "usm = ${usm.toString()}")
+                if (usm != null) {
+                    itemRepository.firestoreDB.collection("items").document(iid)
+                        .collection("users").add(usm)
+                }
+            }
+        }
+    }
+
 }
