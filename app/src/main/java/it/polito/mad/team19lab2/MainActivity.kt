@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.Gravity
 import android.view.Menu
 import android.view.View
+import android.view.ViewManager
 import android.widget.AutoCompleteTextView
 import android.widget.ImageView
 import android.widget.TextView
@@ -21,6 +22,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
+import androidx.navigation.get
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -35,6 +37,8 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
 import com.squareup.picasso.Picasso
+import it.polito.mad.team19lab2.data.UserModel
+import it.polito.mad.team19lab2.repository.UserRepository
 import it.polito.mad.team19lab2.ui.ItemDetailsFragment
 import it.polito.mad.team19lab2.ui.StateVO
 import it.polito.mad.team19lab2.viewModel.UserViewModel
@@ -120,20 +124,7 @@ class MainActivity : AppCompatActivity() {
                 }
             })
         }
-        FirebaseInstanceId.getInstance().instanceId
-            .addOnCompleteListener(OnCompleteListener { task ->
-                if (!task.isSuccessful) {
-                    Log.w(TAG, "getInstanceId failed", task.exception)
-                    return@OnCompleteListener
-                }
 
-                // Get new Instance ID token
-                val token = task.result?.token
-
-                // Log and toast
-                Log.d(TAG, token)
-                //Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
-            })
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -178,6 +169,26 @@ class MainActivity : AppCompatActivity() {
                         }
                     }
                 })
+                FirebaseInstanceId.getInstance().instanceId
+                    .addOnCompleteListener(OnCompleteListener { task ->
+                        if (!task.isSuccessful) {
+                            Log.w(TAG, "getInstanceId failed", task.exception)
+                            return@OnCompleteListener
+                        }
+                        // Get new Instance ID token
+                        val token = task.result?.token
+
+                        val repo = UserRepository()
+                        repo.getProfile().get().addOnSuccessListener {
+                            val usm = it.toObject(UserModel::class.java)
+                            if (usm != null) {
+                                usm.notificationToken = token
+                                repo.saveProfile(usm)
+                            }
+                        }
+                        Log.d(TAG, token)
+                    })
+
             } else {
                Log.d("signIn", "Sign in failed")
             }
@@ -195,14 +206,14 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment)
         //destination means source!
         when(navController.currentDestination?.id){
-            R.id.nav_item_detail ->{
-                navController.navigate(R.id.action_nav_item_detail_to_nav_my_advertisement)
-                return false
-            }
-            R.id.nav_on_sale -> {
-                navController.navigate(R.id.action_nav_on_sale_to_nav_home)
-                return false
-                }
+//            R.id.nav_item_detail ->{
+//                navController.navigate(R.id.action_nav_item_detail_to_nav_my_advertisement)
+//                return false
+//            }
+//            R.id.nav_on_sale -> {
+//                navController.navigate(R.id.action_nav_on_sale_to_nav_home)
+//                return false
+//                }
             R.id.nav_my_advertisement ->{
                 navController.navigate(R.id.action_nav_my_advertisement_to_nav_home)
                 return false
@@ -241,10 +252,10 @@ class MainActivity : AppCompatActivity() {
             //destination means source!
 
         when(navController.currentDestination?.id){
-                R.id.nav_item_detail ->
-                    navController.navigate(R.id.action_nav_item_detail_to_nav_my_advertisement)
-                R.id.nav_on_sale ->
-                    navController.navigate(R.id.action_nav_on_sale_to_nav_home)
+//                R.id.nav_item_detail ->
+//                    navController.navigate(R.id.action_nav_item_detail_to_nav_my_advertisement)
+//                R.id.nav_on_sale ->
+//                    navController.navigate(R.id.action_nav_on_sale_to_nav_home)
                 R.id.nav_my_advertisement ->
                     navController.navigate(R.id.action_nav_my_advertisement_to_nav_home)
                 R.id.nav_home -> {

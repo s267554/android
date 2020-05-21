@@ -25,11 +25,11 @@
             android:id="@+id/action_nav_home_to_nav_my_advertisement"
             app:destination="@id/nav_my_advertisement" />
         <action
-            android:id="@+id/action_nav_home_to_nav_on_sale"
-            app:destination="@id/nav_on_sale" />
-        <action
             android:id="@+id/action_nav_home_to_nav_edit_profile"
             app:destination="@id/nav_edit_profile" />
+        <action
+            android:id="@+id/action_nav_home_to_nav_item_detail"
+            app:destination="@id/nav_item_detail" />
     </fragment>
     <fragment
         android:id="@+id/nav_item_detail"
@@ -38,9 +38,14 @@
         <argument
             android:name="item_id1"
             app:argType="string" />
+        <argument
+            android:name="source"
+            app:argType="string" />
         <action
             android:id="@+id/action_nav_item_detail_to_nav_edit_item"
             app:destination="@id/nav_edit_item"
+            app:popUpTo="@id/nav_item_detail"
+            app:popUpToInclusive="true"
             app:launchSingleTop="true" />
         <action
             android:id="@+id/action_nav_item_detail_to_nav_my_advertisement"
@@ -61,7 +66,7 @@
         <action
             android:id="@+id/action_nav_edit_item_to_nav_item_detail"
             app:destination="@id/nav_item_detail"
-            app:popUpTo="@id/nav_item_detail"
+            app:popUpTo="@id/nav_edit_item"
             app:popUpToInclusive="true" />
     </fragment>
     <fragment
@@ -94,15 +99,6 @@
             app:destination="@id/nav_edit_item" />
         <action
             android:id="@+id/action_nav_my_advertisement_to_nav_home"
-            app:destination="@id/nav_home" />
-    </fragment>
-    <fragment
-        android:id="@+id/nav_on_sale"
-        android:name="it.polito.mad.team19lab2.ui.ItemDetailsFragment"
-        android:label="@string/item_deatails_bar">
-
-        <action
-            android:id="@+id/action_nav_on_sale_to_nav_home"
             app:destination="@id/nav_home" />
     </fragment>
 </navigation>
