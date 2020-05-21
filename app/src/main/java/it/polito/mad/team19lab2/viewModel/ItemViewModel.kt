@@ -65,8 +65,7 @@ class ItemViewModel : ViewModel() {
         })
     }
 
-    fun addInterestedUser(iid: String) {
-        // TODO: move some to repository?
+    fun addInterestedUser(id: String) {
         // TODO: better way to get my own UserShortModel
         // TODO: switch to coroutines maybe?
         val query = userRepository.getProfile().get()
@@ -76,11 +75,21 @@ class ItemViewModel : ViewModel() {
                 val usm = it.toObject(UserShortModel::class.java)
                 Log.d(TAG, "usm = ${usm.toString()}")
                 if (usm != null) {
-                    itemRepository.firestoreDB.collection("items").document(iid)
-                        .collection("users").add(usm)
+                    itemRepository.addInterestedUser(usm, id )
                 }
             }
         }
     }
 
+    fun removeInterestedUser(id: String){
+        val query = userRepository.getProfile().get()
+        query.addOnSuccessListener {
+            if (it != null) {
+                val usm = it.toObject(UserShortModel::class.java)
+                if (usm != null) {
+                    itemRepository.removeInterestedUser(usm, id)
+                }
+            }
+        }
+    }
 }

@@ -20,16 +20,14 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginStart="@dimen/fab_margin"
             android:layout_marginTop="@dimen/fab_margin"
             android:layout_marginEnd="@dimen/fab_margin"
-            android:layout_marginBottom="@dimen/fab_margin"
+            app:backgroundTint="@color/colorAccent"
+            app:elevation="1dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:backgroundTint="@color/colorAccent"
-            app:srcCompat="@drawable/ic_add_black_48dp"
-            app:elevation="1dp"
-            app:pressedTranslationZ="1dp"/>
+            app:pressedTranslationZ="1dp"
+            app:srcCompat="@drawable/baseline_favorite_border_black_48dp" />
 
         />
 

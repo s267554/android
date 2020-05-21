@@ -36,6 +36,7 @@ class ItemDetailsFragment : Fragment() {
     private var user = FirebaseAuth.getInstance().currentUser
     private var interestedUsers = ArrayList<UserShortModel>()
     var f: Boolean = false
+    var favourite: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,13 +66,11 @@ class ItemDetailsFragment : Fragment() {
         var usersLabel = view.findViewById<TextView>(R.id.interestedUsers)
         itemVm.getItem(idItem).observe(viewLifecycleOwner, Observer { it ->
             item = it
-            Log.d("USER", it.userId)
-            Log.d("USER", user?.uid)
             if(it.userId == user?.uid ?: ""){
                 //CASE I AM THE USER
-                Log.d("USER", "i'm the user")
                 setHasOptionsMenu(true)
                 buyButton.visibility = View.GONE
+                fab.visibility=View.GONE
                 itemVm.getInterestedUsers(idItem).observe(viewLifecycleOwner, Observer { users ->
                     interestedUsers= users as ArrayList<UserShortModel>
                     Log.d("userList", users.toString())
@@ -95,6 +94,32 @@ class ItemDetailsFragment : Fragment() {
                     itemVm.saveItem(item)
                     Toast.makeText(this.context, "Item bought", Toast.LENGTH_SHORT).show()
                 }
+                val fab: FloatingActionButton = view.findViewById(R.id.fab)
+                itemVm.getInterestedUsers(idItem).observe(viewLifecycleOwner, Observer { users ->
+                    interestedUsers= users as ArrayList<UserShortModel>
+                    for(intUser in interestedUsers){
+                        if(intUser.id == user?.uid ?: ""){
+                            favourite=true
+                            fab.setImageResource(R.drawable.baseline_favorite_black_48dp)
+                            break
+                        }
+                    }
+                })
+                fab.setOnClickListener {
+                    Log.d(TAG, "iditem: $idItem")
+                    if(!favourite) {
+                        itemVm.addInterestedUser(idItem)
+                        favourite=true
+                        fab.setImageResource(R.drawable.baseline_favorite_black_48dp)
+                        Toast.makeText(this.context, "Owner notified of your interest", Toast.LENGTH_LONG).show()
+                    }
+                    else{
+                        itemVm.removeInterestedUser(idItem)
+                        favourite=false
+                        fab.setImageResource(R.drawable.baseline_favorite_border_black_48dp)
+                        Toast.makeText(this.context, "Item removed from your interests", Toast.LENGTH_LONG).show()
+                    }
+                }
             }
             if(item.imagePath.isNullOrEmpty()){
                 image_view.setImageResource(R.drawable.sport_category_foreground)
@@ -112,11 +137,6 @@ class ItemDetailsFragment : Fragment() {
         })
 
         // TODO: if I am already present in users list then change Action Button to "check" symbol
-        val fab: FloatingActionButton = view.findViewById(R.id.fab)
-        fab.setOnClickListener {
-            Log.d(TAG, "iditem: $idItem")
-            itemVm.addInterestedUser(idItem)
-        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, menuInflater: MenuInflater) {

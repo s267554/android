@@ -105,7 +105,10 @@ class EditItemFragment : Fragment() {
                     priceEditText.setText(item.price.toString())
                     dateEditText.setText(item.expiryDate)
                     categoryEditText.setText(item.category, false)
-                    stateSpinner.setText(item.state)
+                    if(!item.state.isNullOrEmpty())
+                        stateSpinner.setText(item.state)
+                    else
+                        stateSpinner.setText("Available")
                     if (item.imagePath.isNullOrEmpty()) {
                         image_view.setImageResource(R.drawable.sport_category_foreground)
                     } else {
@@ -140,6 +143,7 @@ class EditItemFragment : Fragment() {
                 priceTextField.error = getString(R.string.notEmpty)
                 dateTextField.error = getString(R.string.notEmpty)
                 categoryTextField.error = getString(R.string.notEmpty)
+                stateSpinner.setText("Available")
             }
         }
         titleEditText.addTextChangedListener(object : TextWatcher {
