@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.Gravity
 import android.view.Menu
 import android.view.View
+import android.view.ViewManager
 import android.widget.AutoCompleteTextView
 import android.widget.ImageView
 import android.widget.TextView
@@ -21,6 +22,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
+import androidx.navigation.get
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -195,14 +197,14 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment)
         //destination means source!
         when(navController.currentDestination?.id){
-            R.id.nav_item_detail ->{
-                navController.navigate(R.id.action_nav_item_detail_to_nav_my_advertisement)
-                return false
-            }
-            R.id.nav_on_sale -> {
-                navController.navigate(R.id.action_nav_on_sale_to_nav_home)
-                return false
-                }
+//            R.id.nav_item_detail ->{
+//                navController.navigate(R.id.action_nav_item_detail_to_nav_my_advertisement)
+//                return false
+//            }
+//            R.id.nav_on_sale -> {
+//                navController.navigate(R.id.action_nav_on_sale_to_nav_home)
+//                return false
+//                }
             R.id.nav_my_advertisement ->{
                 navController.navigate(R.id.action_nav_my_advertisement_to_nav_home)
                 return false
@@ -241,10 +243,10 @@ class MainActivity : AppCompatActivity() {
             //destination means source!
 
         when(navController.currentDestination?.id){
-                R.id.nav_item_detail ->
-                    navController.navigate(R.id.action_nav_item_detail_to_nav_my_advertisement)
-                R.id.nav_on_sale ->
-                    navController.navigate(R.id.action_nav_on_sale_to_nav_home)
+//                R.id.nav_item_detail ->
+//                    navController.navigate(R.id.action_nav_item_detail_to_nav_my_advertisement)
+//                R.id.nav_on_sale ->
+//                    navController.navigate(R.id.action_nav_on_sale_to_nav_home)
                 R.id.nav_my_advertisement ->
                     navController.navigate(R.id.action_nav_my_advertisement_to_nav_home)
                 R.id.nav_home -> {
