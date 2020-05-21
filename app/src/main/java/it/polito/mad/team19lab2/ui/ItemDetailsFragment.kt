@@ -10,6 +10,9 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -23,6 +26,7 @@ import it.polito.mad.team19lab2.R
 import it.polito.mad.team19lab2.data.ItemModel
 import it.polito.mad.team19lab2.data.UserShortModel
 import it.polito.mad.team19lab2.viewModel.ItemViewModel
+import it.polito.mad.team19lab2.viewModel.UserViewModel
 import kotlinx.android.synthetic.main.item_details_fragment.*
 
 
@@ -32,11 +36,15 @@ class ItemDetailsFragment : Fragment() {
     private lateinit var item: ItemModel
     lateinit var storage: FirebaseStorage
     private val itemVm: ItemViewModel by viewModels()
+    private val userVm: UserViewModel by viewModels()
     private lateinit var idItem : String
+    private lateinit var sellerUser:String
     private var user = FirebaseAuth.getInstance().currentUser
     private var interestedUsers = ArrayList<UserShortModel>()
+    private var listenerSet=false
     var f: Boolean = false
     var favourite: Boolean = false
+    lateinit var navC:NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,6 +79,9 @@ class ItemDetailsFragment : Fragment() {
                 setHasOptionsMenu(true)
                 buyButton.visibility = View.GONE
                 fab.visibility=View.GONE
+                seller_textView.visibility=View.GONE
+                materialCardView3.visibility=View.GONE
+
                 itemVm.getInterestedUsers(idItem).observe(viewLifecycleOwner, Observer { users ->
                     interestedUsers= users as ArrayList<UserShortModel>
                     Log.d("userList", users.toString())
@@ -87,6 +98,11 @@ class ItemDetailsFragment : Fragment() {
                 //CASE I AM NOT THE USER
                 userList.visibility=View.GONE
                 usersLabel.visibility=View.GONE
+                userVm.getUser(item.userId).observe(viewLifecycleOwner, Observer { user ->
+                    sellerUser=user.id
+                    seller_fullname.setText(user.fullname)
+                    seller_nickname.setText(user.nickname)
+                })
                 Log.d("USER", "i'm not the user")
                 setHasOptionsMenu(false)
                 buyButton.setOnClickListener {
@@ -136,7 +152,24 @@ class ItemDetailsFragment : Fragment() {
             subCategoryTextView.text=item.subcategory
         })
 
+
+            seller_view_button.setOnClickListener {
+                Log.d("seller", sellerUser+ "  <  "+it.toString())
+                if(it!=null&&!sellerUser.isEmpty()){
+                    Log.d("seller", findNavController().graph.toString())
+                    Log.d("seller", sellerUser)
+                    Navigation.findNavController(requireView()).navigate(R.id.action_nav_item_detail_to_nav_show_profile,bundleOf("user_id" to sellerUser))
+                } }
+
+
+
+
         // TODO: if I am already present in users list then change Action Button to "check" symbol
+    }
+
+    fun navigateToUserProfile(){
+        findNavController().
+        navigate(R.id.action_nav_item_detail_to_nav_show_profile,bundleOf("user_id" to item.userId))
     }
 
     override fun onCreateOptionsMenu(menu: Menu, menuInflater: MenuInflater) {

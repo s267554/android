@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
@@ -52,6 +53,7 @@ class OnSaleListFragment: Fragment(),SearchDialogFragment.NoticeDialogListener{
     ): View? {
         val view = inflater.inflate(R.layout.fragment_onsale_list, container, false)
         r= view.findViewById(R.id.onsale_list)
+        Log.d("seller2", findNavController().graph.toString())
         emptyList=view.findViewById<TextView>(R.id.empty_list)
         clearBotton=view.findViewById(R.id.button_clear_filter)
         modifyBotton=view.findViewById(R.id.modify_query_button)
