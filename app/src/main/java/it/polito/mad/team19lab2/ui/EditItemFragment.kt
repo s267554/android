@@ -214,6 +214,8 @@ class EditItemFragment : Fragment() {
         year = if(dateEditText.text.isNullOrBlank()) c.get(Calendar.YEAR) else dateEditText.text.toString().split("/")[2].toInt()
         month = if(dateEditText.text.isNullOrBlank()) c.get(Calendar.MONTH) else dateEditText.text.toString().split("/")[1].toInt()-1
         day = if(dateEditText.text.isNullOrBlank() && day == 0) c.get(Calendar.DAY_OF_MONTH) else dateEditText.text.toString().split("/")[0].toInt()
+        val calendar: Calendar = GregorianCalendar(year, month, day+1)
+        timestamp=Timestamp(Date(calendar.timeInMillis))
         dateEditText.setOnClickListener {
             val datePickerDialog = activity?.let {
                 DatePickerDialog(
