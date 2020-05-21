@@ -35,6 +35,8 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
 import com.squareup.picasso.Picasso
+import it.polito.mad.team19lab2.data.UserModel
+import it.polito.mad.team19lab2.repository.UserRepository
 import it.polito.mad.team19lab2.ui.ItemDetailsFragment
 import it.polito.mad.team19lab2.ui.StateVO
 import it.polito.mad.team19lab2.viewModel.UserViewModel
@@ -120,20 +122,7 @@ class MainActivity : AppCompatActivity() {
                 }
             })
         }
-        FirebaseInstanceId.getInstance().instanceId
-            .addOnCompleteListener(OnCompleteListener { task ->
-                if (!task.isSuccessful) {
-                    Log.w(TAG, "getInstanceId failed", task.exception)
-                    return@OnCompleteListener
-                }
 
-                // Get new Instance ID token
-                val token = task.result?.token
-
-                // Log and toast
-                Log.d(TAG, token)
-                //Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
-            })
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -178,6 +167,26 @@ class MainActivity : AppCompatActivity() {
                         }
                     }
                 })
+                FirebaseInstanceId.getInstance().instanceId
+                    .addOnCompleteListener(OnCompleteListener { task ->
+                        if (!task.isSuccessful) {
+                            Log.w(TAG, "getInstanceId failed", task.exception)
+                            return@OnCompleteListener
+                        }
+                        // Get new Instance ID token
+                        val token = task.result?.token
+
+                        val repo = UserRepository()
+                        repo.getProfile().get().addOnSuccessListener {
+                            val usm = it.toObject(UserModel::class.java)
+                            if (usm != null) {
+                                usm.notificationToken = token
+                                repo.saveProfile(usm)
+                            }
+                        }
+                        Log.d(TAG, token)
+                    })
+
             } else {
                Log.d("signIn", "Sign in failed")
             }

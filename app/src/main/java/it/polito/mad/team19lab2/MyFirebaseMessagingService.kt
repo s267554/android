@@ -95,14 +95,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     private fun sendRegistrationToServer(token: String?) {
         // TODO: add multiple tokens for each device
         Log.d(TAG, "sendRegistrationTokenToServer($token)")
-        val repo = UserRepository()
-        repo.getProfile().get().addOnSuccessListener {
-            val usm = it.toObject(UserModel::class.java)
-            if (usm != null) {
-                usm.notificationToken = token
-                repo.saveProfile(usm)
-            }
-        }
+
     }
 
     /**
