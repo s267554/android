@@ -88,7 +88,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
                 android:paddingTop="2dp"
-                android:text="@ any location"
+                android:text="/@ any location"
                 android:textSize="10sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/modify_query_button"
@@ -134,7 +134,7 @@
         app:layout_constraintTop_toBottomOf="@+id/empty_list"
         app:layout_constraintVertical_bias="1.0"
         tools:context=".ui.OnSaleListFragment"
-        tools:listitem="@layout/onsale_item_card_view">
+        tools:listitem="@layout/fragment_item">
 
     </androidx.recyclerview.widget.RecyclerView>
 </androidx.constraintlayout.widget.ConstraintLayout>

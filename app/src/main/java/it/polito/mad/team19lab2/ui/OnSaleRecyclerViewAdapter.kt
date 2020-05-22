@@ -4,6 +4,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.os.bundleOf
@@ -16,7 +17,7 @@ import com.squareup.picasso.Picasso
 import it.polito.mad.team19lab2.R
 import it.polito.mad.team19lab2.data.ItemModel
 
-import kotlinx.android.synthetic.main.onsale_item_card_view.view.*
+import kotlinx.android.synthetic.main.fragment_item.view.*
 
 class OnSaleRecyclerViewAdapter(val onSaleItems: ArrayList<ItemModel>):
 RecyclerView.Adapter<OnSaleRecyclerViewAdapter.ViewHolder> ( ){
@@ -35,7 +36,7 @@ RecyclerView.Adapter<OnSaleRecyclerViewAdapter.ViewHolder> ( ){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val vh = LayoutInflater.from(parent.context)
-            .inflate(R.layout.onsale_item_card_view, parent, false)
+            .inflate(R.layout.fragment_item, parent, false)
         return ViewHolder(vh)
     }
 
@@ -43,6 +44,8 @@ RecyclerView.Adapter<OnSaleRecyclerViewAdapter.ViewHolder> ( ){
         holder.bind(onSaleItems[position])
         with(holder.cv){
             tag = onSaleItems[position]
+            val b = findViewById<Button>(R.id.item_list_edit_button)
+            b.visibility = View.GONE
             setOnClickListener(onSaleCL)
         }
     }
