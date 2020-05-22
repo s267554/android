@@ -47,13 +47,14 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 //scheduleJob()
             } else {
                 // Handle message within 10 seconds
-                handleNow()
+                //handleNow()
             }
         }
 
         // Check if message contains a notification payload.
         remoteMessage.notification?.let {
             Log.d(TAG, "Message Notification Body: ${it.body}")
+            it.body?.run { sendNotification(this) }
         }
 
         // Also if you intend on generating your own notifications as a result of a received FCM
