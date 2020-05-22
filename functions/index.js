@@ -33,24 +33,37 @@ exports.notifyOwner = functions.firestore
           const owner = item.data().userId
           const title = item.data().title
           console.log('ownerId is', owner);
-          return db.collection('utenti').doc(owner).get().then(doc => {
-            const token = doc.data().notificationToken
-            console.log('token is', token);
+          return db.collection('utenti').doc(owner).get().then(async (doc) => {
+            const tokens = doc.data().notificationTokens
+            console.log('tokens are', tokens);
             // Notification details.
             const payload = {
               notification: {
                 title: 'Your item got some love!',
                 body: `${fullname} has expressed interest in ${title}`
-              },
-              token: token
+              }
             };
             // Send notifications to all tokens.
-            admin.messaging().send(payload).then((response) => {
-                console.log("Message sent successfully:", response);
-                return response;
-            })
-            .catch((error) => {
-                console.log("Error sending message: ", error, payload);
+            const response = await admin.messaging().sendToDevice(tokens, payload);
+            // For each message check if there was an error.
+            const tokensToRemove = [];
+            response.results.forEach((result, index) => {
+              const error = result.error;
+              if (error) {
+                console.error('Failure sending notification to', tokens[index], error);
+                // Cleanup the tokens who are not registered anymore.
+                if (error.code === 'messaging/invalid-registration-token' ||
+                    error.code === 'messaging/registration-token-not-registered') {
+                  tokensToRemove.push(tokens[index]);
+                }
+              }
+            });
+            await Promise.all(tokensToRemove);
+            console.log('tokens to remove are ', tokensToRemove);
+            let difference = tokens.filter(x => !tokensToRemove.includes(x));
+            console.log('tokens are now', difference);
+            return db.collection('utenti').doc(owner).update({
+              notificationTokens: difference
             });
           });
       });
@@ -62,34 +75,48 @@ exports.sendFollowerNotification = functions.firestore.document('items/{itemId}'
         const oldState = change.before.data().state
         const title = change.after.data().title
 
-        if(newState == oldState){return;}
-
-        const promises = []
-        const tokens = []
+        if(newState == oldState){
+            return;
+        }
 
         return db.collection('items').doc(context.params.itemId).collection('users').get().then( async (col) => {
-            col.forEach(async (item) => {
-                promises.push(
-                    db.collection('utenti').doc(item.data().id).get().then( async (utente) => {
-                          return tokens.push(utente.data().notificationToken);
-                      })
-                    );
+            col.forEach(async (user) => {
+                  const follower = user.data().id
+                  return db.collection('utenti').doc(follower).get().then(async (doc) => {
+                    const tokens = doc.data().notificationTokens
+                    console.log('tokens are', tokens);
+                    // Notification details.
+                    const payload = {
+                      notification: {
+                        title: 'Update on your loved item!',
+                        body: `${title} is now ${newState}`
+                      }
+                    };
+                    // Send notifications to all tokens.
+                    const response = await admin.messaging().sendToDevice(tokens, payload);
+                    // For each message check if there was an error.
+                    const tokensToRemove = [];
+                    response.results.forEach((result, index) => {
+                      const error = result.error;
+                      if (error) {
+                        console.error('Failure sending notification to', tokens[index], error);
+                        // Cleanup the tokens who are not registered anymore.
+                        if (error.code === 'messaging/invalid-registration-token' ||
+                            error.code === 'messaging/registration-token-not-registered') {
+                          tokensToRemove.push(tokens[index]);
+                        }
+                      }
+                    });
+                    await Promise.all(tokensToRemove);
+                    console.log('tokens to remove are ', tokensToRemove);
+                    let difference = tokens.filter(x => !tokensToRemove.includes(x));
+                    console.log('tokens are now', difference);
+                    return db.collection('utenti').doc(follower).update({
+                      notificationTokens: difference
+                    });
+                  });
             })
-            await Promise.all(promises);
-            console.log("Tokens:", tokens);
-            const payload = {
-              notification: {
-                title: 'Update on an item you were following',
-                body: `${title} is now ${newState}!`
-              }
-            };
-            return admin.messaging().sendToDevice(tokens, payload).then((response) => {
-                console.log("Message sent successfully:", response);
-                return response;
-            })
-            .catch((error) => {
-                console.log("Error sending message: ", error, payload);
-            });
+
         });
     });
 

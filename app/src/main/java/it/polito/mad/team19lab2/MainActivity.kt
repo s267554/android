@@ -32,6 +32,7 @@ import com.firebase.ui.auth.IdpResponse
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
@@ -123,6 +124,25 @@ class MainActivity : AppCompatActivity() {
                     signOut(view = View(applicationContext))
                 }
             })
+            FirebaseInstanceId.getInstance().instanceId
+                .addOnCompleteListener(OnCompleteListener { task ->
+                    if (!task.isSuccessful) {
+                        Log.w(TAG, "getInstanceId failed", task.exception)
+                        return@OnCompleteListener
+                    }
+                    // Get new Instance ID token
+                    val token = task.result?.token
+
+                    val repo = UserRepository()
+                    if(repo.user != null) {
+                        Log.d(TAG,"firstRegistrationToken($token)")
+                        repo.getProfile().update("notificationTokens", FieldValue.arrayUnion(token))
+                            .addOnSuccessListener { Log.d(TAG, "firstRegistrationToken succeeded") }
+                            .addOnFailureListener { Log.d(TAG, "firstRegistrationToken failed") }
+                    }
+
+                    Log.d(TAG, token)
+                })
         }
 
     }
@@ -179,13 +199,13 @@ class MainActivity : AppCompatActivity() {
                         val token = task.result?.token
 
                         val repo = UserRepository()
-                        repo.getProfile().get().addOnSuccessListener {
-                            val usm = it.toObject(UserModel::class.java)
-                            if (usm != null) {
-                                usm.notificationToken = token
-                                repo.saveProfile(usm)
-                            }
+                        if(repo.user != null) {
+                            Log.d(TAG,"firstRegistrationToken($token)")
+                            repo.getProfile().update("notificationTokens", FieldValue.arrayUnion(token))
+                                .addOnSuccessListener { Log.d(TAG, "firstRegistrationToken succeeded") }
+                                .addOnFailureListener { Log.d(TAG, "firstRegistrationToken failed") }
                         }
+
                         Log.d(TAG, token)
                     })
 

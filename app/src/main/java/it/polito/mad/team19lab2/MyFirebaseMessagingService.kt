@@ -10,6 +10,7 @@ import android.media.RingtoneManager
 import android.os.Build
 import android.util.Log
 import androidx.core.app.NotificationCompat
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import it.polito.mad.team19lab2.data.UserModel
@@ -97,15 +98,11 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         // TODO: add multiple tokens for each device
         val repo = UserRepository()
         if(repo.user != null) {
-            repo.getProfile().get().addOnSuccessListener {
-                val usm = it.toObject(UserModel::class.java)
-                if (usm != null) {
-                    usm.notificationToken = token
-                    repo.saveProfile(usm)
-                }
-            }
+            Log.d(TAG, "sendRegistrationTokenToServer($token)")
+            repo.getProfile().update("notificationTokens", FieldValue.arrayUnion(token))
+                .addOnSuccessListener { Log.d(TAG, "sendRegistrationTokenToServer succeeded") }
+                .addOnFailureListener { Log.d(TAG, "sendRegistrationTokenToServer failed") }
         }
-        Log.d(TAG, "sendRegistrationTokenToServer($token)")
     }
 
     /**
