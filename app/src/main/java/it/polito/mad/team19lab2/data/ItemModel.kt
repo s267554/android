@@ -12,6 +12,7 @@ data class ItemModel (
     //var category: String,
     var category: Int,
     var subcategory: String,
+   // var subcategory: Int,
     var imagePath: String,
     var location: String,
     var expiryDate: String,

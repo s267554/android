@@ -2,39 +2,39 @@
 <resources>
 
 
-    <string-array name="sub1">
+    <string-array name="sub0">
         <item>Pittura, disegno e strumenti artistici</item>
         <item>Cucito</item>
         <item>Album e stampe</item>
         <item>Decorazioni per feste</item>
     </string-array>
-    <string-array name="sub2">
+    <string-array name="sub1">
         <item>Sport e attivit&#224; all\&apos;aperto</item>
         <item>Ricreazione all\&apos;aperto</item>
         <item>Sport e salute</item>
         <item>Animali domestici</item>
     </string-array>
-    <string-array name="sub3">
+    <string-array name="sub2">
         <item>Abbigliamento e accessori</item>
         <item>Giochi per bambini e neonati</item>
         <item>Seggiolini e accessori</item>
         <item>Gravidanza e maternit&#224;</item>
         <item>Passeggini e accessori</item>
     </string-array>
-    <string-array name="sub4">
+    <string-array name="sub3">
         <item>Vestiti</item>
         <item>Scarpe</item>
         <item>Orologi</item>
         <item>Borse</item>
         <item>Accessori</item>
     </string-array>
-    <string-array name="sub5">
+    <string-array name="sub4">
         <item>Vestiti</item>
         <item>Scarpe</item>
         <item>Orologi</item>
         <item>Accessori</item>
     </string-array>
-    <string-array name="sub6">
+    <string-array name="sub5">
         <item>Computer</item>
         <item>Schermi</item>
         <item>Stampanti e scanner</item>
@@ -48,7 +48,7 @@
         <item>Ferri da stiro</item>
         <item>Aspirapolvere e cura del pavimento</item>
     </string-array>
-    <string-array name="sub7">
+    <string-array name="sub6">
         <item>Poster e statue</item>
         <item>Arti e mestieri</item>
         <item>Giocattoli da costruzione</item>
@@ -58,7 +58,7 @@
         <item>Tricicli, moto e veicoli</item>
         <item>Videogiochi</item>
     </string-array>
-    <string-array name="sub8">
+    <string-array name="sub7">
         <item>Elettronica per auto</item>
         <item>Accessori</item>
         <item>Motorcicli e Powersports</item>

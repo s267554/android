@@ -53,7 +53,8 @@ class EditItemFragment : Fragment() {
     private lateinit var image: Bitmap
     lateinit var storage: FirebaseStorage
     var user = FirebaseAuth.getInstance().currentUser
-    private lateinit var catArray : MutableList<String>;
+    private lateinit var catArray : MutableList<String>
+    private lateinit var subCatArray: MutableList<String>
 
     companion object {
         private val maxMemory : Long = Runtime.getRuntime().maxMemory() / 1024
@@ -134,6 +135,9 @@ class EditItemFragment : Fragment() {
                         if (item.category != catArray.indexOf("other")) {
                             subCategoryTextField.visibility = View.VISIBLE
                             manageSubDropdown(item.category, itemsCategory)
+                            val name = "R.array.sub"+item.category
+
+                        //    subCatArray = resources.getStringArray(R.array.s)
                             subCategoryDropdown.setText(item.subcategory, false)
                         }
                     }
@@ -388,14 +392,15 @@ class EditItemFragment : Fragment() {
         }*/
         //item.state = stateDropdown.text.toString()
         item.expireDatestamp=timestamp
-
+        clEditItem.visibility=View.GONE
+        progressBar.visibility=View.VISIBLE
         // Update or create the image
         if(imageModified && this::image.isInitialized) {
             val itemPictureRef=storage.reference.child("itemPicture/${idItem}")
             val path="itemPicture/${idItem}"
             item.imagePath = path
             val baos = ByteArrayOutputStream()
-            image.compress(Bitmap.CompressFormat.JPEG, 20, baos)
+            image.compress(Bitmap.CompressFormat.JPEG, 100, baos)
             val data = baos.toByteArray()
             val uploadTask = itemPictureRef.putBytes(data)
             uploadTask.addOnFailureListener {

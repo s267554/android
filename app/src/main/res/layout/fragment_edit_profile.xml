@@ -7,233 +7,245 @@
     android:layout_marginBottom="16dp"
     android:fillViewport="true">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:touchscreenBlocksFocus="false"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        tools:context=".ui.ItemDetailsFragment">
+        android:layout_height="wrap_content">
 
-        <FrameLayout
-            android:id="@+id/frameLayout2"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginTop="10dp"
-            app:layout_constraintBottom_toTopOf="@+id/profilePictureGuideline"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clEditProfile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:touchscreenBlocksFocus="false"
+            tools:context=".ui.ItemDetailsFragment">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+            <FrameLayout
+                android:id="@+id/frameLayout2"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="10dp"
+                app:layout_constraintBottom_toTopOf="@+id/profilePictureGuideline"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/roundCardView"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="5dp"
-                    android:elevation="0dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintDimensionRatio="1:1"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
-                    <ImageView
-                        android:id="@+id/image_view"
-                        android:layout_width="match_parent"
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/roundCardView"
+                        android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:scaleType="centerCrop" />
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:elevation="0dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintDimensionRatio="1:1"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
 
-                </androidx.cardview.widget.CardView>
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                        <ImageView
+                            android:id="@+id/image_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="centerCrop" />
 
-            <ImageButton
-                android:id="@+id/imageEdit"
-                android:layout_width="wrap_content"
+                    </androidx.cardview.widget.CardView>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <ImageButton
+                    android:id="@+id/imageEdit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start|top"
+                    app:srcCompat="@android:drawable/ic_menu_camera" />
+
+                <ImageButton
+                    android:id="@+id/imageRotateProfile"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top|end"
+                    app:srcCompat="@android:drawable/ic_menu_rotate" />
+            </FrameLayout>
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/profilePictureGuideline"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="start|top"
-                app:srcCompat="@android:drawable/ic_menu_camera" />
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintGuide_begin="200dp" />
 
-            <ImageButton
-                android:id="@+id/imageRotateProfile"
-                android:layout_width="wrap_content"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/fullNameProfile"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="top|end"
-                app:srcCompat="@android:drawable/ic_menu_rotate" />
-        </FrameLayout>
+                android:layout_marginTop="8dp"
+                android:hint="@string/name"
+                app:boxBackgroundColor="@color/category_icon_background"
+                app:boxStrokeColor="@color/colorPrimary"
+                app:counterEnabled="false"
+                app:errorEnabled="true"
+                app:hintAnimationEnabled="true"
+                app:hintEnabled="true"
+                app:hintTextAppearance="@style/TextAppearance.AppCompat.Small"
+                app:hintTextColor="@color/colorPrimary"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/frameLayout2"
+                app:startIconDrawable="@drawable/account_profile_foreground"
+                app:startIconTint="@color/colorPrimary">
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/profilePictureGuideline"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintGuide_begin="200dp" />
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/fullNameProfileEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:enabled="true"
+                    android:inputType="text"
+                    android:maxLength="20"
+                    android:singleLine="true"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/fullNameProfile"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:hint="@string/name"
-            app:boxBackgroundColor="@color/category_icon_background"
-            app:boxStrokeColor="@color/colorPrimary"
-            app:counterEnabled="false"
-            app:errorEnabled="true"
-            app:hintAnimationEnabled="true"
-            app:hintEnabled="true"
-            app:hintTextAppearance="@style/TextAppearance.AppCompat.Small"
-            app:hintTextColor="@color/colorPrimary"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/frameLayout2"
-            app:startIconDrawable="@drawable/account_profile_foreground"
-            app:startIconTint="@color/colorPrimary">
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/fullNameProfileEditText"
-                android:layout_width="match_parent"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/nicknameProfile"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:enabled="true"
-                android:inputType="text"
-                android:maxLength="20"
-                android:singleLine="true"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+                android:hint="@string/nickname"
+                app:boxBackgroundColor="@color/category_icon_background"
+                app:boxStrokeColor="@color/colorPrimary"
+                app:counterEnabled="false"
+                app:errorEnabled="true"
+                app:hintAnimationEnabled="true"
+                app:hintEnabled="true"
+                app:hintTextAppearance="@style/TextAppearance.AppCompat.Small"
+                app:hintTextColor="@color/colorPrimary"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/fullNameProfile"
+                app:startIconDrawable="@drawable/nickname_profile_foreground"
+                app:startIconTint="@color/colorPrimary">
 
-        </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/nicknameProfileEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:enabled="true"
+                    android:inputType="text"
+                    android:maxLength="20"
+                    android:singleLine="true"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/nicknameProfile"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:hint="@string/nickname"
-            app:boxBackgroundColor="@color/category_icon_background"
-            app:boxStrokeColor="@color/colorPrimary"
-            app:counterEnabled="false"
-            app:errorEnabled="true"
-            app:hintAnimationEnabled="true"
-            app:hintEnabled="true"
-            app:hintTextAppearance="@style/TextAppearance.AppCompat.Small"
-            app:hintTextColor="@color/colorPrimary"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fullNameProfile"
-            app:startIconDrawable="@drawable/nickname_profile_foreground"
-            app:startIconTint="@color/colorPrimary">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/nicknameProfileEditText"
-                android:layout_width="match_parent"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/emailProfile"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:enabled="true"
-                android:inputType="text"
-                android:maxLength="20"
-                android:singleLine="true"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:hint="@string/email"
+                app:boxBackgroundColor="@color/category_icon_background"
+                app:boxStrokeColor="@color/colorPrimary"
+                app:counterEnabled="false"
+                app:errorEnabled="true"
+                app:hintAnimationEnabled="true"
+                app:hintEnabled="true"
+                app:hintTextAppearance="@style/TextAppearance.AppCompat.Small"
+                app:hintTextColor="@color/colorPrimary"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/nicknameProfile"
+                app:startIconDrawable="@drawable/email_profile_foreground"
+                app:startIconTint="@color/colorPrimary">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/emailProfile"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:hint="@string/email"
-            app:boxBackgroundColor="@color/category_icon_background"
-            app:boxStrokeColor="@color/colorPrimary"
-            app:counterEnabled="false"
-            app:errorEnabled="true"
-            app:hintAnimationEnabled="true"
-            app:hintEnabled="true"
-            app:hintTextAppearance="@style/TextAppearance.AppCompat.Small"
-            app:hintTextColor="@color/colorPrimary"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/nicknameProfile"
-            app:startIconDrawable="@drawable/email_profile_foreground"
-            app:startIconTint="@color/colorPrimary">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/emailProfileEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:enabled="true"
+                    android:inputType="text|textEmailAddress"
+                    android:maxLength="40"
+                    android:singleLine="true"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/emailProfileEditText"
-                android:layout_width="match_parent"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/locationProfile"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:enabled="true"
-                android:inputType="text|textEmailAddress"
-                android:maxLength="40"
-                android:singleLine="true"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:hint="@string/location"
+                app:boxBackgroundColor="@color/category_icon_background"
+                app:boxStrokeColor="@color/colorPrimary"
+                app:counterEnabled="false"
+                app:errorEnabled="false"
+                app:hintAnimationEnabled="true"
+                app:hintEnabled="true"
+                app:hintTextAppearance="@style/TextAppearance.AppCompat.Small"
+                app:hintTextColor="@color/colorPrimary"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/emailProfile"
+                app:startIconDrawable="@drawable/location_icon_edit"
+                app:startIconTint="@color/colorPrimary">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/locationProfile"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:hint="@string/location"
-            app:boxBackgroundColor="@color/category_icon_background"
-            app:boxStrokeColor="@color/colorPrimary"
-            app:counterEnabled="false"
-            app:errorEnabled="false"
-            app:hintAnimationEnabled="true"
-            app:hintEnabled="true"
-            app:hintTextAppearance="@style/TextAppearance.AppCompat.Small"
-            app:hintTextColor="@color/colorPrimary"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/emailProfile"
-            app:startIconDrawable="@drawable/location_icon_edit"
-            app:startIconTint="@color/colorPrimary">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/locationProfileEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:enabled="true"
+                    android:inputType="text"
+                    android:maxLength="20"
+                    android:singleLine="true"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/locationProfileEditText"
-                android:layout_width="match_parent"
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/test"
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:enabled="true"
-                android:inputType="text"
-                android:maxLength="20"
-                android:singleLine="true"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+                android:layout_marginTop="16dp"
+                android:hint="@string/interests"
+                app:boxBackgroundColor="@color/category_icon_background"
+                app:boxStrokeColor="@color/colorPrimary"
+                app:counterEnabled="false"
+                app:errorEnabled="true"
+                app:hintAnimationEnabled="true"
+                app:hintEnabled="true"
+                app:hintTextAppearance="@style/TextAppearance.AppCompat.Small"
+                app:hintTextColor="@color/colorPrimary"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/locationProfile"
+                app:startIconDrawable="@drawable/interests_profile_foreground"
+                app:startIconTint="@color/colorPrimary">
 
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/test"
-            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:hint="@string/interests"
-            app:boxBackgroundColor="@color/category_icon_background"
-            app:boxStrokeColor="@color/colorPrimary"
-            app:counterEnabled="false"
-            app:errorEnabled="true"
-            app:hintAnimationEnabled="true"
-            app:hintEnabled="true"
-            app:hintTextAppearance="@style/TextAppearance.AppCompat.Small"
-            app:hintTextColor="@color/colorPrimary"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/locationProfile"
-            app:startIconDrawable="@drawable/interests_profile_foreground"
-            app:startIconTint="@color/colorPrimary">
-
-            <AutoCompleteTextView
-                android:id="@+id/interestsDropdown"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:focusable="false"
-                android:focusableInTouchMode="false"
-                android:inputType="none|textNoSuggestions"
-                android:textIsSelectable="false" />
-        </com.google.android.material.textfield.TextInputLayout>
+                <AutoCompleteTextView
+                    android:id="@+id/interestsDropdown"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:inputType="none|textNoSuggestions"
+                    android:textIsSelectable="false" />
+            </com.google.android.material.textfield.TextInputLayout>
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:visibility="gone"/>
+    </FrameLayout>
 
 </ScrollView>
