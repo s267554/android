@@ -283,6 +283,8 @@ class EditProfileFragment : Fragment() {
                 interests.add(i)
         if (interests.isNotEmpty())
             user.interests = interests
+        clEditProfile.visibility=View.GONE
+        progressBar.visibility=View.VISIBLE
         if(this::image.isInitialized && imageModified) {
                 headerView.findViewById<ImageView>(R.id.header_imageView).setImageBitmap(image)
                 val profilePictureRef=storage.reference.child("profilePicture/${user.id}")
