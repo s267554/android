@@ -11,8 +11,8 @@ data class ItemModel (
     var description: String,
     //var category: String,
     var category: Int,
-    var subcategory: String,
-   // var subcategory: Int,
+    //var subcategory: String,
+    var subcategory: Int,
     var imagePath: String,
     var location: String,
     var expiryDate: String,
@@ -30,5 +30,5 @@ data class ItemModel (
             return 1
     }
 
-    constructor() : this("","","",-1,"","","","", 0.0F, 1, "",Timestamp(0,0))
+    constructor() : this("","","",-1,-1,"","","", 0.0F, 1, "",Timestamp(0,0))
 }

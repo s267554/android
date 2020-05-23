@@ -107,12 +107,8 @@ class EditItemFragment : Fragment() {
                     locationEditText.setText(item.location)
                     priceEditText.setText(item.price.toString())
                     dateEditText.setText(item.expiryDate)
-                    //categoryEditText.setText(item.category, false)
                     categoryEditText.setText(itemsCategory[item.category], false)
-                   /* if(item.state.isNotEmpty())
-                        stateSpinner.setText(item.state)
-                    else
-                        stateSpinner.setText("Available")*/
+
                     val stateArray = resources.getStringArray(R.array.item_state).toMutableList()
                     stateSpinner.setText(stateArray[item.state])
                     if (item.imagePath.isEmpty()) {
@@ -135,10 +131,10 @@ class EditItemFragment : Fragment() {
                         if (item.category != catArray.indexOf("other")) {
                             subCategoryTextField.visibility = View.VISIBLE
                             manageSubDropdown(item.category, itemsCategory)
-                            val name = "R.array.sub"+item.category
 
-                        //    subCatArray = resources.getStringArray(R.array.s)
-                            subCategoryDropdown.setText(item.subcategory, false)
+                            val sub = resources.getIdentifier("sub${item.category}", "array", context?.packageName)
+                            subCatArray = resources.getStringArray(sub).toMutableList()
+                            subCategoryDropdown.setText(subCatArray[item.category], false)
                         }
                     }
                 })
@@ -382,15 +378,11 @@ class EditItemFragment : Fragment() {
         item.price = priceEditText.text.toString().toFloat()
         item.expiryDate = dateEditText.text.toString()
         item.category = catArray.indexOf(categoryDropdown.text.toString())
-        item.subcategory = subCategoryDropdown.text.toString()
+        if (subCatArray.isNotEmpty())
+            item.subcategory = subCatArray.indexOf(subCategoryDropdown.text.toString())
         val stateArray = resources.getStringArray(R.array.item_state)
         item.state = stateArray.indexOf(stateDropdown.text.toString())
-        /*when(stateDropdown.text.toString()){
-            stateArray[0] -> item.state = 0
-            stateArray[1] -> item.state = 1
-            stateArray[2] -> item.state = 2
-        }*/
-        //item.state = stateDropdown.text.toString()
+
         item.expireDatestamp=timestamp
         clEditItem.visibility=View.GONE
         progressBar.visibility=View.VISIBLE
@@ -519,7 +511,7 @@ class EditItemFragment : Fragment() {
             subCategoryTextField.visibility=View.GONE
             return
         }
-        var index = 1
+        var index = 0
         for(category in categories){
             if(chosenCategory == catArray.indexOf(category)){
                 val subId = resources.getIdentifier("sub${index}", "array", context?.packageName)

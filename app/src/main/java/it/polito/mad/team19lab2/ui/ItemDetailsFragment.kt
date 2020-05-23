@@ -140,7 +140,9 @@ class ItemDetailsFragment : Fragment() {
             priceTextView.text = "${item.price.toString()} €"
             expireTextView.text = item.expiryDate
             categoryTextView.text = resources.getStringArray(R.array.categories)[item.category]
-            subCategoryTextView.text=item.subcategory
+            val sub = resources.getIdentifier("sub${item.category}", "array", context?.packageName)
+            if (item.subcategory != -1)
+                subCategoryTextView.text= resources.getStringArray(sub)[item.subcategory]
         })
 
 
