@@ -53,7 +53,8 @@ class EditItemFragment : Fragment() {
     private lateinit var image: Bitmap
     lateinit var storage: FirebaseStorage
     var user = FirebaseAuth.getInstance().currentUser
-    private lateinit var catArray : MutableList<String>;
+    private lateinit var catArray : MutableList<String>
+    private lateinit var subCatArray: MutableList<String>
 
     companion object {
         private val maxMemory : Long = Runtime.getRuntime().maxMemory() / 1024
@@ -134,6 +135,9 @@ class EditItemFragment : Fragment() {
                         if (item.category != catArray.indexOf("other")) {
                             subCategoryTextField.visibility = View.VISIBLE
                             manageSubDropdown(item.category, itemsCategory)
+                            val name = "R.array.sub"+item.category
+
+                        //    subCatArray = resources.getStringArray(R.array.s)
                             subCategoryDropdown.setText(item.subcategory, false)
                         }
                     }

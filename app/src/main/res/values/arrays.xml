@@ -1,38 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="sub1">
+<!--    <string-array name="sub_array"-->
+    <string-array name="sub0">
         <item>Painting, Drawing &amp; Art Supplies</item>
         <item>Sewing</item>
         <item>Scrapbooking &amp; Stamping</item>
         <item>Party Decorations &amp; Supplies</item>
     </string-array>
-    <string-array name="sub2">
+    <string-array name="sub1">
         <item>Sports and Outdoors</item>
         <item>Outdoor Recreation</item>
         <item>Sports &amp; Fitness</item>
         <item>Pet Supplies</item>
     </string-array>
-    <string-array name="sub3">
+    <string-array name="sub2">
         <item>Apparel &amp; Accessories</item>
         <item>Baby &amp; Toddler Toys</item>
         <item>Car Seats &amp; Accessories</item>
         <item>Pregnancy &amp; Maternity</item>
         <item>Strollers &amp; Accessories</item>
     </string-array>
-    <string-array name="sub4">
+    <string-array name="sub3">
         <item>Clothing</item>
         <item>Shoes</item>
         <item>Watches</item>
         <item>Handbags</item>
         <item>Accessories</item>
     </string-array>
-    <string-array name="sub5">
+    <string-array name="sub4">
         <item>Clothing</item>
         <item>Shoes</item>
         <item>Watches</item>
         <item>Accessories</item>
     </string-array>
-    <string-array name="sub6">
+    <string-array name="sub5">
         <item>Computers</item>
         <item>Monitors</item>
         <item>Printers &amp; Scanners&amp;</item>
@@ -46,7 +47,7 @@
         <item>Irons &amp; Streamers</item>
         <item>Vacuums &amp; Floor Care</item>
     </string-array>
-    <string-array name="sub7">
+    <string-array name="sub6">
         <item>Action figures &amp; Statues</item>
         <item>Arts &amp; Crafts</item>
         <item>Building Toys</item>
@@ -56,7 +57,7 @@
         <item>Tricycles, Scooters &amp; Wagons</item>
         <item>Videogames</item>
     </string-array>
-    <string-array name="sub8">
+    <string-array name="sub7">
         <item>Car Electronics &amp; Accessories</item>
         <item>Accessories</item>
         <item>Motorcycle &amp; Powersports</item>

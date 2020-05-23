@@ -52,7 +52,7 @@ class SearchDialogFragment(var title: String?=null, var category: Int = -1,
             if(!title.isNullOrEmpty())
                 titleTextView.setText(title)
             if(category != -1)
-                categoryEditText.setText(category)
+                categoryEditText.setText(resources.getStringArray(R.array.categories)[category])
             if(!min.isNullOrEmpty())
                 minPrice.setText(min)
             if(!max.isNullOrEmpty())

@@ -72,7 +72,6 @@ class OnSaleListFragment: Fragment(),SearchDialogFragment.NoticeDialogListener{
                 search=false
                 itemListVm.getAllItems().observe(viewLifecycleOwner, Observer {
                     //if(!search){
-                    Log.e("xxx", "Inside getAllItems Observer")
                         if(!search){
                             onSaleArray= it as ArrayList<ItemModel>
                             with(r) {
