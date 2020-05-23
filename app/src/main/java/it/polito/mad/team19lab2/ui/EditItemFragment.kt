@@ -53,7 +53,7 @@ class EditItemFragment : Fragment() {
     private lateinit var image: Bitmap
     lateinit var storage: FirebaseStorage
     var user = FirebaseAuth.getInstance().currentUser
-    private val catArray = resources.getStringArray(R.array.categories)
+    private lateinit var catArray : MutableList<String>;
 
     companion object {
         private val maxMemory : Long = Runtime.getRuntime().maxMemory() / 1024
@@ -69,6 +69,7 @@ class EditItemFragment : Fragment() {
         super.onCreate(savedInstanceState)
         storage = Firebase.storage
         setHasOptionsMenu(true)
+        catArray = resources.getStringArray(R.array.categories).toMutableList()
     }
 
     override fun onCreateView(
