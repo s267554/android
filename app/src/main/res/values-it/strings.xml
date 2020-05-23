@@ -57,6 +57,11 @@
     <string name="image_from_gallery">Immagine dalla galleria</string>
     <string name="Availability">Disponibilità</string>
 
+    <string-array name="item_state">
+        <item>Disponibile</item>
+        <item>Bloccato</item>
+        <item>Venduto</item>
+    </string-array>
 
     <string-array name="categories">
         <item>Arti e Mestieri</item>

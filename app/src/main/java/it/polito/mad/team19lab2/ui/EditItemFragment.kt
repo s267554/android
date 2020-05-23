@@ -129,7 +129,7 @@ class EditItemFragment : Fragment() {
                     if (item.category == -1) {
                         categoryTextField.error = getString(R.string.notEmpty)
                     } else {
-                        if (item.category != catArray.indexOf("other")) {
+                        if (item.category != (catArray.size-1)){
                             subCategoryTextField.visibility = View.VISIBLE
                             manageSubDropdown(item.category)
                             if(item.subcategory != -1 ) {
@@ -154,7 +154,7 @@ class EditItemFragment : Fragment() {
                 priceTextField.error = getString(R.string.notEmpty)
                 dateTextField.error = getString(R.string.notEmpty)
                 categoryTextField.error = getString(R.string.notEmpty)
-                stateSpinner.setText(stateValue[stateValue.indexOf("Available")])
+                stateSpinner.setText(stateValue[0])
             }
         }
         titleEditText.addTextChangedListener(object : TextWatcher {
@@ -384,7 +384,7 @@ class EditItemFragment : Fragment() {
         item.price = priceEditText.text.toString().toFloat()
         item.expiryDate = dateEditText.text.toString()
         item.category = catArray.indexOf(categoryDropdown.text.toString())
-        if (subCatArray.isNotEmpty())
+        if (this::subCatArray.isInitialized)
             item.subcategory = subCatArray.indexOf(subCategoryDropdown.text.toString())
         val stateArray = resources.getStringArray(R.array.item_state)
         item.state = stateArray.indexOf(stateDropdown.text.toString())

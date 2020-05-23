@@ -99,7 +99,8 @@ class ItemDetailsFragment : Fragment() {
                 })
                 setHasOptionsMenu(false)
                 buyButton.setOnClickListener {
-                    item.state = resources.getStringArray(R.array.item_state).indexOf("Sold")
+                    item.state = 2
+                    //item.state = resources.getStringArray(R.array.item_state).indexOf("Sold")
                     itemVm.saveItem(item)
                     Toast.makeText(this.context, "Item bought", Toast.LENGTH_SHORT).show()
                 }

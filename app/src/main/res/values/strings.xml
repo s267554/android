@@ -38,8 +38,9 @@
         <item>Electronics</item>
         <item>Games &amp; Videogames</item>
         <item>Automotive</item>
-        <item>other</item>
+        <item>Other</item>
     </string-array>
+
     <string-array name="item_state">
         <item>Available</item>
         <item>Blocked</item>
