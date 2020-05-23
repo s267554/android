@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/clEditItem"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.ItemDetailsFragment">
@@ -229,11 +233,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:hint="@string/subcategory"
+                android:visibility="gone"
                 app:boxBackgroundColor="@color/category_icon_background"
                 app:boxStrokeColor="@color/colorPrimary"
                 app:counterEnabled="false"
                 app:errorEnabled="true"
-                android:visibility="gone"
                 app:hintAnimationEnabled="true"
                 app:hintEnabled="true"
                 app:hintTextAppearance="@style/TextAppearance.AppCompat.Small"
@@ -353,3 +357,10 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center"
+        android:visibility="gone" />
+</FrameLayout>

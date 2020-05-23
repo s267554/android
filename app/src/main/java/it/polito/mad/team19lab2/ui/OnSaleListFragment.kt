@@ -18,6 +18,7 @@ import com.google.android.material.card.MaterialCardView
 import it.polito.mad.team19lab2.R
 import it.polito.mad.team19lab2.data.ItemModel
 import it.polito.mad.team19lab2.viewModel.ItemListViewModel
+import kotlinx.android.synthetic.main.fragment_onsale_list.*
 
 class OnSaleListFragment: Fragment(),SearchDialogFragment.NoticeDialogListener{
 
@@ -28,7 +29,6 @@ class OnSaleListFragment: Fragment(),SearchDialogFragment.NoticeDialogListener{
     lateinit var adapter: OnSaleRecyclerViewAdapter
     lateinit var swipeRefreshLayout: SwipeRefreshLayout
     private val itemListVm: ItemListViewModel by viewModels()
-    lateinit var r: RecyclerView
     lateinit var emptyList:TextView
     lateinit var searchCard: MaterialCardView
     private lateinit var clearBotton: Button
@@ -51,7 +51,6 @@ class OnSaleListFragment: Fragment(),SearchDialogFragment.NoticeDialogListener{
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_onsale_list, container, false)
-        r= view.findViewById(R.id.onsale_list)
         emptyList=view.findViewById(R.id.empty_list)
         clearBotton=view.findViewById(R.id.button_clear_filter)
         modifyBotton=view.findViewById(R.id.modify_query_button)
@@ -70,11 +69,22 @@ class OnSaleListFragment: Fragment(),SearchDialogFragment.NoticeDialogListener{
                 queryMin=null
                 queryMax=null
                 search=false
+
+                //clear=true
+                adapter=OnSaleRecyclerViewAdapter(onSaleArray)
+                recyclerView.adapter=adapter
+                adapter.onNewData(onSaleArray)
+                //itemListVm.getAllItems().observe(viewLifecycleOwner, Observer {
+                /*    if(!search){
+
+
                 itemListVm.getAllItems().observe(viewLifecycleOwner, Observer {
                     //if(!search){
+                    Log.e("xxx", "Inside getAllItems Observer")
+
                         if(!search){
                             onSaleArray= it as ArrayList<ItemModel>
-                            with(r) {
+                            with(recyclerView) {
                                 layoutManager = LinearLayoutManager(context)
                                 adapter = OnSaleRecyclerViewAdapter(
                                     onSaleArray
@@ -90,6 +100,7 @@ class OnSaleListFragment: Fragment(),SearchDialogFragment.NoticeDialogListener{
                    // }
                 })
                 searchCard.visibility=View.GONE
+                 */
             }
         }
 
@@ -100,24 +111,14 @@ class OnSaleListFragment: Fragment(),SearchDialogFragment.NoticeDialogListener{
         recyclerView.layoutManager=LinearLayoutManager(context)
         swipeRefreshLayout.setOnRefreshListener(myRefreshListener())
         itemListVm.getAllItems().observe(viewLifecycleOwner, Observer {
-            if(!search && it!=null){
-                onSaleArray= it as ArrayList<ItemModel>
-
-                Log.d("vittoz", "all observer: "+onSaleArray.toString())
+            if(!search && it!=null) {
+                onSaleArray = it as ArrayList<ItemModel>
                 adapter.onNewData(onSaleArray);
-                swipeRefreshLayout.setRefreshing(false);
-            with(r) {
-                layoutManager = LinearLayoutManager(context)
-                adapter = OnSaleRecyclerViewAdapter(
-                    onSaleArray
-                )
+                if (onSaleArray.count() != 0)
+                    emptyList.visibility = View.GONE
+                else
+                    emptyList.visibility = View.VISIBLE
             }
-
-            if (onSaleArray.count() != 0)
-                emptyList.visibility = View.GONE
-            }
-            else
-                emptyList.visibility = View.VISIBLE
         })
         return view
     }
@@ -194,16 +195,13 @@ class OnSaleListFragment: Fragment(),SearchDialogFragment.NoticeDialogListener{
             Log.e("xxx", title)
             searchCard.findViewById<TextView>(R.id.textViewPrice).text = s
 
+            adapter = OnSaleRecyclerViewAdapter(onSearchArray)
+            recyclerView.adapter=adapter
             itemListVm.getQueryItems(title, catIndex, m1, m2, location)
                 .observe(viewLifecycleOwner, Observer {
                     if (search) {
                         onSearchArray = it as ArrayList<ItemModel>
-                        with(r) {
-                            layoutManager = LinearLayoutManager(context)
-                            adapter = OnSaleRecyclerViewAdapter(
-                                onSearchArray
-                            )
-                        }
+                        adapter.onNewData(onSearchArray)
                         if (onSearchArray.count() != 0)
                             emptyList.visibility = View.GONE
                         else
@@ -223,8 +221,16 @@ class OnSaleListFragment: Fragment(),SearchDialogFragment.NoticeDialogListener{
 
     inner class myRefreshListener:SwipeRefreshLayout.OnRefreshListener {
         override fun onRefresh() {
-            adapter.onNewData(onSaleArray);
-            swipeRefreshLayout.setRefreshing(false);
+            itemListVm.getAllItems().observe(viewLifecycleOwner, Observer {
+                if(!search && it!=null){
+                    onSaleArray= it as ArrayList<ItemModel>
+                    adapter.onNewData(onSaleArray);
+                }
+                if (onSaleArray.count() != 0)
+                    emptyList.visibility = View.GONE
+                else
+                    emptyList.visibility = View.VISIBLE
+            })
         }
     }
 }

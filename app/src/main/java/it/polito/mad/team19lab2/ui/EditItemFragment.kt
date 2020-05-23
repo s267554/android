@@ -392,14 +392,15 @@ class EditItemFragment : Fragment() {
         }*/
         //item.state = stateDropdown.text.toString()
         item.expireDatestamp=timestamp
-
+        clEditItem.visibility=View.GONE
+        progressBar.visibility=View.VISIBLE
         // Update or create the image
         if(imageModified && this::image.isInitialized) {
             val itemPictureRef=storage.reference.child("itemPicture/${idItem}")
             val path="itemPicture/${idItem}"
             item.imagePath = path
             val baos = ByteArrayOutputStream()
-            image.compress(Bitmap.CompressFormat.JPEG, 20, baos)
+            image.compress(Bitmap.CompressFormat.JPEG, 100, baos)
             val data = baos.toByteArray()
             val uploadTask = itemPictureRef.putBytes(data)
             uploadTask.addOnFailureListener {
