@@ -39,11 +39,11 @@
         <string name="invalidEmail">Email non valida</string>
     <string name="item_update_message">Annuncio aggiornato</string>
     <string name="item_create_message">Annuncio creato</string>
-    <string name="keep_pressed">tieni premuto</string>
-    <string name="insert_all_required_fields">inserisci tutti i campi obbligatori</string>
-    <string name="camera_launched">camera avviata</string>
-    <string name="gallery_launched">galleria avviata</string>
-    <string name="insert_image_before">prima inserisci un\&apos;immagine</string>
+    <string name="keep_pressed">Tieni premuto</string>
+    <string name="insert_all_required_fields">Inserisci tutti i campi obbligatori</string>
+    <string name="camera_launched">Camera avviata</string>
+    <string name="gallery_launched">Galleria avviata</string>
+    <string name="insert_image_before">Prima inserisci un\&apos;immagine</string>
     <string name="profile_updated">profilo aggiornato</string>
     <string name="logout">logout</string>
     <string name="search">Cerca</string>

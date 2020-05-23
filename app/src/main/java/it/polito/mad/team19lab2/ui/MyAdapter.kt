@@ -30,23 +30,22 @@ class MyAdapter(
     }
 
     private fun getCustomView(position: Int, convertView: View?): View {//creo i view holder
-        Log.d("MY_ADAPTER", "getCustomView")
-        var convertView: View? = convertView
+        var cv: View? = convertView
         val holder: ViewHolder
-        if (convertView == null) {
+        if (cv == null) {
             val layoutInflator = LayoutInflater.from(mContext)
-            convertView = layoutInflator.inflate(R.layout.spinner_item, null)//the view is a single itme of the spinner
+            cv = layoutInflator.inflate(R.layout.spinner_item, null)//the view is a single item of the spinner
             holder = ViewHolder()
-            holder.mTextView = convertView.findViewById(R.id.text)//binding of the holder fields with the layout's views
-            holder.mCheckBox = convertView.findViewById(R.id.checkbox)
-            convertView.tag=holder //set the tag, so for the next i'm always generating the same holder with the same binding
+            holder.mTextView = cv.findViewById(R.id.text)//binding of the holder fields with the layout's views
+            holder.mCheckBox = cv.findViewById(R.id.checkbox)
+            cv.tag=holder //set the tag, so for the next i'm always generating the same holder with the same binding
         } else {
-            holder = convertView.tag as ViewHolder//set tag for next
+            holder = cv.tag as ViewHolder//set tag for next
         }
-        holder.mTextView!!.text = listState[position].title//ora setto il testo
+        holder.mTextView!!.text = listState[position].title// set the text
         // To check weather checked event fire from getview() or user input
         isFromView = true
-        holder.mCheckBox!!.isChecked = listState[position].isSelected//setto la checkboxe in base al campo selected dell'item (tipo stateVO)
+        holder.mCheckBox!!.isChecked = listState[position].isSelected//setto la checkbox e in base al campo selected dell'item (tipo stateVO)
         isFromView = false
         holder.mCheckBox!!.visibility = View.VISIBLE
         holder.mCheckBox!!.tag = position
@@ -59,7 +58,7 @@ class MyAdapter(
             }
             (mContext as MainActivity).setInterestsDropdown(listState)
         }
-        return convertView!!
+        return cv!!
     }
 
     private class ViewHolder {

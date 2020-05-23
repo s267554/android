@@ -8,7 +8,6 @@ import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -19,8 +18,6 @@ import com.google.android.material.card.MaterialCardView
 import it.polito.mad.team19lab2.R
 import it.polito.mad.team19lab2.data.ItemModel
 import it.polito.mad.team19lab2.viewModel.ItemListViewModel
-import kotlinx.android.synthetic.main.fragment_onsale_list.*
-
 
 class OnSaleListFragment: Fragment(),SearchDialogFragment.NoticeDialogListener{
 
@@ -31,18 +28,17 @@ class OnSaleListFragment: Fragment(),SearchDialogFragment.NoticeDialogListener{
     lateinit var adapter: OnSaleRecyclerViewAdapter
     lateinit var swipeRefreshLayout: SwipeRefreshLayout
     private val itemListVm: ItemListViewModel by viewModels()
-    lateinit var liveList:MutableLiveData<List<ItemModel>>
     lateinit var r: RecyclerView
     lateinit var emptyList:TextView
     lateinit var searchCard: MaterialCardView
-    lateinit var clearBotton: Button
-    lateinit var modifyBotton: Button
+    private lateinit var clearBotton: Button
+    private lateinit var modifyBotton: Button
     private var search:Boolean =false
-    private var query_title:String?=null
-    private var query_cat:String?=null
-    private var query_min:String?=null
-    private var query_max:String?=null
-    private var query_loc:String?=null
+    private var queryTitle:String?=null
+    private var queryCat:String?=null
+    private var queryMin:String?=null
+    private var queryMax:String?=null
+    private var queryLoc:String?=null
 
     //private var clear=false
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,25 +53,23 @@ class OnSaleListFragment: Fragment(),SearchDialogFragment.NoticeDialogListener{
     ): View? {
         val view = inflater.inflate(R.layout.fragment_onsale_list, container, false)
         r= view.findViewById(R.id.onsale_list)
-        Log.d("seller2", findNavController().graph.toString())
-        emptyList=view.findViewById<TextView>(R.id.empty_list)
+        emptyList=view.findViewById(R.id.empty_list)
         clearBotton=view.findViewById(R.id.button_clear_filter)
         modifyBotton=view.findViewById(R.id.modify_query_button)
         searchCard=view.findViewById(R.id.materialCardView2)
         modifyBotton.setOnClickListener {
             if(search) {
-                val d = SearchDialogFragment(query_title,query_cat,query_min,query_max,query_loc);
+                val d = SearchDialogFragment(queryTitle,queryCat,queryMin,queryMax,queryLoc)
                 d.show(childFragmentManager, "search dialog")
             }
         }
         clearBotton.setOnClickListener {
-            Log.d("vittoz",search.toString())
             if(search){
-                query_title=null
-                query_cat=null
-                query_loc=null
-                query_min=null
-                query_max=null
+                queryTitle=null
+                queryCat=null
+                queryLoc=null
+                queryMin=null
+                queryMax=null
                 search=false
                 //clear=true
                 itemListVm.getAllItems().observe(viewLifecycleOwner, Observer {
@@ -83,7 +77,6 @@ class OnSaleListFragment: Fragment(),SearchDialogFragment.NoticeDialogListener{
 
                         if(!search){
                             onSaleArray= it as ArrayList<ItemModel>
-                            Log.d("vittoz", "clear observer: "+onSaleArray.toString())
                             with(r) {
                                 layoutManager = LinearLayoutManager(context)
                                 adapter = OnSaleRecyclerViewAdapter(
@@ -111,9 +104,16 @@ class OnSaleListFragment: Fragment(),SearchDialogFragment.NoticeDialogListener{
         itemListVm.getAllItems().observe(viewLifecycleOwner, Observer {
             if(!search && it!=null){
                 onSaleArray= it as ArrayList<ItemModel>
+
                 Log.d("vittoz", "all observer: "+onSaleArray.toString())
                 adapter.onNewData(onSaleArray);
                 swipeRefreshLayout.setRefreshing(false);
+            with(r) {
+                layoutManager = LinearLayoutManager(context)
+                adapter = OnSaleRecyclerViewAdapter(
+                    onSaleArray
+                )
+            }
 
             if (onSaleArray.count() != 0)
                 emptyList.visibility = View.GONE
@@ -132,7 +132,7 @@ class OnSaleListFragment: Fragment(),SearchDialogFragment.NoticeDialogListener{
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if(item.itemId == R.id.search_item_action){
-            val d=SearchDialogFragment();
+            val d=SearchDialogFragment()
             d.show(childFragmentManager,"search dialog")
         }
         return super.onOptionsItemSelected(item)
@@ -145,7 +145,6 @@ class OnSaleListFragment: Fragment(),SearchDialogFragment.NoticeDialogListener{
         maxprice: String?,
         location: String?
     ) {
-        Log.d(" vittoz query param", title+"  "+category+"  "+minprice+"  "+maxprice+"  "+location)
         var m1=minprice
         var m2=maxprice
         if(!minprice.isNullOrEmpty())
@@ -176,23 +175,23 @@ class OnSaleListFragment: Fragment(),SearchDialogFragment.NoticeDialogListener{
         }
         else
             searchCard.findViewById<TextView>(R.id.textViewloc).text = "@ any location"
-        var s=""
-        if(!m1.isNullOrEmpty()){
-            s=resources.getString(R.string.from)+m1+"€ "
-        }
-        else
-            s=resources.getString(R.string.from)+"0€ "
+
+        var s: String
+        s = if(!m1.isNullOrEmpty()){
+            resources.getString(R.string.from)+m1+"€ "
+        } else
+            resources.getString(R.string.from)+"0€ "
         if(!m2.isNullOrEmpty()){
             s=s+resources.getString(R.string.upTo)+m2+ "€"
         }
         else
-            s=s+resources.getString(R.string.upUnbound)
+            s += resources.getString(R.string.upUnbound)
         if(search) {
-            query_title=title
-            query_cat=category
-            query_loc=location
-            query_min=m1
-            query_max=m2
+            queryTitle=title
+            queryCat=category
+            queryLoc=location
+            queryMin=m1
+            queryMax=m2
 
             searchCard.findViewById<TextView>(R.id.textViewPrice).text = s
 
@@ -200,7 +199,6 @@ class OnSaleListFragment: Fragment(),SearchDialogFragment.NoticeDialogListener{
                 .observe(viewLifecycleOwner, Observer {
                     if (search) {
                         onSearchArray = it as ArrayList<ItemModel>
-                        Log.d("vittoz", "search observer: " + onSearchArray.toString())
                         with(r) {
                             layoutManager = LinearLayoutManager(context)
                             adapter = OnSaleRecyclerViewAdapter(
@@ -215,6 +213,7 @@ class OnSaleListFragment: Fragment(),SearchDialogFragment.NoticeDialogListener{
                 })
             searchCard.visibility = View.VISIBLE
         }
+
         else
             searchCard.visibility = View.GONE
         //r.adapter?.notifyDataSetChanged()
@@ -229,7 +228,6 @@ class OnSaleListFragment: Fragment(),SearchDialogFragment.NoticeDialogListener{
             swipeRefreshLayout.setRefreshing(false);
         }
     }
-
 }
 
 

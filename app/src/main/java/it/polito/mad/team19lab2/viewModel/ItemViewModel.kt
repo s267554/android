@@ -4,21 +4,19 @@ package it.polito.mad.team19lab2.viewModel
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.EventListener
 import com.google.firebase.firestore.Query
-import com.google.firebase.firestore.QuerySnapshot
 import it.polito.mad.team19lab2.data.ItemModel
 import it.polito.mad.team19lab2.data.UserShortModel
 import it.polito.mad.team19lab2.repository.ItemRepository
 import it.polito.mad.team19lab2.repository.UserRepository
 
 class ItemViewModel : ViewModel() {
-    var itemRepository = ItemRepository()
-    var userRepository = UserRepository()
-    var TAG = "ITEM_VIEW_MODEL"
-    var liveItem: MutableLiveData<ItemModel> = MutableLiveData()
-    var liveUsers : MutableLiveData<List<UserShortModel>> = MutableLiveData()
+    private var itemRepository = ItemRepository()
+    private var userRepository = UserRepository()
+    private var TAG = "ITEM_VIEW_MODEL"
+    private var liveItem: MutableLiveData<ItemModel> = MutableLiveData()
+    private var liveUsers : MutableLiveData<List<UserShortModel>> = MutableLiveData()
     private var userList : MutableList<UserShortModel> = mutableListOf()
 
     fun saveItem(item: ItemModel) {
@@ -28,7 +26,7 @@ class ItemViewModel : ViewModel() {
     }
 
     fun getItem(id: String): MutableLiveData<ItemModel> {
-        itemRepository.getItem(id).addSnapshotListener(EventListener<DocumentSnapshot> { value, e ->
+        itemRepository.getItem(id).addSnapshotListener(EventListener { value, e ->
             if (e != null) {
                 Log.e(TAG, "Listen failed.", e)
                 liveItem.value = null
@@ -48,7 +46,7 @@ class ItemViewModel : ViewModel() {
     }
 
     private fun takeLiveUsersFromQuery(q: Query){
-        q.addSnapshotListener(EventListener<QuerySnapshot> { value, e ->
+        q.addSnapshotListener(EventListener { value, e ->
             if (e != null) {
                 Log.d(TAG, "Listen failed.", e)
                 liveUsers.value = null
@@ -56,18 +54,16 @@ class ItemViewModel : ViewModel() {
             }
             for (doc in value!!) {
                 Log.d(TAG,doc.toString())
-                var user = doc.toObject(UserShortModel::class.java)
+                val user = doc.toObject(UserShortModel::class.java)
                 userList.add(user)
             }
-            var tmpArray=ArrayList(userList)
+            val tmpArray=ArrayList(userList)
             liveUsers.value = tmpArray
             userList.clear()
         })
     }
 
     fun addInterestedUser(id: String) {
-        // TODO: better way to get my own UserShortModel
-        // TODO: switch to coroutines maybe?
         val query = userRepository.getProfile().get()
         query.addOnSuccessListener {
             if (it != null) {

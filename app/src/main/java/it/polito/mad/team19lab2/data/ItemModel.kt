@@ -15,7 +15,6 @@ data class ItemModel (
     var location: String,
     var expiryDate: String,
     var price: Float,
-    //var sold: Boolean,
     var state: String,
     var userId: String,
     var expireDatestamp: Timestamp

@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -19,10 +20,11 @@ import com.google.firebase.storage.ktx.storage
 import com.squareup.picasso.Picasso
 import it.polito.mad.team19lab2.R
 import it.polito.mad.team19lab2.data.ItemModel
-import kotlinx.android.synthetic.main.onsale_item_card_view.view.*
 
+import kotlinx.android.synthetic.main.fragment_item.view.*
 
-class OnSaleRecyclerViewAdapter(val onSaleItems: ArrayList<ItemModel>):
+class OnSaleRecyclerViewAdapter(private val onSaleItems: ArrayList<ItemModel>):
+
 RecyclerView.Adapter<OnSaleRecyclerViewAdapter.ViewHolder> ( ){
 
     override fun getItemCount() = onSaleItems.size
@@ -39,7 +41,7 @@ RecyclerView.Adapter<OnSaleRecyclerViewAdapter.ViewHolder> ( ){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val vh = LayoutInflater.from(parent.context)
-            .inflate(R.layout.onsale_item_card_view, parent, false)
+            .inflate(R.layout.fragment_item, parent, false)
         return ViewHolder(vh)
     }
 
@@ -85,6 +87,8 @@ RecyclerView.Adapter<OnSaleRecyclerViewAdapter.ViewHolder> ( ){
         holder.bind(onSaleItems[position])
         with(holder.cv) {
             tag = onSaleItems[position]
+            val b = findViewById<Button>(R.id.item_list_edit_button)
+            b.visibility = View.GONE
             setOnClickListener(onSaleCL)
         }
     }
@@ -108,7 +112,7 @@ RecyclerView.Adapter<OnSaleRecyclerViewAdapter.ViewHolder> ( ){
             itemTitle.text = item.title
             itemPrice.text = "€ " + item.price.toString()
             storage = Firebase.storage
-            if (!item.imagePath.isNullOrEmpty()) {
+            if (item.imagePath.isNotEmpty()) {
                 val storageRef = storage.reference
                 storageRef.child(item.imagePath).downloadUrl.addOnSuccessListener {
                     Picasso.get().load(it).noFade().placeholder(R.drawable.progress_animation)
@@ -120,7 +124,7 @@ RecyclerView.Adapter<OnSaleRecyclerViewAdapter.ViewHolder> ( ){
                             }
                         })
                 }.addOnFailureListener {
-                    Log.d("image", "error in download image")
+                    Log.e("IMAGE", "Error in download image")
                 }
             } else {
                 this.itemImage.setImageResource(R.drawable.sport_category_foreground)

@@ -3,15 +3,14 @@ package it.polito.mad.team19lab2.viewModel
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.EventListener
 import it.polito.mad.team19lab2.data.UserModel
 import it.polito.mad.team19lab2.repository.UserRepository
 
 class UserViewModel: ViewModel() {
-    val TAG = "USER_VIEW_MODEL"
-    var userRepository = UserRepository()
-    var liveUser: MutableLiveData<UserModel> = MutableLiveData()
+    private val TAG = "USER_VIEW_MODEL"
+    private var userRepository = UserRepository()
+    private var liveUser: MutableLiveData<UserModel> = MutableLiveData()
 
     fun saveUser(user: UserModel){
         userRepository.saveProfile(user).addOnFailureListener {
@@ -20,7 +19,7 @@ class UserViewModel: ViewModel() {
     }
 
     fun getUser(userId: String): MutableLiveData<UserModel> {
-        userRepository.getUser(userId).addSnapshotListener(EventListener<DocumentSnapshot> { value, e ->
+        userRepository.getUser(userId).addSnapshotListener(EventListener { value, e ->
             if (e != null) {
                 Log.e(TAG, "Listen failed.", e)
 
@@ -35,7 +34,7 @@ class UserViewModel: ViewModel() {
     }
 
     fun getOrCreateUser(): MutableLiveData<UserModel>{
-        userRepository.getProfile().addSnapshotListener(EventListener<DocumentSnapshot> { value, e ->
+        userRepository.getProfile().addSnapshotListener(EventListener { value, e ->
             if (e != null) {
                 Log.e(TAG, "Listen failed.", e)
                 liveUser.value = null
@@ -45,14 +44,14 @@ class UserViewModel: ViewModel() {
                 if(value.exists())
                     liveUser.value = value.toObject(UserModel::class.java)
                 else{
-                    userRepository.createUser().addSnapshotListener(EventListener<DocumentSnapshot> { value, e ->
-                        if (e != null) {
-                            Log.e(TAG, "Listen failed.", e)
+                    userRepository.createUser().addSnapshotListener(EventListener { v, err ->
+                        if (err != null) {
+                            Log.e(TAG, "Listen failed.", err)
                             liveUser.value = null
                             return@EventListener
                         }
-                        if (value != null) {
-                            liveUser.value = value.toObject(UserModel::class.java)
+                        if (v != null) {
+                            liveUser.value = v.toObject(UserModel::class.java)
                         }
                     })
                 }

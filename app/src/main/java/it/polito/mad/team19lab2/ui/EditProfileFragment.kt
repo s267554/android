@@ -53,7 +53,7 @@ class EditProfileFragment : Fragment() {
     }
 
     companion object {
-        private val maxMemory : Long = Runtime.getRuntime().maxMemory() / 1024;
+        private val maxMemory : Long = Runtime.getRuntime().maxMemory() / 1024
         private val cacheSize = (maxMemory/4).toInt()
         private val mMemoryCache = object : LruCache<String, Bitmap>(cacheSize) {
             override fun sizeOf(key: String?, bitmap: Bitmap): Int {
@@ -62,17 +62,14 @@ class EditProfileFragment : Fragment() {
         }
     }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
         storage = Firebase.storage
     }
 
-
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        Log.d("SCREEN_ROTATION", "onSaveInstanceState")
         val interestsRecover= mutableListOf<Int>()
         for(i in listVOs.indices)
             if(listVOs[i].isSelected)
@@ -286,7 +283,6 @@ class EditProfileFragment : Fragment() {
                 interests.add(i)
         if (interests.isNotEmpty())
             user.interests = interests
-        Log.d("IMAGE", imageModified.toString())
         if(this::image.isInitialized && imageModified) {
                 headerView.findViewById<ImageView>(R.id.header_imageView).setImageBitmap(image)
                 val profilePictureRef=storage.reference.child("profilePicture/${user.id}")
@@ -299,7 +295,6 @@ class EditProfileFragment : Fragment() {
                 uploadTask.addOnFailureListener {
                     Log.e("profilePicture", "Error in upload image")
                 }.addOnSuccessListener {
-                    Log.d("profilePicture", "ProfilePicture loaded correctly")
                     userVm.saveUser(user)
                     headerView.findViewById<TextView>(R.id.header_title_textView).text =
                         nicknameProfileEditText.text
@@ -412,7 +407,7 @@ class EditProfileFragment : Fragment() {
             Toast.makeText(activity?.applicationContext,resources.getString(R.string.insert_image_before),Toast.LENGTH_SHORT).show()
             return
         }
-        val rotatedBitmap: Bitmap = rotateImage(image!!, 90)
+        val rotatedBitmap: Bitmap = rotateImage(image, 90)
         imageModified=true
         image_view.setImageBitmap(rotatedBitmap)
         image = rotatedBitmap
@@ -436,10 +431,9 @@ class EditProfileFragment : Fragment() {
                 }
             })
         }.addOnFailureListener {
-            Log.d("image", "error in download image")
+            Log.e("IMAGE", "Error in download image")
         }
     }
-
 }
 
 class StateVO {

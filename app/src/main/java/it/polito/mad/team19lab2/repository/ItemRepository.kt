@@ -1,7 +1,6 @@
 package it.polito.mad.team19lab2.repository
 
 import android.util.Log
-import com.firebase.ui.auth.data.model.User
 import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
@@ -38,7 +37,7 @@ class ItemRepository {
 
     fun addInterestedUser(usm: UserShortModel, id: String)  {
         var documentReference = firestoreDB.collection("items").document(id)
-            .collection("users").document(usm.id);
+            .collection("users").document(usm.id)
         documentReference.set(usm)
         return
     }

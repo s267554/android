@@ -24,7 +24,7 @@ class ShowProfileFragment :Fragment() {
 
     private lateinit var user: UserModel
     private var currentUser = FirebaseAuth.getInstance().currentUser
-    lateinit var storage: FirebaseStorage
+    private lateinit var storage: FirebaseStorage
     private val userVm: UserViewModel by viewModels()
     private lateinit var userId: String
 
@@ -44,9 +44,9 @@ class ShowProfileFragment :Fragment() {
         } else{
             currentUser?.uid ?: ""
         }
-        userVm.getUser(userId).observe(viewLifecycleOwner, Observer { it ->
+        userVm.getUser(userId).observe(viewLifecycleOwner, Observer {
             user = it
-            if (user.imagePath.isNullOrEmpty()) {
+            if (user.imagePath.isEmpty()) {
                 image_view.setImageResource(R.drawable.avatar_foreground)
             }
             else{
@@ -110,7 +110,7 @@ class ShowProfileFragment :Fragment() {
         storageRef.child(user.imagePath).downloadUrl.addOnSuccessListener {
             Picasso.get().load(it).noFade().placeholder(R.drawable.progress_animation).into(image_view)
         }.addOnFailureListener {
-            Log.d("image", "error in download image")
+            Log.e("IMAGE", "Error in download image")
         }
     }
 }
