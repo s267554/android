@@ -19,7 +19,7 @@ import it.polito.mad.team19lab2.data.ItemModel
 
 import kotlinx.android.synthetic.main.fragment_item.view.*
 
-class OnSaleRecyclerViewAdapter(val onSaleItems: ArrayList<ItemModel>):
+class OnSaleRecyclerViewAdapter(private val onSaleItems: ArrayList<ItemModel>):
 RecyclerView.Adapter<OnSaleRecyclerViewAdapter.ViewHolder> ( ){
 
     override fun getItemCount() = onSaleItems.size
@@ -51,15 +51,15 @@ RecyclerView.Adapter<OnSaleRecyclerViewAdapter.ViewHolder> ( ){
     }
 
     inner class ViewHolder(val cv: View): RecyclerView.ViewHolder(cv) {
-        val itemTitle: TextView = cv.item_title
-        val itemPrice: TextView = cv.content
-        val itemImage: ImageView = cv.item_image_preview
+        private val itemTitle: TextView = cv.item_title
+        private val itemPrice: TextView = cv.content
+        private val itemImage: ImageView = cv.item_image_preview
 
         fun bind(item: ItemModel){
             itemTitle.text = item.title
             itemPrice.text = "€ " + item.price.toString()
             storage = Firebase.storage
-            if (!item.imagePath.isNullOrEmpty()) {
+            if (item.imagePath.isNotEmpty()) {
                 val storageRef = storage.reference
                 storageRef.child(item.imagePath).downloadUrl.addOnSuccessListener {
                     Picasso.get().load(it).noFade().placeholder(R.drawable.progress_animation)
@@ -71,7 +71,7 @@ RecyclerView.Adapter<OnSaleRecyclerViewAdapter.ViewHolder> ( ){
                             }
                         })
                 }.addOnFailureListener {
-                    Log.d("image", "error in download image")
+                    Log.e("IMAGE", "Error in download image")
                 }
             } else {
                 this.itemImage.setImageResource(R.drawable.sport_category_foreground)

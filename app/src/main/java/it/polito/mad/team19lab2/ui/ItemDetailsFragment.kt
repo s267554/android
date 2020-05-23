@@ -10,9 +10,7 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -32,7 +30,6 @@ import kotlinx.android.synthetic.main.item_details_fragment.*
 
 class ItemDetailsFragment : Fragment() {
 
-    private val TAG = "ITEM_DETAIL_FRAGMENT"
     private lateinit var item: ItemModel
     lateinit var storage: FirebaseStorage
     private val itemVm: ItemViewModel by viewModels()
@@ -41,10 +38,7 @@ class ItemDetailsFragment : Fragment() {
     private lateinit var sellerUser:String
     private var user = FirebaseAuth.getInstance().currentUser
     private var interestedUsers = ArrayList<UserShortModel>()
-    private var listenerSet=false
-    var f: Boolean = false
     var favourite: Boolean = false
-    lateinit var navC:NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,7 +65,7 @@ class ItemDetailsFragment : Fragment() {
             idItem = arguments?.getString("item_id1").toString()
         }
         val recycler: RecyclerView = view.findViewById(R.id.userList)
-        var usersLabel = view.findViewById<TextView>(R.id.interestedUsers)
+        val usersLabel = view.findViewById<TextView>(R.id.interestedUsers)
         itemVm.getItem(idItem).observe(viewLifecycleOwner, Observer { it ->
             item = it
             if(it.userId == user?.uid ?: ""){
@@ -84,7 +78,6 @@ class ItemDetailsFragment : Fragment() {
 
                 itemVm.getInterestedUsers(idItem).observe(viewLifecycleOwner, Observer { users ->
                     interestedUsers= users as ArrayList<UserShortModel>
-                    Log.d("userList", users.toString())
                     with(recycler) {
                         layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
                         adapter =  InterestedUsersRecycleViewAdapter(interestedUsers)
@@ -100,10 +93,9 @@ class ItemDetailsFragment : Fragment() {
                 usersLabel.visibility=View.GONE
                 userVm.getUser(item.userId).observe(viewLifecycleOwner, Observer { user ->
                     sellerUser=user.id
-                    seller_fullname.setText(user.fullname)
-                    seller_nickname.setText(user.nickname)
+                    seller_fullname.text = user.fullname
+                    seller_nickname.text = user.nickname
                 })
-                Log.d("USER", "i'm not the user")
                 setHasOptionsMenu(false)
                 buyButton.setOnClickListener {
                     item.state = "Sold"
@@ -122,7 +114,6 @@ class ItemDetailsFragment : Fragment() {
                     }
                 })
                 fab.setOnClickListener {
-                    Log.d(TAG, "iditem: $idItem")
                     if(!favourite) {
                         itemVm.addInterestedUser(idItem)
                         favourite=true
@@ -137,7 +128,7 @@ class ItemDetailsFragment : Fragment() {
                     }
                 }
             }
-            if(item.imagePath.isNullOrEmpty()){
+            if(item.imagePath.isEmpty()){
                 image_view.setImageResource(R.drawable.sport_category_foreground)
             }
             else{
@@ -146,7 +137,7 @@ class ItemDetailsFragment : Fragment() {
             titleTextView.text = item.title
             descriptionExpandable.text = item.description
             locationTextView.text = item.location
-            priceTextView.text = item.price.toString() + " €"
+            priceTextView.text = "${item.price.toString()} €"
             expireTextView.text = item.expiryDate
             categoryTextView.text = item.category
             subCategoryTextView.text=item.subcategory
@@ -154,22 +145,9 @@ class ItemDetailsFragment : Fragment() {
 
 
             seller_view_button.setOnClickListener {
-                Log.d("seller", sellerUser+ "  <  "+it.toString())
                 if(it!=null&&!sellerUser.isEmpty()){
-                    Log.d("seller", findNavController().graph.toString())
-                    Log.d("seller", sellerUser)
                     Navigation.findNavController(requireView()).navigate(R.id.action_nav_item_detail_to_nav_show_profile,bundleOf("user_id" to sellerUser))
                 } }
-
-
-
-
-        // TODO: if I am already present in users list then change Action Button to "check" symbol
-    }
-
-    fun navigateToUserProfile(){
-        findNavController().
-        navigate(R.id.action_nav_item_detail_to_nav_show_profile,bundleOf("user_id" to item.userId))
     }
 
     override fun onCreateOptionsMenu(menu: Menu, menuInflater: MenuInflater) {
@@ -191,7 +169,7 @@ class ItemDetailsFragment : Fragment() {
         storageRef.child(item.imagePath).downloadUrl.addOnSuccessListener {
             Picasso.get().load(it).noFade().placeholder(R.drawable.progress_animation).into(image_view)
         }.addOnFailureListener {
-            Log.d("image", "error in download image")
+            Log.e("IMAGE", "Error in download image")
         }
     }
 }

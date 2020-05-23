@@ -9,7 +9,7 @@ class ItemListRepository {
 
     val TAG = "ITEM_REPOSITORY"
     var firestoreDB = FirebaseFirestore.getInstance()
-    val myId=FirebaseAuth.getInstance()!!.uid!!;
+    val myId=FirebaseAuth.getInstance()!!.uid!!
 
     fun getMyItems(): Query {
         return firestoreDB.collection("items")
@@ -23,13 +23,13 @@ class ItemListRepository {
     ): Query {
         var q:Query=firestoreDB.collection("items")
         if(!minprice.isNullOrEmpty())
-            q=q.whereGreaterThanOrEqualTo("price", minprice.toInt());
+            q=q.whereGreaterThanOrEqualTo("price", minprice.toInt())
         if(!maxprice.isNullOrEmpty())
-            q=q.whereLessThanOrEqualTo("price", maxprice.toInt());
+            q=q.whereLessThanOrEqualTo("price", maxprice.toInt())
         if(!category.isNullOrEmpty())
-            q=q.whereEqualTo("category", category);
+            q=q.whereEqualTo("category", category)
         if(!location.isNullOrEmpty())
-            q=q.whereEqualTo("location", location);
+            q=q.whereEqualTo("location", location)
         q=q.whereEqualTo("state","Available")
         return q
     }

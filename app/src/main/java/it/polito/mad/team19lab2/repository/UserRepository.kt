@@ -3,18 +3,14 @@ package it.polito.mad.team19lab2.repository
 import android.util.Log
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentReference
-import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import it.polito.mad.team19lab2.data.UserModel
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 
 class UserRepository {
 
     val TAG = "USER_REPOSITORY"
-    var firestoreDB = FirebaseFirestore.getInstance()
+    private var firestoreDB = FirebaseFirestore.getInstance()
     var user = FirebaseAuth.getInstance().currentUser
 
     fun saveProfile(profile: UserModel): Task<Void> {
@@ -37,7 +33,6 @@ class UserRepository {
 
     fun createUser(): DocumentReference {
         var documentReference = firestoreDB.collection("utenti").document(user!!.uid)
-        Log.d("xxxx", "eccomi")
         var newUser = UserModel(user!!.email.toString(), user!!.uid)
         newUser.nickname = "avatar${System.currentTimeMillis().toString().subSequence(0,10)}"
         newUser.fullname = user!!.email?.split("@")?.get(0) ?: "fullname"

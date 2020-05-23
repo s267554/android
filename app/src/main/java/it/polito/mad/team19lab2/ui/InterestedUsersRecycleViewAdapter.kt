@@ -1,9 +1,7 @@
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.navigation.findNavController
@@ -23,14 +21,13 @@ class InterestedUsersRecycleViewAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val user = mValues[position] as UserShortModel
+        val user = mValues[position]
         holder.mIdView.text = user.nickname
         holder.mContentView.text = user.fullname
 
         with(holder.mView) {
             tag = user
         }
-
         holder.mViewButton.setOnClickListener {
             it.findNavController().navigate(
                 R.id.action_nav_item_detail_to_nav_show_profile,

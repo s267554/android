@@ -13,7 +13,6 @@ import androidx.core.app.NotificationCompat
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
-import it.polito.mad.team19lab2.data.UserModel
 import it.polito.mad.team19lab2.repository.UserRepository
 
 class MyFirebaseMessagingService : FirebaseMessagingService() {

@@ -1,7 +1,6 @@
 package it.polito.mad.team19lab2.data
 
 import android.os.Parcelable
-import android.provider.ContactsContract
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize

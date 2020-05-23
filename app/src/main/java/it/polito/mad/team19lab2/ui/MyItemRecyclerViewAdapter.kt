@@ -1,6 +1,5 @@
 package it.polito.mad.team19lab2.ui
 
-import android.graphics.drawable.BitmapDrawable
 import android.util.Log
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
@@ -17,7 +16,6 @@ import com.google.firebase.storage.ktx.storage
 import com.squareup.picasso.Picasso
 import it.polito.mad.team19lab2.R
 import it.polito.mad.team19lab2.data.ItemModel
-import kotlinx.android.synthetic.main.fragment_edit_profile.*
 
 import kotlinx.android.synthetic.main.fragment_item.view.*
 import java.util.ArrayList
@@ -28,7 +26,7 @@ class MyItemRecyclerViewAdapter(
 ) : RecyclerView.Adapter<MyItemRecyclerViewAdapter.ViewHolder>() {
 
     private val mOnClickListener: View.OnClickListener
-    lateinit var storage: FirebaseStorage
+    private lateinit var storage: FirebaseStorage
 
     init {
         mOnClickListener = View.OnClickListener { v ->
@@ -49,11 +47,11 @@ class MyItemRecyclerViewAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = mValues[position] as ItemModel
+        val item = mValues[position]
         storage = Firebase.storage
         holder.mIdView.text = item.title
         holder.mContentView.text = "€ " + item.price.toString()
-        if (!item.imagePath.isNullOrEmpty()) {
+        if (item.imagePath.isNotEmpty()) {
             //Download image
             val storageRef = storage.reference
             storageRef.child(item.imagePath).downloadUrl.addOnSuccessListener {
@@ -66,7 +64,7 @@ class MyItemRecyclerViewAdapter(
                         }
                     })
             }.addOnFailureListener {
-                Log.d("image", "error in download image")
+                Log.e("IMAGE", "Error in download image")
             }
         } else {
             holder.mImage.setImageResource(R.drawable.sport_category_foreground)

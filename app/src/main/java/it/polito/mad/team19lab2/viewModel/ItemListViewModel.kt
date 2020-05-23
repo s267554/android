@@ -6,19 +6,17 @@ import androidx.lifecycle.ViewModel
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.EventListener
-import com.google.firebase.firestore.QuerySnapshot
 import it.polito.mad.team19lab2.data.ItemModel
 import it.polito.mad.team19lab2.repository.ItemListRepository
 import com.google.firebase.firestore.Query
 
 
 class ItemListViewModel : ViewModel() {
-    var itemListRepository = ItemListRepository()
-    var TAG = "ITEM_LIST_VIEW_MODEL"
-    var liveItems : MutableLiveData<List<ItemModel>> = MutableLiveData()
+    private var itemListRepository = ItemListRepository()
+    private var TAG = "ITEM_LIST_VIEW_MODEL"
+    private var liveItems : MutableLiveData<List<ItemModel>> = MutableLiveData()
     private var itemsList : MutableList<ItemModel> = mutableListOf()
-    private var flag=0;
-    val myId= FirebaseAuth.getInstance()!!.uid!!;
+    private val myId= FirebaseAuth.getInstance().uid!!
 
     fun getAllItems(): MutableLiveData<List<ItemModel>>{
         itemsList.clear()
@@ -33,50 +31,40 @@ class ItemListViewModel : ViewModel() {
     }
 
     private fun takeLiveItemsFromQuery(q:Query){
-        q.addSnapshotListener(EventListener<QuerySnapshot> { value, e ->
+        q.addSnapshotListener(EventListener { value, e ->
             if (e != null) {
-                Log.d(TAG, "Listen failed.", e)
                 liveItems.value = null
                 return@EventListener
             }
             for (doc in value!!) {
-                Log.d(TAG,doc.toString())
-                var item = doc.toObject(ItemModel::class.java)
+                val item = doc.toObject(ItemModel::class.java)
                 itemsList.add(item)
             }
-            var tmpArray=ArrayList(itemsList)
+            val tmpArray=ArrayList(itemsList)
             liveItems.value = tmpArray
             itemsList.clear()
         })
     }
 
     private fun takeOtherFromQuery(q:Query,title: String?){
-        q.addSnapshotListener(EventListener<QuerySnapshot> { value, e ->
+        q.addSnapshotListener(EventListener { value, e ->
             if (e != null) {
-                Log.d(TAG, "Listen failed.", e)
                 liveItems.value = null
                 return@EventListener
             }
             for (doc in value!!) {
-                var item = doc.toObject(ItemModel::class.java)
+                val item = doc.toObject(ItemModel::class.java)
 
                 if(item.userId!=myId&&item.expireDatestamp>= Timestamp.now()) {
-                    Log.d("vittoz",item.title+": "+item.expireDatestamp +"vs now: "+Timestamp.now())
                     if (title.isNullOrEmpty()){
                         itemsList.add(item)
-                        Log.d("vittoz",item.title)
                     }
                     else if(item.title.contains(title,true)){
                         itemsList.add(item)
-                        Log.d("vittoz",item.title)
                     }
                 }
-                else if(item.expireDatestamp> Timestamp.now()){
-                    //change state
-                }
-
             }
-            var tmpArray=ArrayList(itemsList)
+            val tmpArray=ArrayList(itemsList)
             liveItems.value = tmpArray
             itemsList.clear()
                     })

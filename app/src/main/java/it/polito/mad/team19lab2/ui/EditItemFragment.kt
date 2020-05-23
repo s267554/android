@@ -55,7 +55,7 @@ class EditItemFragment : Fragment() {
     var user = FirebaseAuth.getInstance().currentUser
 
     companion object {
-        private val maxMemory : Long = Runtime.getRuntime().maxMemory() / 1024;
+        private val maxMemory : Long = Runtime.getRuntime().maxMemory() / 1024
         private val cacheSize = (maxMemory/4).toInt()
         private val mMemoryCache = object : LruCache<String, Bitmap>(cacheSize) {
             override fun sizeOf(key: String?, bitmap: Bitmap): Int {
@@ -105,11 +105,11 @@ class EditItemFragment : Fragment() {
                     priceEditText.setText(item.price.toString())
                     dateEditText.setText(item.expiryDate)
                     categoryEditText.setText(item.category, false)
-                    if(!item.state.isNullOrEmpty())
+                    if(item.state.isNotEmpty())
                         stateSpinner.setText(item.state)
                     else
                         stateSpinner.setText("Available")
-                    if (item.imagePath.isNullOrEmpty()) {
+                    if (item.imagePath.isEmpty()) {
                         image_view.setImageResource(R.drawable.sport_category_foreground)
                     } else {
                         downloadFile()
@@ -226,8 +226,8 @@ class EditItemFragment : Fragment() {
                         this.year=year
                         this.month=monthOfYear
                         this.day=dayOfMonth
-                        val calendar: Calendar = GregorianCalendar(year, monthOfYear, dayOfMonth+1)
-                        timestamp=Timestamp(Date(calendar.timeInMillis))
+                        val cal: Calendar = GregorianCalendar(year, monthOfYear, dayOfMonth+1)
+                        timestamp=Timestamp(Date(cal.timeInMillis))
                         dateEditText.setText(finalDate)
                     }, year, month, day)
 
@@ -287,7 +287,6 @@ class EditItemFragment : Fragment() {
             }
         })
 
-
         //IMAGE MANAGEMENT
         registerForContextMenu(imageEdit)
         imageRotate.setOnClickListener{
@@ -321,7 +320,6 @@ class EditItemFragment : Fragment() {
         super.onSaveInstanceState(outState)
         if(this::image.isInitialized){
             addBitmapToMemoryCache("TMPIMG", image)
-            //outState.putParcelable("group19.lab2.TMPIMG", image)
             outState.putBoolean("group19.lab2.IMGFLAG", imageModified)
         }
         if(this::item.isInitialized)
@@ -329,18 +327,17 @@ class EditItemFragment : Fragment() {
     }
 
     private fun addBitmapToMemoryCache(key: String?, bitmap: Bitmap?) {
-        mMemoryCache!!.put(key, bitmap)
+        mMemoryCache.put(key, bitmap)
     }
 
     private fun getBitmapFromMemCache(key: String?): Bitmap? {
-        return mMemoryCache!!.get(key)
+        return mMemoryCache.get(key)
     }
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
         if (savedInstanceState != null){
             getBitmapFromMemCache("TMPIMG").run {
-                Log.d("IMAGE", this.toString())
                 if (this != null) {
                     image = this
                     image_view.setImageBitmap(this)
@@ -351,7 +348,7 @@ class EditItemFragment : Fragment() {
                 }
                 item= savedInstanceState.getParcelable("group19.lab2.ITEM")!!
                 return
-            }//savedInstanceState.getParcelable("group19.lab2.TMPIMG")
+            }
         }
     }
 
@@ -379,18 +376,17 @@ class EditItemFragment : Fragment() {
         item.expireDatestamp=timestamp
 
         // Update or create the image
-        if(imageModified && image!=null) {
+        if(imageModified && this::image.isInitialized) {
             val itemPictureRef=storage.reference.child("itemPicture/${idItem}")
             val path="itemPicture/${idItem}"
             item.imagePath = path
             val baos = ByteArrayOutputStream()
             image.compress(Bitmap.CompressFormat.JPEG, 20, baos)
             val data = baos.toByteArray()
-            var uploadTask = itemPictureRef.putBytes(data)
+            val uploadTask = itemPictureRef.putBytes(data)
             uploadTask.addOnFailureListener {
                 Log.e("profilePicture", "Error in upload image")
             }.addOnSuccessListener {
-                Log.d("profilePicture", "ProfilePicture loaded correctly")
                 itemVm.saveItem(item)
                 navigateAfterSave()
             }
@@ -418,15 +414,6 @@ class EditItemFragment : Fragment() {
             val bundle = bundleOf("item_id1" to item.id)
             findNavController().navigate(R.id.action_nav_edit_item_to_nav_item_detail, bundle)
         }
-    }
-
-    private fun populateBundle(b:Bundle){
-        b.putString("group19.lab2.TITLE", titleEditText.text.toString())
-        b.putString("group19.lab2.DESCRIPTION", descriptionEditText.text.toString())
-        b.putString("group19.lab2.CATEGORY",item.category)
-        b.putString("group19.lab2.LOCATION",locationEditText.text.toString())
-        b.putFloat("group19.lab2.PRICE", priceEditText.text.toString().toFloat())
-        b.putString("group19.lab2.EXPIRY_DATE", dateEditText.text.toString())
     }
 
     override fun onCreateContextMenu(menu: ContextMenu, v: View, menuInfo: ContextMenu.ContextMenuInfo?) {
@@ -479,9 +466,6 @@ class EditItemFragment : Fragment() {
                     val uri: Uri? = data.data
                     if (uri != null) {
                         image = MediaStore.Images.Media.getBitmap(activity?.contentResolver, uri)
-                        if(image.byteCount > 1000000){
-
-                        }
                         image_view.setImageBitmap(image)
                         imageModified = true
                     }
@@ -489,7 +473,6 @@ class EditItemFragment : Fragment() {
             }
         }
     }
-
 
     private fun rotateImage(source: Bitmap, angle: Int): Bitmap {
         val matrix = Matrix()
@@ -501,11 +484,11 @@ class EditItemFragment : Fragment() {
     }
 
     private fun rotateBitmap() {
-        if(image == null){
+        if(!this::image.isInitialized){
             Toast.makeText(activity?.applicationContext,resources.getString(R.string.insert_image_before),Toast.LENGTH_SHORT).show()
             return
         }
-        val rotatedBitmap: Bitmap = rotateImage(image!!, 90)
+        val rotatedBitmap: Bitmap = rotateImage(image, 90)
         imageModified=true
         image_view.setImageBitmap(rotatedBitmap)
         image = rotatedBitmap
@@ -558,7 +541,7 @@ class EditItemFragment : Fragment() {
                 }
             })
         }.addOnFailureListener {
-            Log.d("image", "error in download image")
+            Log.e("IMAGE", "Error in download image")
         }
     }
 }
