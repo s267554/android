@@ -78,5 +78,6 @@
     <string name="state_hint">State</string>
     <string name="picture_from_camera">Picture from Camera</string>
     <string name="image_from_gallery">Image from Gallery</string>
+    <string name="Availability">Availability</string>
 
 </resources>
