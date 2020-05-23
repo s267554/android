@@ -103,6 +103,14 @@ RecyclerView.Adapter<OnSaleRecyclerViewAdapter.ViewHolder> ( ){
         }
     }
 
+    fun reloadData(newData: ArrayList<ItemModel>?) {
+        this.onSaleItems.clear()
+        if (newData != null) {
+            this.onSaleItems.addAll(newData)
+        }
+    }
+
+
     inner class ViewHolder(val cv: View): RecyclerView.ViewHolder(cv) {
         val itemTitle: TextView = cv.item_title
         val itemPrice: TextView = cv.content
