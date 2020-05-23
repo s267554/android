@@ -3,6 +3,7 @@ package it.polito.mad.team19lab2.ui
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.widget.ImageView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -107,8 +108,9 @@ class ShowProfileFragment :Fragment() {
 
     private fun downloadFile() {
         val storageRef = storage.reference
+        val imView= view?.findViewById<ImageView>(R.id.image_view)
         storageRef.child(user.imagePath).downloadUrl.addOnSuccessListener {
-            Picasso.get().load(it).noFade().placeholder(R.drawable.progress_animation).into(image_view)
+            Picasso.get().load(it).noFade().placeholder(R.drawable.progress_animation).into(imView)
         }.addOnFailureListener {
             Log.e("IMAGE", "Error in download image")
         }

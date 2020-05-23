@@ -18,6 +18,7 @@ import android.util.LruCache
 import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.AutoCompleteTextView
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
@@ -130,11 +131,16 @@ class EditItemFragment : Fragment() {
                     } else {
                         if (item.category != catArray.indexOf("other")) {
                             subCategoryTextField.visibility = View.VISIBLE
-                            manageSubDropdown(item.category, itemsCategory)
-
-                            val sub = resources.getIdentifier("sub${item.category}", "array", context?.packageName)
-                            subCatArray = resources.getStringArray(sub).toMutableList()
-                            subCategoryDropdown.setText(subCatArray[item.category], false)
+                            manageSubDropdown(item.category)
+                            if(item.subcategory != -1 ) {
+                                val sub = resources.getIdentifier(
+                                    "sub${item.category}",
+                                    "array",
+                                    context?.packageName
+                                )
+                                subCatArray = resources.getStringArray(sub).toMutableList()
+                                subCategoryDropdown.setText(subCatArray[item.subcategory], false)
+                            }
                         }
                     }
                 })
@@ -255,7 +261,7 @@ class EditItemFragment : Fragment() {
                         subCategoryTextField.visibility=View.GONE
                     } else {
                         categoryTextField.error = null
-                        manageSubDropdown(itemsCategory.indexOf(p0.toString()), itemsCategory)
+                        manageSubDropdown(itemsCategory.indexOf(p0.toString()))
                     }
                 }
             }
@@ -505,22 +511,22 @@ class EditItemFragment : Fragment() {
         image = rotatedBitmap
     }
 
-    private fun manageSubDropdown(chosenCategory: Int, categories : MutableList<String>){
-        if(chosenCategory == catArray.indexOf("other")){
+    private fun manageSubDropdown(chosenCategory: Int){
+        if(chosenCategory == (catArray.size-1)){
             subCategoryDropdown.setText("")
             subCategoryTextField.visibility=View.GONE
             return
         }
         var index = 0
-        for(category in categories){
+        for(category in catArray){
             if(chosenCategory == catArray.indexOf(category)){
                 val subId = resources.getIdentifier("sub${index}", "array", context?.packageName)
-                val subcategories=resources.getStringArray(subId).toMutableList()
+                subCatArray=resources.getStringArray(subId).toMutableList()
                 val subAdapter=
                     DropdownAdapter(
                         requireContext(),
                         R.layout.list_item,
-                        subcategories
+                        subCatArray
                     )
                 subCategoryDropdown.setText("")
                 subCategoryDropdown?.setAdapter(subAdapter)
@@ -540,11 +546,12 @@ class EditItemFragment : Fragment() {
 
     private fun downloadFile() {
         val storageRef = storage.reference
+        val imView= view?.findViewById<ImageView>(R.id.image_view)
         storageRef.child(item.imagePath).downloadUrl.addOnSuccessListener {
-            Picasso.get().load(it).noFade().placeholder(R.drawable.progress_animation).into(image_view, object: com.squareup.picasso.Callback {
+            Picasso.get().load(it).noFade().placeholder(R.drawable.progress_animation).into(imView, object: com.squareup.picasso.Callback {
                 override fun onSuccess() {
                     val drawable: BitmapDrawable? = image_view?.drawable as BitmapDrawable?
-                    if(drawable!=null)
+                    if(drawable != null)
                         image = drawable.bitmap!!
                 }
                 override fun onError(e: java.lang.Exception?) {

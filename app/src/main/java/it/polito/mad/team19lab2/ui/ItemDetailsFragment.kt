@@ -4,6 +4,7 @@ import InterestedUsersRecycleViewAdapter
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.os.bundleOf
@@ -168,8 +169,9 @@ class ItemDetailsFragment : Fragment() {
 
     private fun downloadFile() {
         val storageRef = storage.reference
+        val imView= view?.findViewById<ImageView>(R.id.image_view)
         storageRef.child(item.imagePath).downloadUrl.addOnSuccessListener {
-            Picasso.get().load(it).noFade().placeholder(R.drawable.progress_animation).into(image_view)
+            Picasso.get().load(it).noFade().placeholder(R.drawable.progress_animation).into(imView)
         }.addOnFailureListener {
             Log.e("IMAGE", "Error in download image")
         }

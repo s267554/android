@@ -291,7 +291,7 @@ class EditProfileFragment : Fragment() {
                 val path="profilePicture/${user.id}"
                 user.imagePath = path
                 val baos = ByteArrayOutputStream()
-                image.compress(Bitmap.CompressFormat.JPEG, 20, baos)
+                image.compress(Bitmap.CompressFormat.JPEG, 100, baos)
                 val data = baos.toByteArray()
                 var uploadTask = profilePictureRef.putBytes(data)
                 uploadTask.addOnFailureListener {
@@ -422,8 +422,9 @@ class EditProfileFragment : Fragment() {
 
     private fun downloadFile() {
         val storageRef = storage.reference
+        val imView= view?.findViewById<ImageView>(R.id.image_view)
         storageRef.child(user.imagePath).downloadUrl.addOnSuccessListener {
-            Picasso.get().load(it).noFade().placeholder(R.drawable.progress_animation).into(image_view, object: com.squareup.picasso.Callback {
+            Picasso.get().load(it).noFade().placeholder(R.drawable.progress_animation).into(imView, object: com.squareup.picasso.Callback {
                 override fun onSuccess() {
                     val drawable: BitmapDrawable? = image_view?.drawable as BitmapDrawable?
                     if(drawable!=null)
