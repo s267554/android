@@ -65,7 +65,7 @@
     <string name="clear">clear</string>
     <string name="interestedUsers">Interested users</string>
     <string name="view">view</string>
-    <string name="nofilter">no filter</string>
+    <string name="nofilter">No filter</string>
     <string name="from">"from "</string>
     <string name="upTo">"up to "</string>
     <string name="pUnbound">up to unbounded</string>
@@ -75,5 +75,8 @@
     <string name="no_users">No interested users</string>
     <string name="buy">Buy this item</string>
     <string name="seller">Seller</string>
+    <string name="state_hint">State</string>
+    <string name="picture_from_camera">Picture from Camera</string>
+    <string name="image_from_gallery">Image from Gallery</string>
 
 </resources>

@@ -3,10 +3,10 @@
 
     <item
         android:id="@+id/option_camera"
-        android:title="Picture from Camera"/>
+        android:title="@string/picture_from_camera"/>
 
     <item
         android:id="@+id/option_gallery"
-        android:title="Image from Gallery"/>
+        android:title="@string/image_from_gallery"/>
 
 </menu>

@@ -35,12 +35,11 @@ class OnSaleListFragment: Fragment(),SearchDialogFragment.NoticeDialogListener{
     private lateinit var modifyBotton: Button
     private var search:Boolean =false
     private var queryTitle:String?=null
-    private var queryCat:String?=null
+    private var queryCat: Int = -1
     private var queryMin:String?=null
     private var queryMax:String?=null
     private var queryLoc:String?=null
 
-    //private var clear=false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
@@ -65,17 +64,23 @@ class OnSaleListFragment: Fragment(),SearchDialogFragment.NoticeDialogListener{
         clearBotton.setOnClickListener {
             if(search){
                 queryTitle=null
-                queryCat=null
+                queryCat=-1
                 queryLoc=null
                 queryMin=null
                 queryMax=null
                 search=false
+
                 //clear=true
                 adapter=OnSaleRecyclerViewAdapter(onSaleArray)
                 recyclerView.adapter=adapter
                 adapter.onNewData(onSaleArray)
                 //itemListVm.getAllItems().observe(viewLifecycleOwner, Observer {
                 /*    if(!search){
+
+
+                itemListVm.getAllItems().observe(viewLifecycleOwner, Observer {
+                    //if(!search){
+                    Log.e("xxx", "Inside getAllItems Observer")
 
                         if(!search){
                             onSaleArray= it as ArrayList<ItemModel>
@@ -91,7 +96,8 @@ class OnSaleListFragment: Fragment(),SearchDialogFragment.NoticeDialogListener{
                             else
                                 emptyList.visibility = View.VISIBLE
                         }
-                    }
+
+                   // }
                 })
                 searchCard.visibility=View.GONE
                  */
@@ -179,17 +185,19 @@ class OnSaleListFragment: Fragment(),SearchDialogFragment.NoticeDialogListener{
         }
         else
             s += resources.getString(R.string.upUnbound)
+        val catIndex = resources.getStringArray(R.array.categories).indexOf(category)
         if(search) {
             queryTitle=title
-            queryCat=category
+            queryCat= catIndex
             queryLoc=location
             queryMin=m1
             queryMax=m2
-
+            Log.e("xxx", title)
             searchCard.findViewById<TextView>(R.id.textViewPrice).text = s
+
             adapter = OnSaleRecyclerViewAdapter(onSearchArray)
             recyclerView.adapter=adapter
-            itemListVm.getQueryItems(title, category, m1, m2, location)
+            itemListVm.getQueryItems(title, catIndex, m1, m2, location)
                 .observe(viewLifecycleOwner, Observer {
                     if (search) {
                         onSearchArray = it as ArrayList<ItemModel>

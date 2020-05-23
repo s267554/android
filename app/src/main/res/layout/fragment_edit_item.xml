@@ -6,13 +6,16 @@
     android:layout_height="match_parent"
     android:layout_marginBottom="16dp"
     android:fillViewport="true">
-
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clEditItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:touchscreenBlocksFocus="false"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
+        android:touchscreenBlocksFocus="false"
         tools:context=".ui.ItemDetailsFragment">
 
         <FrameLayout
@@ -272,11 +275,11 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:hint="@string/subcategory"
+            android:visibility="gone"
             app:boxBackgroundColor="@color/category_icon_background"
             app:boxStrokeColor="@color/colorPrimary"
             app:counterEnabled="false"
             app:errorEnabled="true"
-            android:visibility="gone"
             app:hintAnimationEnabled="true"
             app:hintEnabled="true"
             app:hintTextAppearance="@style/TextAppearance.AppCompat.Small"
@@ -304,7 +307,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:hint="State"
+            android:hint="@string/state_hint"
             app:boxBackgroundColor="@color/category_icon_background"
             app:boxStrokeColor="@color/colorPrimary"
             app:counterEnabled="false"
@@ -331,5 +334,13 @@
         </com.google.android.material.textfield.TextInputLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:visibility="gone" />
+    </FrameLayout>
 
 </ScrollView>

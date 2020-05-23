@@ -137,7 +137,7 @@ class EditProfileFragment : Fragment() {
                 emailProfileEditText.setText(user.email)
                 locationProfileEditText.setText(user.location)
                 //IMAGE
-                if (user.imagePath.isNullOrEmpty()) {
+                if (user.imagePath.isEmpty()) {
                     image_view.setImageResource(R.drawable.avatar_foreground)
                 } else {
                     downloadFile()
