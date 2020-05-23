@@ -1,6 +1,5 @@
 package it.polito.mad.team19lab2.viewModel
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.Timestamp
@@ -71,7 +70,7 @@ class ItemListViewModel : ViewModel() {
     }
 
 
-    fun getQueryItems(title: String?, category: String?, minprice: String?,maxprice: String?, location: String?): MutableLiveData<List<ItemModel>> {
+    fun getQueryItems(title: String?, category: Int, minprice: String?,maxprice: String?, location: String?): MutableLiveData<List<ItemModel>> {
         itemsList.clear()
         takeOtherFromQuery(itemListRepository.getItemsWithQuery(category,minprice,maxprice,location),title)
         return liveItems

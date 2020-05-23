@@ -9,15 +9,17 @@ data class ItemModel (
     var id: String,
     var title: String,
     var description: String,
-    var category: String,
+    //var category: String,
+    var category: Int,
     var subcategory: String,
     var imagePath: String,
     var location: String,
     var expiryDate: String,
     var price: Float,
-    var state: String,
+    //var state: String,
+    var state: Int,
     var userId: String,
     var expireDatestamp: Timestamp
 ) : Parcelable{
-    constructor() : this("","","","","","","","", 0.0F, "Available", "",Timestamp(0,0))
+    constructor() : this("","","",-1,"","","","", 0.0F, 1, "",Timestamp(0,0))
 }

@@ -17,7 +17,7 @@ import it.polito.mad.team19lab2.R
 import it.polito.mad.team19lab2.utilities.DropdownAdapter
 import it.polito.mad.team19lab2.utilities.PriceInputFilter
 
-class SearchDialogFragment(var title: String?=null, var category: String?=null,
+class SearchDialogFragment(var title: String?=null, var category: Int = -1,
                            private var min:String?=null, private var max:String?=null, var location: String?=null): AppCompatDialogFragment(){
 
     // Use this instance of the interface to deliver action events
@@ -51,7 +51,7 @@ class SearchDialogFragment(var title: String?=null, var category: String?=null,
             titleTextView=view.findViewById(R.id.titleSearchText)
             if(!title.isNullOrEmpty())
                 titleTextView.setText(title)
-            if(!category.isNullOrEmpty())
+            if(category != -1)
                 categoryEditText.setText(category)
             if(!min.isNullOrEmpty())
                 minPrice.setText(min)

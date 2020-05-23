@@ -98,7 +98,7 @@ class ItemDetailsFragment : Fragment() {
                 })
                 setHasOptionsMenu(false)
                 buyButton.setOnClickListener {
-                    item.state = "Sold"
+                    item.state = resources.getStringArray(R.array.item_state).indexOf("Sold")
                     itemVm.saveItem(item)
                     Toast.makeText(this.context, "Item bought", Toast.LENGTH_SHORT).show()
                 }
@@ -139,7 +139,7 @@ class ItemDetailsFragment : Fragment() {
             locationTextView.text = item.location
             priceTextView.text = "${item.price.toString()} €"
             expireTextView.text = item.expiryDate
-            categoryTextView.text = item.category
+            categoryTextView.text = resources.getStringArray(R.array.categories)[item.category]
             subCategoryTextView.text=item.subcategory
         })
 

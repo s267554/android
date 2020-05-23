@@ -51,6 +51,11 @@
     <string name="interestedUsers">Utenti interessati</string>
     <string name="no_users">Nessun utente interessato</string>
     <string name="buy">Compra</string>
+    <string name="state_hint">Stato</string>
+    <string name="seller">Venditore</string>
+    <string name="picture_from_camera">Immagine dalla fotocamera</string>
+    <string name="image_from_gallery">Immagine dalla galleria</string>
+
 
 
     <string-array name="categories">

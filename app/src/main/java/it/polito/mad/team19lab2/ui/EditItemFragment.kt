@@ -53,6 +53,7 @@ class EditItemFragment : Fragment() {
     private lateinit var image: Bitmap
     lateinit var storage: FirebaseStorage
     var user = FirebaseAuth.getInstance().currentUser
+    private val catArray = resources.getStringArray(R.array.categories)
 
     companion object {
         private val maxMemory : Long = Runtime.getRuntime().maxMemory() / 1024
@@ -104,11 +105,14 @@ class EditItemFragment : Fragment() {
                     locationEditText.setText(item.location)
                     priceEditText.setText(item.price.toString())
                     dateEditText.setText(item.expiryDate)
-                    categoryEditText.setText(item.category, false)
-                    if(item.state.isNotEmpty())
+                    //categoryEditText.setText(item.category, false)
+                    categoryEditText.setText(itemsCategory[item.category], false)
+                   /* if(item.state.isNotEmpty())
                         stateSpinner.setText(item.state)
                     else
-                        stateSpinner.setText("Available")
+                        stateSpinner.setText("Available")*/
+                    val stateArray = resources.getStringArray(R.array.item_state).toMutableList()
+                    stateSpinner.setText(stateArray[item.state])
                     if (item.imagePath.isEmpty()) {
                         image_view.setImageResource(R.drawable.sport_category_foreground)
                     } else {
@@ -123,10 +127,10 @@ class EditItemFragment : Fragment() {
                         priceTextField.error = getString(R.string.notEmpty)
                     if (item.expiryDate.isEmpty())
                         dateTextField.error = getString(R.string.notEmpty)
-                    if (item.category.isEmpty()) {
+                    if (item.category == -1) {
                         categoryTextField.error = getString(R.string.notEmpty)
                     } else {
-                        if (item.category != "other") {
+                        if (item.category != catArray.indexOf("other")) {
                             subCategoryTextField.visibility = View.VISIBLE
                             manageSubDropdown(item.category, itemsCategory)
                             subCategoryDropdown.setText(item.subcategory, false)
@@ -143,7 +147,7 @@ class EditItemFragment : Fragment() {
                 priceTextField.error = getString(R.string.notEmpty)
                 dateTextField.error = getString(R.string.notEmpty)
                 categoryTextField.error = getString(R.string.notEmpty)
-                stateSpinner.setText("Available")
+                stateSpinner.setText(stateValue[stateValue.indexOf("Available")])
             }
         }
         titleEditText.addTextChangedListener(object : TextWatcher {
@@ -250,7 +254,7 @@ class EditItemFragment : Fragment() {
                         subCategoryTextField.visibility=View.GONE
                     } else {
                         categoryTextField.error = null
-                        manageSubDropdown(p0.toString(), itemsCategory)
+                        manageSubDropdown(itemsCategory.indexOf(p0.toString()), itemsCategory)
                     }
                 }
             }
@@ -365,14 +369,23 @@ class EditItemFragment : Fragment() {
         if(idItem!=="-1"){
             item.id = idItem
         }
+        val catArray = resources.getStringArray(R.array.categories)
+
         item.title=titleEditText.text.toString()
         item.description=descriptionEditText.text.toString()
         item.location = locationEditText.text.toString()
         item.price = priceEditText.text.toString().toFloat()
         item.expiryDate = dateEditText.text.toString()
-        item.category = categoryDropdown.text.toString()
+        item.category = catArray.indexOf(categoryDropdown.text.toString())
         item.subcategory = subCategoryDropdown.text.toString()
-        item.state = stateDropdown.text.toString()
+        val stateArray = resources.getStringArray(R.array.item_state)
+        item.state = stateArray.indexOf(stateDropdown.text.toString())
+        /*when(stateDropdown.text.toString()){
+            stateArray[0] -> item.state = 0
+            stateArray[1] -> item.state = 1
+            stateArray[2] -> item.state = 2
+        }*/
+        //item.state = stateDropdown.text.toString()
         item.expireDatestamp=timestamp
 
         // Update or create the image
@@ -494,15 +507,15 @@ class EditItemFragment : Fragment() {
         image = rotatedBitmap
     }
 
-    private fun manageSubDropdown(chosenCategory: String, categories : MutableList<String>){
-        if(chosenCategory == "other"){
+    private fun manageSubDropdown(chosenCategory: Int, categories : MutableList<String>){
+        if(chosenCategory == catArray.indexOf("other")){
             subCategoryDropdown.setText("")
             subCategoryTextField.visibility=View.GONE
             return
         }
         var index = 1
         for(category in categories){
-            if(chosenCategory == category){
+            if(chosenCategory == catArray.indexOf(category)){
                 val subId = resources.getIdentifier("sub${index}", "array", context?.packageName)
                 val subcategories=resources.getStringArray(subId).toMutableList()
                 val subAdapter=
