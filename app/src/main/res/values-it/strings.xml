@@ -47,7 +47,7 @@
     <string name="profile_updated">profilo aggiornato</string>
     <string name="logout">logout</string>
     <string name="search">Cerca</string>
-    <string name="clear">clear</string>
+    <string name="clear">cancella</string>
     <string name="interestedUsers">Utenti interessati</string>
     <string name="no_users">Nessun utente interessato</string>
     <string name="buy">Compra</string>
@@ -56,6 +56,23 @@
     <string name="picture_from_camera">Immagine dalla fotocamera</string>
     <string name="image_from_gallery">Immagine dalla galleria</string>
     <string name="Availability">Disponibilità</string>
+    <string name="bought">Acquistato</string>
+    <string name="item_bought">Prodotto acquistato</string>
+    <string name="sold">Acquistato</string>
+    <string name="blocked">Bloccato</string>
+    <string name="from">"da "</string>
+    <string name="upTo">"fino a "</string>
+    <string name="pUnbound">fino a illimitato</string>
+    <string name="upUnbound">"fino a illimitato"</string>
+    <string name="any_title">qualsiasi titolo</string>
+    <string name="any_category">IN qualsiasi categoria</string>
+    <string name="any_location">\@ qualsiasi luogo</string>
+    <string name="modify">modifica</string>
+    <string name="MinPrice">Prezzo minimo</string>
+    <string name="MaxPrice">Prezzo massimo</string>
+    <string name="view">visita</string>
+    <string name="cancel">annulla</string>
+    <string name="no_advs_users">Non ci sono annunci di altri utenti</string>
 
     <string-array name="item_state">
         <item>Disponibile</item>

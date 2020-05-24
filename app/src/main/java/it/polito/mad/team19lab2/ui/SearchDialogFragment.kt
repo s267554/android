@@ -89,7 +89,7 @@ class SearchDialogFragment(var title: String?=null, var category: Int = -1,
                         val location=locationEditText.text?.toString()
                         listener.onDialogPositiveClick(title,category,minprice,maxprice,location)
                     })
-                .setNeutralButton("cancel",
+                .setNeutralButton(R.string.cancel,
                     DialogInterface.OnClickListener { dialog, id ->
                         listener.onDialogNegativeClick(this)
                     })

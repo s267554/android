@@ -149,19 +149,19 @@ class OnSaleListFragment: Fragment(),SearchDialogFragment.NoticeDialogListener{
             search=true
         }
         else
-            searchCard.findViewById<TextView>(R.id.textViewTitle).text= "any title"
+            searchCard.findViewById<TextView>(R.id.textViewTitle).setText(R.string.any_title)
         if(!category.isNullOrEmpty()) {
             searchCard.findViewById<TextView>(R.id.textViewCat).text = "IN $category"
             search=true
         }
         else
-            searchCard.findViewById<TextView>(R.id.textViewCat).text = "IN any category"
+            searchCard.findViewById<TextView>(R.id.textViewCat).setText(R.string.any_category)
         if(!location.isNullOrEmpty()) {
             searchCard.findViewById<TextView>(R.id.textViewloc).text = "@ $location"
             search=true
         }
         else
-            searchCard.findViewById<TextView>(R.id.textViewloc).text = "@ any location"
+            searchCard.findViewById<TextView>(R.id.textViewloc).setText(R.string.any_location)
 
         var s: String
         s = if(!m1.isNullOrEmpty()){
@@ -180,7 +180,6 @@ class OnSaleListFragment: Fragment(),SearchDialogFragment.NoticeDialogListener{
             queryLoc=location
             queryMin=m1
             queryMax=m2
-            Log.e("xxx", title)
             searchCard.findViewById<TextView>(R.id.textViewPrice).text = s
             adapter = OnSaleRecyclerViewAdapter(onSaleArray)
             recyclerView.adapter=adapter
