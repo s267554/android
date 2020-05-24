@@ -103,7 +103,8 @@ class OnSaleListFragment: Fragment(),SearchDialogFragment.NoticeDialogListener{
         recyclerView.adapter=adapter
         recyclerView.layoutManager=LinearLayoutManager(context)
         swipeRefreshLayout.setOnRefreshListener(myRefreshListener())
-        
+        live_items=itemListVm.getAllItems()
+
         if(savedInstanceState!=null){
             queryTitle=savedInstanceState.getString("title")
             queryLoc=savedInstanceState.getString("location")
@@ -111,21 +112,25 @@ class OnSaleListFragment: Fragment(),SearchDialogFragment.NoticeDialogListener{
             queryMax=savedInstanceState.getString("max")
             queryCat=savedInstanceState.getInt("category")
             search=true
-            onDialogPositiveClick(queryTitle,resources.getStringArray(R.array.categories)[queryCat],queryMin,queryMax,queryLoc)
+            var c:String?=null
+            if(queryCat!=-1)
+                c=resources.getStringArray(R.array.categories)[queryCat]
+            onDialogPositiveClick(queryTitle,c,queryMin,queryMax,queryLoc)
         }
-        live_items=itemListVm.getAllItems()
-        live_items.removeObservers(viewLifecycleOwner)
-        live_items.observe(viewLifecycleOwner, Observer {
-            if(!search && it!=null) {
-                Log.d("xxxxxx", "initial all items Observer")
-                onSaleArray = it as ArrayList<ItemModel>
-                adapter.onNewData(onSaleArray);
-                if (onSaleArray.count() != 0)
-                    emptyList.visibility = View.GONE
-                else
-                    emptyList.visibility = View.VISIBLE
-            }
-        })
+        else {
+            live_items.removeObservers(viewLifecycleOwner)
+            live_items.observe(viewLifecycleOwner, Observer {
+                if (!search && it != null) {
+                    Log.d("xxxxxx", "initial all items Observer")
+                    onSaleArray = it as ArrayList<ItemModel>
+                    adapter.onNewData(onSaleArray);
+                    if (onSaleArray.count() != 0)
+                        emptyList.visibility = View.GONE
+                    else
+                        emptyList.visibility = View.VISIBLE
+                }
+            })
+        }
         return view
     }
 
@@ -208,6 +213,7 @@ class OnSaleListFragment: Fragment(),SearchDialogFragment.NoticeDialogListener{
             adapter = OnSaleRecyclerViewAdapter(onSaleArray)
             recyclerView.adapter=adapter
             //adapter.onNewData(onSaleArray)
+
             live_items.removeObservers(viewLifecycleOwner)
             live_items=itemListVm.getQueryItems(title, catIndex, m1, m2, location)
             live_items.observe(viewLifecycleOwner, Observer {
