@@ -159,6 +159,7 @@ class OnSaleListFragment: Fragment(),SearchDialogFragment.NoticeDialogListener{
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if(item.itemId == R.id.search_item_action){
             val d=SearchDialogFragment()
+            d.show(childFragmentManager,"search dialog")
         }
         return super.onOptionsItemSelected(item)
     }
@@ -226,6 +227,7 @@ class OnSaleListFragment: Fragment(),SearchDialogFragment.NoticeDialogListener{
             live_items=itemListVm.getQueryItems(title, catIndex, m1, m2, location)
             live_items.observe(viewLifecycleOwner, Observer {
                     if (search) {
+                        Log.d("xxxxxx", "query items Observer")
                         onSaleArray = it as ArrayList<ItemModel>
                         adapter.onNewData(onSaleArray)
                         if (onSaleArray.count() != 0)
