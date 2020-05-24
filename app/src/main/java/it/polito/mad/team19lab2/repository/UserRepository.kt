@@ -21,13 +21,11 @@ class UserRepository {
 
     fun getUser(userId : String): DocumentReference {
         var documentReference = firestoreDB.collection("utenti").document(userId)
-        Log.d(TAG, documentReference.toString())
         return documentReference
     }
 
     fun getProfile() : DocumentReference {
         var documentReference = firestoreDB.collection("utenti").document(user!!.uid)
-        Log.d(TAG, documentReference.toString())
         return documentReference
     }
 

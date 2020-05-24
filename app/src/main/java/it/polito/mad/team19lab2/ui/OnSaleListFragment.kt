@@ -50,7 +50,6 @@ class OnSaleListFragment: Fragment(),SearchDialogFragment.NoticeDialogListener{
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.d("xxxxx", "ciao")
         emptyList=view.findViewById(R.id.empty_list)
         clearBotton=view.findViewById(R.id.button_clear_filter)
         modifyBotton=view.findViewById(R.id.modify_query_button)
@@ -79,7 +78,6 @@ class OnSaleListFragment: Fragment(),SearchDialogFragment.NoticeDialogListener{
                 live_items=itemListVm.getAllItems()
                 live_items.observe(viewLifecycleOwner, Observer {
                     //if(!search){
-                    Log.d("xxxxxx", "Clear botton Observer")
                     if(!search && it!=null) {
                         onSaleArray = it as ArrayList<ItemModel>
                         adapter.onNewData(onSaleArray);
@@ -101,28 +99,23 @@ class OnSaleListFragment: Fragment(),SearchDialogFragment.NoticeDialogListener{
         recyclerView.layoutManager=LinearLayoutManager(context)
         swipeRefreshLayout.setOnRefreshListener(myRefreshListener())
         live_items=itemListVm.getAllItems()
-        if(savedInstanceState!=null){
-            if(savedInstanceState.containsKey("title")) {
+        if(savedInstanceState!=null&&savedInstanceState.containsKey("title")){
                 queryTitle = savedInstanceState.getString("title")
                 queryLoc = savedInstanceState.getString("location")
                 queryMin = savedInstanceState.getString("min")
                 queryMax = savedInstanceState.getString("max")
                 queryCat = savedInstanceState.getInt("category", -1)
-                Log.d("rotation", "savedinstancestate !=null - " + queryCat)
                 search = true
                 var c: String? = null
                 if (queryCat != -1)
                     c = resources.getStringArray(R.array.categories)[queryCat]
                 onDialogPositiveClick(queryTitle, c, queryMin, queryMax, queryLoc)
-            }
         }
         else {
-            Log.d("xxxxx", "ciao==null")
             live_items.removeObservers(viewLifecycleOwner)
             live_items.observe(viewLifecycleOwner, Observer {
                 if (it != null) {
                     if(!search) {
-                        Log.d("xxxxxx", "initial all items Observer")
                         onSaleArray = it as ArrayList<ItemModel>
                         adapter.onNewData(onSaleArray);
                         if (onSaleArray.count() != 0)
@@ -154,7 +147,6 @@ class OnSaleListFragment: Fragment(),SearchDialogFragment.NoticeDialogListener{
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         if(search){
-            Log.d("rotation", "onsavedinstancestate()")
             val b=bundleOf("category" to queryCat,"title" to queryTitle,"minprice" to queryMin,"maxprice" to queryMax,"location" to queryLoc)
             outState.putAll(b)
         }
@@ -167,7 +159,6 @@ class OnSaleListFragment: Fragment(),SearchDialogFragment.NoticeDialogListener{
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if(item.itemId == R.id.search_item_action){
             val d=SearchDialogFragment()
-            d.show(childFragmentManager,"search dialog")
         }
         return super.onOptionsItemSelected(item)
     }
@@ -235,7 +226,6 @@ class OnSaleListFragment: Fragment(),SearchDialogFragment.NoticeDialogListener{
             live_items=itemListVm.getQueryItems(title, catIndex, m1, m2, location)
             live_items.observe(viewLifecycleOwner, Observer {
                     if (search) {
-                        Log.d("xxxxxx", "query items Observer")
                         onSaleArray = it as ArrayList<ItemModel>
                         adapter.onNewData(onSaleArray)
                         if (onSaleArray.count() != 0)

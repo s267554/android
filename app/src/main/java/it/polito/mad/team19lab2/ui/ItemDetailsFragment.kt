@@ -190,7 +190,6 @@ class ItemDetailsFragment : Fragment() {
         storageRef.child(item.imagePath).downloadUrl.addOnSuccessListener {
             Picasso.get().load(it).noFade().placeholder(R.drawable.progress_animation).into(imView)
         }.addOnFailureListener {
-            Log.e("IMAGE", "Error in download image")
         }
     }
 }

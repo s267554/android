@@ -403,7 +403,6 @@ class EditItemFragment : Fragment() {
             val data = baos.toByteArray()
             val uploadTask = itemPictureRef.putBytes(data)
             uploadTask.addOnFailureListener {
-                Log.e("profilePicture", "Error in upload image")
             }.addOnSuccessListener {
                 itemVm.saveItem(item)
                 navigateAfterSave()
@@ -556,11 +555,9 @@ class EditItemFragment : Fragment() {
                         image = drawable.bitmap!!
                 }
                 override fun onError(e: java.lang.Exception?) {
-                    Log.e("IMAGE","something went wrong")
                 }
             })
         }.addOnFailureListener {
-            Log.e("IMAGE", "Error in download image")
         }
     }
 }

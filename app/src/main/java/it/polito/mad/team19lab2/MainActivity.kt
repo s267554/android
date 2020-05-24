@@ -115,7 +115,6 @@ class MainActivity : AppCompatActivity() {
             FirebaseInstanceId.getInstance().instanceId
                 .addOnCompleteListener(OnCompleteListener { task ->
                     if (!task.isSuccessful) {
-                        Log.w(TAG, "getInstanceId failed", task.exception)
                         return@OnCompleteListener
                     }
                     // Get new Instance ID token
@@ -123,7 +122,6 @@ class MainActivity : AppCompatActivity() {
 
                     val repo = UserRepository()
                     if(repo.user != null) {
-                        Log.d(TAG,"firstRegistrationToken($token)")
                         repo.getProfile().update("notificationTokens", FieldValue.arrayUnion(token))
                             .addOnSuccessListener { Log.d(TAG, "firstRegistrationToken succeeded") }
                             .addOnFailureListener { Log.d(TAG, "firstRegistrationToken failed") }
@@ -135,10 +133,8 @@ class MainActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == RC_SIGN_IN) {
-            Log.d("xxxx", resultCode.toString())
             IdpResponse.fromResultIntent(data)
             if (resultCode == Activity.RESULT_OK) {
-                Log.d("xxxx", "result ok")
                 setContentView(R.layout.activity_main)
                 val toolbar: Toolbar = findViewById(R.id.toolbar)
                 setSupportActionBar(toolbar)
@@ -176,7 +172,6 @@ class MainActivity : AppCompatActivity() {
                 FirebaseInstanceId.getInstance().instanceId
                     .addOnCompleteListener(OnCompleteListener { task ->
                         if (!task.isSuccessful) {
-                            Log.w(TAG, "getInstanceId failed", task.exception)
                             return@OnCompleteListener
                         }
                         // Get new Instance ID token

@@ -112,7 +112,6 @@ class ShowProfileFragment :Fragment() {
         storageRef.child(user.imagePath).downloadUrl.addOnSuccessListener {
             Picasso.get().load(it).noFade().placeholder(R.drawable.progress_animation).into(imView)
         }.addOnFailureListener {
-            Log.e("IMAGE", "Error in download image")
         }
     }
 }

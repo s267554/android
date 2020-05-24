@@ -21,14 +21,13 @@ class ItemViewModel : ViewModel() {
 
     fun saveItem(item: ItemModel) {
         itemRepository.saveItem(item).addOnFailureListener {
-            Log.e(TAG, "Failed to save item! ${item.id}")
+
         }
     }
 
     fun getItem(id: String): MutableLiveData<ItemModel> {
         itemRepository.getItem(id).addSnapshotListener(EventListener { value, e ->
             if (e != null) {
-                Log.e(TAG, "Listen failed.", e)
                 liveItem.value = null
                 return@EventListener
             }
@@ -48,12 +47,10 @@ class ItemViewModel : ViewModel() {
     private fun takeLiveUsersFromQuery(q: Query){
         q.addSnapshotListener(EventListener { value, e ->
             if (e != null) {
-                Log.d(TAG, "Listen failed.", e)
                 liveUsers.value = null
                 return@EventListener
             }
             for (doc in value!!) {
-                Log.d(TAG,doc.toString())
                 val user = doc.toObject(UserShortModel::class.java)
                 userList.add(user)
             }
@@ -67,9 +64,7 @@ class ItemViewModel : ViewModel() {
         val query = userRepository.getProfile().get()
         query.addOnSuccessListener {
             if (it != null) {
-                Log.d(TAG, "value: $it")
                 val usm = it.toObject(UserShortModel::class.java)
-                Log.d(TAG, "usm = ${usm.toString()}")
                 if (usm != null) {
                     itemRepository.addInterestedUser(usm, id )
                 }

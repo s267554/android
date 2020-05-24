@@ -14,13 +14,11 @@ class ItemRepository {
 
     fun saveItem(item: ItemModel): Task<Void> {
         var documentReference = firestoreDB.collection("items").document(item.id)
-        Log.d(TAG, documentReference.toString())
         return documentReference.set(item)
     }
 
     fun getItem(id: String): DocumentReference {
         var documentReference = firestoreDB.collection("items").document(id)
-        Log.d(TAG, documentReference.toString())
         return documentReference
     }
 

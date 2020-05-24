@@ -295,7 +295,6 @@ class EditProfileFragment : Fragment() {
                 val data = baos.toByteArray()
                 var uploadTask = profilePictureRef.putBytes(data)
                 uploadTask.addOnFailureListener {
-                    Log.e("profilePicture", "Error in upload image")
                 }.addOnSuccessListener {
                     userVm.saveUser(user)
                     headerView.findViewById<TextView>(R.id.header_title_textView).text =
@@ -434,7 +433,6 @@ class EditProfileFragment : Fragment() {
                 }
             })
         }.addOnFailureListener {
-            Log.e("IMAGE", "Error in download image")
         }
     }
 }

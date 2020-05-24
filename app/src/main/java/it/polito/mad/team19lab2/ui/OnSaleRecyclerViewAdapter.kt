@@ -71,7 +71,6 @@ RecyclerView.Adapter<OnSaleRecyclerViewAdapter.ViewHolder> ( ){
                                 }
                             })
                     }.addOnFailureListener {
-                        Log.d("image", "error in download image")
                     }
                 }
             with(holder.cv) {
@@ -132,7 +131,6 @@ RecyclerView.Adapter<OnSaleRecyclerViewAdapter.ViewHolder> ( ){
                             }
                         })
                 }.addOnFailureListener {
-                    Log.e("IMAGE", "Error in download image")
                 }
             } else {
                 this.itemImage.setImageResource(R.drawable.sport_category_foreground)

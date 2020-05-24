@@ -67,14 +67,11 @@ class MyItemRecyclerViewAdapter(
                         }
                     })
             }.addOnFailureListener {
-                Log.e("IMAGE", "Error in download image")
             }
         } else {
             holder.mImage.setImageResource(R.drawable.sport_category_foreground)
         }
         if(item.state == 0){
-            Log.d("xxx", item.expireDatestamp.toString())
-            Log.d("xxx", Timestamp.now().toString())
             if(item.expireDatestamp.seconds < Timestamp.now().seconds){
                 holder.mStateText.setText(R.string.expired)
                 holder.mStateImage.setImageResource(R.drawable.state_expired)
