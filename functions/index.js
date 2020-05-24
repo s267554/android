@@ -33,16 +33,17 @@ exports.notifyOwner = functions.firestore
           const owner = item.data().userId
           const title = item.data().title
           console.log('ownerId is', owner);
+          // Notification details.
+          let payload = {
+              "data": {
+                "op": "notifyOwner",
+                "fullname": `${fullname}`,
+                "item": `${title}`
+              }
+          };
           return db.collection('utenti').doc(owner).get().then(async (doc) => {
             const tokens = doc.data().notificationTokens
             console.log('tokens are', tokens);
-            // Notification details.
-            const payload = {
-              notification: {
-                title: 'Your item got some love!',
-                body: `${fullname} has expressed interest in ${title}`
-              }
-            };
             // Send notifications to all tokens.
             const response = await admin.messaging().sendToDevice(tokens, payload);
             // For each message check if there was an error.
@@ -79,19 +80,22 @@ exports.sendFollowerNotification = functions.firestore.document('items/{itemId}'
             return;
         }
 
+        // Notification details.
+        let payload = {
+            "data": {
+              "op": "sendFollowerNotification",
+              "item": `${title}`,
+              "state": `${newState}`
+            }
+        };
+
         return db.collection('items').doc(context.params.itemId).collection('users').get().then( async (col) => {
             col.forEach(async (user) => {
                   const follower = user.data().id
                   return db.collection('utenti').doc(follower).get().then(async (doc) => {
                     const tokens = doc.data().notificationTokens
                     console.log('tokens are', tokens);
-                    // Notification details.
-                    const payload = {
-                      notification: {
-                        title: 'Update on your loved item!',
-                        body: `${title} is now ${newState}`
-                      }
-                    };
+
                     // Send notifications to all tokens.
                     const response = await admin.messaging().sendToDevice(tokens, payload);
                     // For each message check if there was an error.
