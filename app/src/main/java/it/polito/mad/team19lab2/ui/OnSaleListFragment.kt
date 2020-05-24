@@ -106,16 +106,19 @@ class OnSaleListFragment: Fragment(),SearchDialogFragment.NoticeDialogListener{
         live_items=itemListVm.getAllItems()
 
         if(savedInstanceState!=null){
-            queryTitle=savedInstanceState.getString("title")
-            queryLoc=savedInstanceState.getString("location")
-            queryMin=savedInstanceState.getString("min")
-            queryMax=savedInstanceState.getString("max")
-            queryCat=savedInstanceState.getInt("category")
-            search=true
-            var c:String?=null
-            if(queryCat!=-1)
-                c=resources.getStringArray(R.array.categories)[queryCat]
-            onDialogPositiveClick(queryTitle,c,queryMin,queryMax,queryLoc)
+            if(savedInstanceState.containsKey("title")) {
+                queryTitle = savedInstanceState.getString("title")
+                queryLoc = savedInstanceState.getString("location")
+                queryMin = savedInstanceState.getString("min")
+                queryMax = savedInstanceState.getString("max")
+                queryCat = savedInstanceState.getInt("category", -1)
+                Log.d("rotation", "savedinstancestate !=null - " + queryCat)
+                search = true
+                var c: String? = null
+                if (queryCat != -1)
+                    c = resources.getStringArray(R.array.categories)[queryCat]
+                onDialogPositiveClick(queryTitle, c, queryMin, queryMax, queryLoc)
+            }
         }
         else {
             live_items.removeObservers(viewLifecycleOwner)
@@ -137,6 +140,7 @@ class OnSaleListFragment: Fragment(),SearchDialogFragment.NoticeDialogListener{
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         if(search){
+            Log.d("rotation", "onsavedinstancestate()")
             val b=bundleOf("category" to queryCat,"title" to queryTitle,"minprice" to queryMin,"maxprice" to queryMax,"location" to queryLoc)
             outState.putAll(b)
         }
