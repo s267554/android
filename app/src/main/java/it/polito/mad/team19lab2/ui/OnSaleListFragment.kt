@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.*
 import android.widget.Button
 import android.widget.TextView
+import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -102,6 +103,16 @@ class OnSaleListFragment: Fragment(),SearchDialogFragment.NoticeDialogListener{
         recyclerView.adapter=adapter
         recyclerView.layoutManager=LinearLayoutManager(context)
         swipeRefreshLayout.setOnRefreshListener(myRefreshListener())
+        
+        if(savedInstanceState!=null){
+            queryTitle=savedInstanceState.getString("title")
+            queryLoc=savedInstanceState.getString("location")
+            queryMin=savedInstanceState.getString("min")
+            queryMax=savedInstanceState.getString("max")
+            queryCat=savedInstanceState.getInt("category")
+            search=true
+            onDialogPositiveClick(queryTitle,resources.getStringArray(R.array.categories)[queryCat],queryMin,queryMax,queryLoc)
+        }
         live_items=itemListVm.getAllItems()
         live_items.removeObservers(viewLifecycleOwner)
         live_items.observe(viewLifecycleOwner, Observer {
@@ -118,7 +129,13 @@ class OnSaleListFragment: Fragment(),SearchDialogFragment.NoticeDialogListener{
         return view
     }
 
-
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        if(search){
+            val b=bundleOf("category" to queryCat,"title" to queryTitle,"minprice" to queryMin,"maxprice" to queryMax,"location" to queryLoc)
+            outState.putAll(b)
+        }
+    }
 
     override fun onCreateOptionsMenu(menu: Menu, menuInflater: MenuInflater) {
         menuInflater.inflate(R.menu.on_sale_fragment_menu, menu)

@@ -49,7 +49,7 @@ class EditItemFragment : Fragment() {
     private var year: Int = 0
     private var month: Int = 0
     private var day: Int=0
-    private var timestamp: Timestamp= Timestamp.now()
+    private var newtimestamp: Timestamp?= null
     private val itemVm: ItemViewModel by viewModels()
     private lateinit var image: Bitmap
     lateinit var storage: FirebaseStorage
@@ -226,7 +226,8 @@ class EditItemFragment : Fragment() {
         month = if(dateEditText.text.isNullOrBlank()) c.get(Calendar.MONTH) else dateEditText.text.toString().split("/")[1].toInt()-1
         day = if(dateEditText.text.isNullOrBlank() && day == 0) c.get(Calendar.DAY_OF_MONTH) else dateEditText.text.toString().split("/")[0].toInt()
         val calendar: Calendar = GregorianCalendar(year, month, day+1)
-        timestamp=Timestamp(Date(calendar.timeInMillis))
+        //timestamp=Timestamp(Date(calendar.timeInMillis))
+
         dateEditText.setOnClickListener {
             val datePickerDialog = activity?.let {
                 DatePickerDialog(
@@ -238,7 +239,7 @@ class EditItemFragment : Fragment() {
                         this.month=monthOfYear
                         this.day=dayOfMonth
                         val cal: Calendar = GregorianCalendar(year, monthOfYear, dayOfMonth+1)
-                        timestamp=Timestamp(Date(cal.timeInMillis))
+                        newtimestamp=Timestamp(Date(cal.timeInMillis))
                         dateEditText.setText(finalDate)
                     }, year, month, day)
 
@@ -388,8 +389,8 @@ class EditItemFragment : Fragment() {
             item.subcategory = subCatArray.indexOf(subCategoryDropdown.text.toString())
         val stateArray = resources.getStringArray(R.array.item_state)
         item.state = stateArray.indexOf(stateDropdown.text.toString())
-
-        item.expireDatestamp=timestamp
+        if(newtimestamp!=null)
+            item.expireDatestamp= newtimestamp as Timestamp
         clEditItem.visibility=View.GONE
         progressBar.visibility=View.VISIBLE
         // Update or create the image
