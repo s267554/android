@@ -395,8 +395,13 @@ class EditItemFragment : Fragment() {
         progressBar.visibility=View.VISIBLE
         // Update or create the image
         if(imageModified && this::image.isInitialized) {
-            val itemPictureRef=storage.reference.child("itemPicture/${idItem}")
-            val path="itemPicture/${idItem}"
+            val time = System.currentTimeMillis()
+            var itemPictureRef = storage.reference.child("itemPicture/${time}")
+            var path = "itemPicture/${time}"
+            if(idItem != "-1") {
+                itemPictureRef = storage.reference.child("itemPicture/${idItem}")
+                path = "itemPicture/${idItem}"
+            }
             item.imagePath = path
             val baos = ByteArrayOutputStream()
             image.compress(Bitmap.CompressFormat.JPEG, 100, baos)
