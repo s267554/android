@@ -149,7 +149,6 @@ class MainActivity : AppCompatActivity() {
                 setupActionBarWithNavController(navController, appBarConfiguration)
                 navView.setupWithNavController(navController)
                 userVm.getOrCreateUser().observe(this, Observer { item ->
-                    Log.d("xxxx", item.toString())
                     if(item != null) {
                         nav_view.getHeaderView(0).findViewById<TextView>(R.id.header_title_textView).text = item.fullname
                         nav_view.getHeaderView(0).findViewById<TextView>(R.id.header_subtitle_textView).text = item.nickname
