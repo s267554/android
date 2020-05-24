@@ -48,12 +48,9 @@ class OnSaleListFragment: Fragment(),SearchDialogFragment.NoticeDialogListener{
         setHasOptionsMenu(true)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        val view = inflater.inflate(R.layout.fragment_onsale_list, container, false)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        Log.d("xxxxx", "ciao")
         emptyList=view.findViewById(R.id.empty_list)
         clearBotton=view.findViewById(R.id.button_clear_filter)
         modifyBotton=view.findViewById(R.id.modify_query_button)
@@ -104,8 +101,8 @@ class OnSaleListFragment: Fragment(),SearchDialogFragment.NoticeDialogListener{
         recyclerView.layoutManager=LinearLayoutManager(context)
         swipeRefreshLayout.setOnRefreshListener(myRefreshListener())
         live_items=itemListVm.getAllItems()
-
         if(savedInstanceState!=null){
+            Log.d("xxxxx", "ciao!=null")
             queryTitle=savedInstanceState.getString("title")
             queryLoc=savedInstanceState.getString("location")
             queryMin=savedInstanceState.getString("min")
@@ -118,19 +115,39 @@ class OnSaleListFragment: Fragment(),SearchDialogFragment.NoticeDialogListener{
             onDialogPositiveClick(queryTitle,c,queryMin,queryMax,queryLoc)
         }
         else {
+            Log.d("xxxxx", "ciao==null")
             live_items.removeObservers(viewLifecycleOwner)
             live_items.observe(viewLifecycleOwner, Observer {
-                if (!search && it != null) {
-                    Log.d("xxxxxx", "initial all items Observer")
-                    onSaleArray = it as ArrayList<ItemModel>
-                    adapter.onNewData(onSaleArray);
-                    if (onSaleArray.count() != 0)
-                        emptyList.visibility = View.GONE
-                    else
-                        emptyList.visibility = View.VISIBLE
+                Log.d("xxxxx", it.toString())
+                Log.d("xxxxxx",search.toString())
+                if (it != null) {
+                    if(!search) {
+                        Log.d("xxxxxx", "initial all items Observer")
+                        onSaleArray = it as ArrayList<ItemModel>
+                        adapter.onNewData(onSaleArray);
+                        if (onSaleArray.count() != 0)
+                            emptyList.visibility = View.GONE
+                        else
+                            emptyList.visibility = View.VISIBLE
+                    }
+                    else{
+                        var cat  = ""
+                        if(queryCat!=-1) {
+                            cat = resources.getStringArray(R.array.categories)[queryCat]
+                        }
+                        onDialogPositiveClick(queryTitle, cat, queryMin, queryMax, queryLoc)
+                    }
                 }
             })
         }
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val view = inflater.inflate(R.layout.fragment_onsale_list, container, false)
         return view
     }
 
@@ -213,7 +230,6 @@ class OnSaleListFragment: Fragment(),SearchDialogFragment.NoticeDialogListener{
             adapter = OnSaleRecyclerViewAdapter(onSaleArray)
             recyclerView.adapter=adapter
             //adapter.onNewData(onSaleArray)
-
             live_items.removeObservers(viewLifecycleOwner)
             live_items=itemListVm.getQueryItems(title, catIndex, m1, m2, location)
             live_items.observe(viewLifecycleOwner, Observer {
