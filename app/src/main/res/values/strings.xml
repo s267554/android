@@ -73,6 +73,10 @@
     <string name="upUnbound">"up to unbounded"</string>
     <string name="default_notification_channel_id" />
     <string name="fcm_message" />
+    <string name="notifyOwner">Your Item got some love!</string>
+    <string name="notifyOwnerText">has expressed interest for</string>
+    <string name="sendFollowerNotification">Update on your beloved Item!</string>
+    <string name="sendFollowerNotificationText">is now</string>
     <string name="no_users">No interested users</string>
     <string name="buy">Buy this item</string>
     <string name="seller">Seller</string>

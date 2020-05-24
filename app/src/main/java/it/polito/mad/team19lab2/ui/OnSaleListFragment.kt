@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -25,6 +26,7 @@ class OnSaleListFragment: Fragment(),SearchDialogFragment.NoticeDialogListener{
     private var onSaleArray = ArrayList<ItemModel>()
     //private var onSearchArray = ArrayList<ItemModel>()
     //private var onClearArray = ArrayList<ItemModel>()
+    lateinit var live_items: MutableLiveData<List<ItemModel>>
     lateinit var recyclerView: RecyclerView
     lateinit var adapter: OnSaleRecyclerViewAdapter
     lateinit var swipeRefreshLayout: SwipeRefreshLayout
@@ -75,9 +77,11 @@ class OnSaleListFragment: Fragment(),SearchDialogFragment.NoticeDialogListener{
                 //recyclerView.adapter=adapter
                 //adapter.onNewData(onSaleArray)
                 //swipeRefreshLayout.isRefreshing=false
-                itemListVm.getAllItems().observe(viewLifecycleOwner, Observer {
+                live_items.removeObservers(viewLifecycleOwner)
+                live_items=itemListVm.getAllItems()
+                live_items.observe(viewLifecycleOwner, Observer {
                     //if(!search){
-                    Log.e("xxx", "Inside getAllItems Observer")
+                    Log.d("xxxxxx", "Clear botton Observer")
                     if(!search && it!=null) {
                         onSaleArray = it as ArrayList<ItemModel>
                         adapter.onNewData(onSaleArray);
@@ -98,8 +102,11 @@ class OnSaleListFragment: Fragment(),SearchDialogFragment.NoticeDialogListener{
         recyclerView.adapter=adapter
         recyclerView.layoutManager=LinearLayoutManager(context)
         swipeRefreshLayout.setOnRefreshListener(myRefreshListener())
-        itemListVm.getAllItems().observe(viewLifecycleOwner, Observer {
+        live_items=itemListVm.getAllItems()
+        live_items.removeObservers(viewLifecycleOwner)
+        live_items.observe(viewLifecycleOwner, Observer {
             if(!search && it!=null) {
+                Log.d("xxxxxx", "initial all items Observer")
                 onSaleArray = it as ArrayList<ItemModel>
                 adapter.onNewData(onSaleArray);
                 if (onSaleArray.count() != 0)
@@ -184,9 +191,11 @@ class OnSaleListFragment: Fragment(),SearchDialogFragment.NoticeDialogListener{
             adapter = OnSaleRecyclerViewAdapter(onSaleArray)
             recyclerView.adapter=adapter
             //adapter.onNewData(onSaleArray)
-            itemListVm.getQueryItems(title, catIndex, m1, m2, location)
-                .observe(viewLifecycleOwner, Observer {
+            live_items.removeObservers(viewLifecycleOwner)
+            live_items=itemListVm.getQueryItems(title, catIndex, m1, m2, location)
+            live_items.observe(viewLifecycleOwner, Observer {
                     if (search) {
+                        Log.d("xxxxxx", "query items Observer")
                         onSaleArray = it as ArrayList<ItemModel>
                         adapter.onNewData(onSaleArray)
                         if (onSaleArray.count() != 0)
