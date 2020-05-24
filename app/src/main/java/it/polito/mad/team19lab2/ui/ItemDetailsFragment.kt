@@ -1,6 +1,7 @@
 package it.polito.mad.team19lab2.ui
 
 import InterestedUsersRecycleViewAdapter
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -98,11 +99,26 @@ class ItemDetailsFragment : Fragment() {
                     seller_nickname.text = user.nickname
                 })
                 setHasOptionsMenu(false)
+                if(item.state!=0){
+                    buyButton.isClickable = false
+                    buyButton.isEnabled = false
+                    if(item.state==1) {
+                        buyButton.setBackgroundColor(Color.GRAY)
+                        buyButton.setText(R.string.blocked)
+                    }
+                    else{
+                        buyButton.setBackgroundColor(Color.GRAY)
+                        buyButton.setText(R.string.sold)
+                    }
+                }
                 buyButton.setOnClickListener {
                     item.state = 2
-                    //item.state = resources.getStringArray(R.array.item_state).indexOf("Sold")
                     itemVm.saveItem(item)
-                    Toast.makeText(this.context, "Item bought", Toast.LENGTH_SHORT).show()
+                    buyButton.isClickable = false
+                    buyButton.isEnabled = false
+                    buyButton.setBackgroundColor(Color.GRAY)
+                    buyButton.setText(R.string.bought)
+                    Toast.makeText(this.context, getString(R.string.item_bought), Toast.LENGTH_SHORT).show()
                 }
                 val fab: FloatingActionButton = view.findViewById(R.id.fab)
                 itemVm.getInterestedUsers(idItem).observe(viewLifecycleOwner, Observer { users ->

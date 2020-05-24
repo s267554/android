@@ -84,5 +84,17 @@
     <string name="picture_from_camera">Picture from Camera</string>
     <string name="image_from_gallery">Image from Gallery</string>
     <string name="Availability">Availability</string>
+    <string name="bought">Bought</string>
+    <string name="item_bought">Item bought</string>
+    <string name="sold">Sold</string>
+    <string name="blocked">Blocked</string>
+    <string name="any_title">any title</string>
+    <string name="any_category">IN any category</string>
+    <string name="any_location">\@ any location</string>
+    <string name="modify">modify</string>
+    <string name="MinPrice">Min price</string>
+    <string name="MaxPrice">Max price</string>
+    <string name="cancel">cancel</string>
+    <string name="no_advs_users">There are no advertisments of other users</string>
 
 </resources>
