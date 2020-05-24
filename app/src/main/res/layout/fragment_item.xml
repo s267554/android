@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_height="150dp"
     android:layout_width="match_parent"
-    android:layout_margin="8dp"
-    >
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/relativeLayout"
@@ -19,11 +17,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/text_margin"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:text="@string/edit"
-            app:layout_constraintBottom_toBottomOf="@+id/materialCardView"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/content" />
+            app:layout_constraintTop_toBottomOf="@+id/stateImageView" />
 
         <TextView
             android:id="@+id/content"
@@ -48,15 +45,33 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/materialCardView" />
 
+        <ImageView
+            android:id="@+id/stateImageView"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/content" />
+
+        <TextView
+            android:id="@+id/stateText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/stateImageView"
+            app:layout_constraintEnd_toStartOf="@+id/materialCardView"
+            app:layout_constraintStart_toEndOf="@+id/stateImageView"
+            app:layout_constraintTop_toTopOf="@+id/stateImageView" />
+
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/materialCardView"
             android:layout_width="110dp"
             android:layout_height="110dp"
-            android:layout_marginStart="@dimen/text_margin"
-            android:layout_marginTop="@dimen/text_margin"
             android:layout_marginEnd="@dimen/text_margin"
             android:layout_marginBottom="@dimen/text_margin"
             app:cardCornerRadius="5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 

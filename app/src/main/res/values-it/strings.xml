@@ -91,4 +91,6 @@
         <item>Auto</item>
         <item>Altro</item>
     </string-array>
+    <string name="expired">scaduto</string>
+    <string name="available">disponibile</string>
 </resources>
