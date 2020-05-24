@@ -91,6 +91,8 @@
         <item>Auto</item>
         <item>Altro</item>
     </string-array>
+    <string name="expired">scaduto</string>
+    <string name="available">disponibile</string>
     <string name="notifyOwner">Il tuo articolo ha riscosso interesse!</string>
     <string name="notifyOwnerText">è interessato a</string>
     <string name="sendFollowerNotification">Aggiornamenti sul tuo articolo preferito!</string>

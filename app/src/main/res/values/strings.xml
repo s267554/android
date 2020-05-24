@@ -96,5 +96,7 @@
     <string name="MaxPrice">Max price</string>
     <string name="cancel">cancel</string>
     <string name="no_advs_users">There are no advertisments of other users</string>
+    <string name="expired">expired</string>
+    <string name="available">available</string>
 
 </resources>

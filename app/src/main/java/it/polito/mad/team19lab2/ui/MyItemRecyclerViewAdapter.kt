@@ -10,6 +10,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.navigation.findNavController
+import com.google.firebase.Timestamp
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
@@ -18,6 +19,8 @@ import it.polito.mad.team19lab2.R
 import it.polito.mad.team19lab2.data.ItemModel
 
 import kotlinx.android.synthetic.main.fragment_item.view.*
+import java.time.Instant
+import java.time.format.DateTimeFormatter
 import java.util.ArrayList
 
 
@@ -69,6 +72,26 @@ class MyItemRecyclerViewAdapter(
         } else {
             holder.mImage.setImageResource(R.drawable.sport_category_foreground)
         }
+        if(item.state == 0){
+            Log.d("xxx", item.expireDatestamp.toString())
+            Log.d("xxx", Timestamp.now().toString())
+            if(item.expireDatestamp.seconds < Timestamp.now().seconds){
+                holder.mStateText.setText(R.string.expired)
+                holder.mStateImage.setImageResource(R.drawable.state_expired)
+            }
+            else{
+                holder.mStateText.setText(R.string.available)
+                holder.mStateImage.setImageResource(R.drawable.state_available)
+            }
+        }
+        else if(item.state==1){
+            holder.mStateText.setText(R.string.blocked)
+            holder.mStateImage.setImageResource(R.drawable.state_blocked)
+        }
+        else{
+            holder.mStateText.setText(R.string.sold)
+            holder.mStateImage.setImageResource(R.drawable.state_sold)
+        }
 
         with(holder.mView) {
             tag = item
@@ -90,6 +113,8 @@ class MyItemRecyclerViewAdapter(
         val mContentView: TextView = mView.content
         val mEditButton: Button = mView.item_list_edit_button
         val mImage: ImageView = mView.item_image_preview
+        val mStateText: TextView = mView.stateText
+        val mStateImage: ImageView = mView.stateImageView
 
         override fun toString(): String {
             return super.toString() + " '" + mContentView.text + "'"
