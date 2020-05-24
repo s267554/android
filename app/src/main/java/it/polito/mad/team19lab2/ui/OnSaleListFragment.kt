@@ -120,8 +120,6 @@ class OnSaleListFragment: Fragment(),SearchDialogFragment.NoticeDialogListener{
             Log.d("xxxxx", "ciao==null")
             live_items.removeObservers(viewLifecycleOwner)
             live_items.observe(viewLifecycleOwner, Observer {
-                Log.d("xxxxx", it.toString())
-                Log.d("xxxxxx",search.toString())
                 if (it != null) {
                     if(!search) {
                         Log.d("xxxxxx", "initial all items Observer")
