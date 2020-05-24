@@ -42,20 +42,37 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         remoteMessage.data.isNotEmpty().let {
             Log.d(TAG, "Message data payload: " + remoteMessage.data)
 
-            if (/* Check if data needs to be processed by long running job */ true) {
-                // For long-running tasks (10 seconds or more) use WorkManager.
-                //scheduleJob()
-            } else {
-                // Handle message within 10 seconds
-                //handleNow()
+            var title = ""
+            var body = ""
+
+            when (remoteMessage.data["op"]) {
+                "notifyOwner" -> {
+                    title = resources.getString(R.string.notifyOwner)
+                    body = "${remoteMessage.data["fullname"]} " +
+                            "${resources.getString(R.string.notifyOwnerText)} " +
+                            "${remoteMessage.data["item"]}"
+                }
+                "sendFollowerNotification" -> {
+                    if (remoteMessage.data.containsKey("state")) {
+                        title = resources.getString(R.string.sendFollowerNotification)
+                        body = "${remoteMessage.data["item"]} " +
+                                "${resources.getString(R.string.sendFollowerNotificationText)} " +
+                                resources.getStringArray(R.array.item_state)[remoteMessage.data["state"]!!.toInt()]
+                    }
+                }
             }
+
+            if ( title.isNotBlank() && body.isNotBlank() )
+                sendNotification(body, title)
+
         }
 
+
         // Check if message contains a notification payload.
-        remoteMessage.notification?.let {
+        /*remoteMessage.notification?.let {
             Log.d(TAG, "Message Notification Body: ${it.body}")
-            it.body?.run { sendNotification(this) }
-        }
+            it.body?.run { sendNotification(this, title) }
+        }*/
 
         // Also if you intend on generating your own notifications as a result of a received FCM
         // message, here is where that should be initiated. See sendNotification method below.
@@ -109,7 +126,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
      *
      * @param messageBody FCM message body received.
      */
-    private fun sendNotification(messageBody: String) {
+    private fun sendNotification(messageBody: String, title: String) {
         val intent = Intent(this, MainActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         val pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
@@ -118,10 +135,10 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         val channelId = getString(R.string.default_notification_channel_id)
         val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
         val notificationBuilder = NotificationCompat.Builder(this, channelId)
-            .setSmallIcon(R.drawable.ic_stat_ic_notification)
-            .setContentTitle(getString(R.string.fcm_message))
+            .setSmallIcon(R.drawable.ic_shop_black_48dp)
+            .setContentTitle(title)
             .setContentText(messageBody)
-            .setAutoCancel(true)
+            .setAutoCancel(false)
             .setSound(defaultSoundUri)
             .setContentIntent(pendingIntent)
 
