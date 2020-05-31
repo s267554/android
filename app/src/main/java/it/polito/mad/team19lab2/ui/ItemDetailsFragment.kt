@@ -120,6 +120,8 @@ class ItemDetailsFragment : Fragment(), BuyersRecycleViewAdapter.SellItemClick {
                     userList.visibility=View.GONE
                     usersLabel.visibility=View.GONE
                     buyerList.visibility=View.GONE
+                    noUsers.visibility=View.GONE
+                    noBuyers.visibility=View.GONE
                     view.findViewById<TextView>(R.id.buyers).visibility=View.GONE
                 }
             }
