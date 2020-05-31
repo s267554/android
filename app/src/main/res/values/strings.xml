@@ -98,5 +98,12 @@
     <string name="no_advs_users">There are no advertisments of other users</string>
     <string name="expired">expired</string>
     <string name="available">available</string>
+    <string name="item_add_favourites">item added to your interests</string>
+    <string name="item_removed_favourites">item removed from your interests</string>
+    <string name="waiting_for_approval">Pending approval</string>
+    <string name="buyers">Potential buyers</string>
+    <string name="sell">Sell</string>
+    <string name="no_buyers">No potential buyers</string>
+    <string name="request_purchase">request purchase</string>
 
 </resources>

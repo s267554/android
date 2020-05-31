@@ -12,7 +12,17 @@ class ItemRepository {
     val TAG="ITEM_REPOSITORY"
     var firestoreDB = FirebaseFirestore.getInstance()
 
+    fun saveBuyer(item: ItemModel, usm: UserShortModel): Task<Void> {
+        var documentReference = firestoreDB.collection("items").document(item.id).collection("buyers").document(usm.id)
+        return documentReference.set(usm)
+    }
+
     fun saveItem(item: ItemModel): Task<Void> {
+        var documentReference = firestoreDB.collection("items").document(item.id)
+        return documentReference.set(item)
+    }
+
+    fun sellItem(item: ItemModel): Task<Void>{
         var documentReference = firestoreDB.collection("items").document(item.id)
         return documentReference.set(item)
     }
@@ -24,6 +34,11 @@ class ItemRepository {
 
     fun getInterestedUsers(id : String): Query {
         var q:Query=firestoreDB.collection("items").document(id).collection("users")
+        return q
+    }
+
+    fun getBuyers(id : String): Query {
+        var q:Query=firestoreDB.collection("items").document(id).collection("buyers")
         return q
     }
 

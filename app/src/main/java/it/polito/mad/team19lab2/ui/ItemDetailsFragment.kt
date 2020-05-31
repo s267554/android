@@ -1,5 +1,6 @@
 package it.polito.mad.team19lab2.ui
 
+import BuyersRecycleViewAdapter
 import InterestedUsersRecycleViewAdapter
 import android.graphics.Color
 import android.os.Bundle
@@ -16,6 +17,7 @@ import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
@@ -29,8 +31,8 @@ import it.polito.mad.team19lab2.viewModel.ItemViewModel
 import it.polito.mad.team19lab2.viewModel.UserViewModel
 import kotlinx.android.synthetic.main.item_details_fragment.*
 
+class ItemDetailsFragment : Fragment(), BuyersRecycleViewAdapter.SellItemClick {
 
-class ItemDetailsFragment : Fragment() {
 
     private lateinit var item: ItemModel
     lateinit var storage: FirebaseStorage
@@ -40,6 +42,7 @@ class ItemDetailsFragment : Fragment() {
     private lateinit var sellerUser:String
     private var user = FirebaseAuth.getInstance().currentUser
     private var interestedUsers = ArrayList<UserShortModel>()
+    private var buyers = ArrayList<UserShortModel>()
     var favourite: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,6 +70,7 @@ class ItemDetailsFragment : Fragment() {
             idItem = arguments?.getString("item_id1").toString()
         }
         val recycler: RecyclerView = view.findViewById(R.id.userList)
+        val recyclerBuyer: RecyclerView = view.findViewById(R.id.buyerList)
         val usersLabel = view.findViewById<TextView>(R.id.interestedUsers)
         itemVm.getItem(idItem).observe(viewLifecycleOwner, Observer { it ->
             item = it
@@ -78,21 +82,56 @@ class ItemDetailsFragment : Fragment() {
                 seller_textView.visibility=View.GONE
                 materialCardView3.visibility=View.GONE
 
-                itemVm.getInterestedUsers(idItem).observe(viewLifecycleOwner, Observer { users ->
-                    interestedUsers= users as ArrayList<UserShortModel>
-                    with(recycler) {
-                        layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
-                        adapter =  InterestedUsersRecycleViewAdapter(interestedUsers)
+                if(item.state!=2) {
+                    itemVm.getInterestedUsers(idItem)
+                        .observe(viewLifecycleOwner, Observer { users ->
+                            interestedUsers = users as ArrayList<UserShortModel>
+                            with(recycler) {
+                                layoutManager =
+                                    androidx.recyclerview.widget.LinearLayoutManager(context)
+                                adapter = InterestedUsersRecycleViewAdapter(interestedUsers)
+                            }
+                            if (interestedUsers.size == 0) {
+                                noUsers.visibility = View.VISIBLE
+                            }
+                        })
+                    itemVm.getBuyers(idItem).observe(viewLifecycleOwner, Observer { users ->
+                        buyers = users as ArrayList<UserShortModel>
+                        Log.d("xxxx", users.toString())
+                        with(recyclerBuyer) {
+                            layoutManager =
+                                androidx.recyclerview.widget.LinearLayoutManager(context)
+                            adapter = BuyersRecycleViewAdapter(buyers) as BuyersRecycleViewAdapter
+                            (adapter as BuyersRecycleViewAdapter).setSellItemClickListener(this@ItemDetailsFragment)
+                        }
+                        if (buyers.size == 0) {
+                            noBuyers.visibility = View.VISIBLE
+                        }
+                    })
+                    if(item.state==1){
+                        statusTextView.setText(R.string.blocked)
                     }
-                    if(interestedUsers.size == 0) {
-                        noUsers.visibility = View.VISIBLE
+                    else{
+                        statusTextView.setText(R.string.available)
                     }
-                })
+                }
+                else{
+                    statusTextView.setText(R.string.sold)
+                    userList.visibility=View.GONE
+                    usersLabel.visibility=View.GONE
+                    buyerList.visibility=View.GONE
+                    view.findViewById<TextView>(R.id.buyers).visibility=View.GONE
+                }
             }
             else{
                 //CASE I AM NOT THE USER
+                statusIcon.visibility=View.GONE
+                statusLabel.visibility=View.GONE
+                statusTextView.visibility=View.GONE
                 userList.visibility=View.GONE
                 usersLabel.visibility=View.GONE
+                buyerList.visibility=View.GONE
+                view.findViewById<TextView>(R.id.buyers).visibility=View.GONE
                 userVm.getUser(item.userId).observe(viewLifecycleOwner, Observer { user ->
                     sellerUser=user.id
                     seller_fullname.text = user.fullname
@@ -107,18 +146,34 @@ class ItemDetailsFragment : Fragment() {
                         buyButton.setText(R.string.blocked)
                     }
                     else{
+                        if(item.buyerId == user?.uid)
+                            buyButton.setText(R.string.bought)
+                        else
+                            buyButton.setText(R.string.sold)
                         buyButton.setBackgroundColor(Color.GRAY)
-                        buyButton.setText(R.string.sold)
                     }
                 }
+                else{
+                    itemVm.getBuyers(idItem).observe(viewLifecycleOwner, Observer { users ->
+                        var flag = 0
+                        for (u in users) {
+                            if (u.id == user?.uid ?: "") {
+                                flag = 1
+                                break
+                            }
+                        }
+                        if (flag == 1) {
+                            buyButton.setBackgroundColor(Color.GRAY)
+                            buyButton.setText(R.string.waiting_for_approval)
+                        }
+                    })
+                }
                 buyButton.setOnClickListener {
-                    item.state = 2
-                    itemVm.saveItem(item)
+                    itemVm.saveBuyer(item)
                     buyButton.isClickable = false
                     buyButton.isEnabled = false
                     buyButton.setBackgroundColor(Color.GRAY)
-                    buyButton.setText(R.string.bought)
-                    Toast.makeText(this.context, getString(R.string.item_bought), Toast.LENGTH_SHORT).show()
+                    buyButton.setText(R.string.waiting_for_approval)
                 }
                 val fab: FloatingActionButton = view.findViewById(R.id.fab)
                 itemVm.getInterestedUsers(idItem).observe(viewLifecycleOwner, Observer { users ->
@@ -136,13 +191,13 @@ class ItemDetailsFragment : Fragment() {
                         itemVm.addInterestedUser(idItem)
                         favourite=true
                         fab.setImageResource(R.drawable.baseline_favorite_black_48dp)
-                        Toast.makeText(this.context, "Owner notified of your interest", Toast.LENGTH_LONG).show()
+                        Toast.makeText(this.context,  R.string.item_add_favourites, Toast.LENGTH_LONG).show()
                     }
                     else{
                         itemVm.removeInterestedUser(idItem)
                         favourite=false
                         fab.setImageResource(R.drawable.baseline_favorite_border_black_48dp)
-                        Toast.makeText(this.context, "Item removed from your interests", Toast.LENGTH_LONG).show()
+                        Toast.makeText(this.context, R.string.item_removed_favourites, Toast.LENGTH_LONG).show()
                     }
                 }
             }
@@ -191,5 +246,11 @@ class ItemDetailsFragment : Fragment() {
             Picasso.get().load(it).noFade().placeholder(R.drawable.progress_animation).into(imView)
         }.addOnFailureListener {
         }
+    }
+
+    override fun sellButtonOnClick(v: View?, position: Int) {
+        item.state=2
+        item.buyerId= buyers[position].id
+        itemVm.sellItem(item)
     }
 }

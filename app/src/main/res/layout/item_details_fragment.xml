@@ -179,6 +179,15 @@
             app:srcCompat="@mipmap/category_icon_round" />
 
         <ImageView
+            android:id="@+id/statusIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ExpireIcon"
+            app:srcCompat="@mipmap/status_icon_round" />
+
+        <ImageView
             android:id="@+id/priceIcon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -283,6 +292,63 @@
             app:layout_constraintStart_toStartOf="@+id/categoryLabel"
             app:layout_constraintTop_toBottomOf="@+id/categoryTextView" />
 
+        <TextView
+            android:id="@+id/statusLabel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/state_hint"
+            app:layout_constraintEnd_toEndOf="@+id/frameLayout2"
+            app:layout_constraintStart_toEndOf="@+id/statusIcon"
+            app:layout_constraintTop_toTopOf="@+id/statusIcon" />
+
+        <TextView
+            android:id="@+id/statusTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@color/primaryText"
+            app:layout_constraintEnd_toEndOf="@+id/buyButton"
+            app:layout_constraintStart_toStartOf="@+id/statusLabel"
+            app:layout_constraintTop_toBottomOf="@+id/statusLabel" />
+
+        <TextView
+            android:id="@+id/buyers"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/buyers"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/materialCardView3" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/buyerList"
+            android:name="it.polito.mad.team19lab2.BuyerFragment"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/buyers"
+            tools:context=".ui.ItemDetailsFragment"
+            tools:listitem="@layout/fragment_buyer">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+        <TextView
+            android:id="@+id/noBuyers"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/no_buyers"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/buyers" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/userList"
             android:name="it.polito.mad.team19lab2.UserFragment"
@@ -306,18 +372,7 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/materialCardView3" />
-
-        <Button
-            android:id="@+id/buyButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="@string/buy"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ExpireIcon" />
-
+            app:layout_constraintTop_toBottomOf="@id/buyerList" />
 
         <TextView
             android:id="@+id/noUsers"
@@ -382,6 +437,17 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.card.MaterialCardView>
+
+        <Button
+            android:id="@+id/buyButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/request_purchase"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/statusIcon" />
 
         <TextView
             android:id="@+id/seller_textView"
