@@ -311,6 +311,77 @@
                 app:layout_constraintTop_toBottomOf="@+id/locationIcon"
                 app:srcCompat="@mipmap/date_icon" />
 
+            <ImageView
+                android:id="@+id/statusIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ExpireIcon"
+                app:srcCompat="@mipmap/status_icon_round" />
+
+            <TextView
+                android:id="@+id/statusLabel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:text="@string/state_hint"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/statusIcon"
+                app:layout_constraintTop_toTopOf="@+id/statusIcon" />
+
+            <TextView
+                android:id="@+id/statusTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@color/primaryText"
+                app:layout_constraintEnd_toEndOf="@+id/buyButton"
+                app:layout_constraintStart_toStartOf="@+id/statusLabel"
+                app:layout_constraintTop_toBottomOf="@+id/statusLabel" />
+
+            <TextView
+                android:id="@+id/buyers"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:text="@string/buyers"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/materialCardView3" />
+
+            <TextView
+                android:id="@+id/noBuyers"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/no_buyers"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/buyers" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/buyerList"
+                android:name="it.polito.mad.team19lab2.BuyerFragment"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/buyers"
+                tools:context=".ui.ItemDetailsFragment"
+                tools:listitem="@layout/fragment_buyer">
+            </androidx.recyclerview.widget.RecyclerView>
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/userList"
                 android:name="it.polito.mad.team19lab2.UserFragment"
@@ -323,33 +394,38 @@
                 app:layout_constraintTop_toBottomOf="@+id/interestedUsers"
                 tools:context=".ui.ItemDetailsFragment"
                 tools:listitem="@layout/fragment_user">
-
             </androidx.recyclerview.widget.RecyclerView>
 
             <Button
                 android:id="@+id/buyButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="@string/buy"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:text="@string/request_purchase"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/ExpireIcon" />
+                app:layout_constraintTop_toBottomOf="@+id/statusIcon" />
 
             <TextView
                 android:id="@+id/interestedUsers"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
                 android:text="@string/interestedUsers"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/materialCardView3" />
+                app:layout_constraintTop_toBottomOf="@+id/buyerList" />
 
             <TextView
                 android:id="@+id/noUsers"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:text="@string/no_users"
                 android:visibility="gone"
@@ -415,7 +491,9 @@
                 android:id="@+id/seller_textView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
                 android:text="@string/seller"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
                 app:layout_constraintEnd_toEndOf="parent"
