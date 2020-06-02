@@ -81,6 +81,7 @@
             app:layout_constraintGuide_percent="0.3" />
 
         <ScrollView
+            android:id="@+id/scrollParent"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginBottom="8dp"
@@ -228,7 +229,7 @@
 
                 <fragment
                     android:id="@+id/google_maps"
-                    android:name="com.google.android.gms.maps.SupportMapFragment"
+                    android:name="it.polito.mad.team19lab2.utilities.WorkaroundMapFragment"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:layout_marginTop="8dp"

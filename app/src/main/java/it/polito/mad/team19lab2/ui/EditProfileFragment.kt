@@ -21,6 +21,7 @@ import android.view.*
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
+import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
@@ -44,6 +45,7 @@ import com.squareup.picasso.Picasso
 import it.polito.mad.team19lab2.MainActivity
 import it.polito.mad.team19lab2.R
 import it.polito.mad.team19lab2.data.UserModel
+import it.polito.mad.team19lab2.utilities.WorkaroundMapFragment
 import it.polito.mad.team19lab2.viewModel.UserViewModel
 import kotlinx.android.synthetic.main.fragment_edit_profile.*
 import java.io.ByteArrayOutputStream
@@ -176,10 +178,18 @@ class EditProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_UNCHANGED)
         userId = arguments?.getString("user_id").toString()
-        supportMapFragment = ( childFragmentManager.findFragmentById(R.id.google_maps) as SupportMapFragment)
-        supportMapFragment.getMapAsync {
+        val supportMapFragment2 : SupportMapFragment = ( childFragmentManager.findFragmentById(R.id.google_maps) as WorkaroundMapFragment)
+        supportMapFragment2.getMapAsync {
             gMap = it
             gMap.uiSettings.isMapToolbarEnabled = false
+            var mScrollView = scrollParent //parent scrollview in xml, give your scrollview id value
+            (childFragmentManager.findFragmentById(R.id.google_maps) as WorkaroundMapFragment?)
+                ?.setListener(object : WorkaroundMapFragment.OnTouchListener {
+                    override fun onTouch() {
+                        mScrollView.requestDisallowInterceptTouchEvent(true)
+                    }
+                })
+            /*
             gMap.setOnCameraMoveStartedListener {
                 val i : ViewParent = view as ViewParent
                 i.requestDisallowInterceptTouchEvent(true)
@@ -188,6 +198,7 @@ class EditProfileFragment : Fragment() {
                 val i : ViewParent = view as ViewParent
                 i.requestDisallowInterceptTouchEvent(false)
             }
+             */
             gMap.setOnMapClickListener {point->
                 var markerPosition = MarkerOptions()
                 markerPosition.position(point)
