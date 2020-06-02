@@ -46,10 +46,16 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             var body = ""
 
             when (remoteMessage.data["op"]) {
-                "notifyOwner" -> {
-                    title = resources.getString(R.string.notifyOwner)
+                "notifyOwnerInterest" -> {
+                    title = resources.getString(R.string.notifyOwnerInterest)
                     body = "${remoteMessage.data["fullname"]} " +
-                            "${resources.getString(R.string.notifyOwnerText)} " +
+                            "${resources.getString(R.string.notifyOwnerInterestText)} " +
+                            "${remoteMessage.data["item"]}"
+                }
+                "notifyOwnerBuy" -> {
+                    title = resources.getString(R.string.notifyOwnerBuy)
+                    body = "${remoteMessage.data["fullname"]} " +
+                            "${resources.getString(R.string.notifyOwnerBuyText)} " +
                             "${remoteMessage.data["item"]}"
                 }
                 "sendFollowerNotification" -> {

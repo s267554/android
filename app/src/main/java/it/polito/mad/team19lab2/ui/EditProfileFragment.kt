@@ -3,26 +3,39 @@ package it.polito.mad.team19lab2.ui
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Matrix
 import android.graphics.drawable.BitmapDrawable
+import android.location.Address
+import android.location.Geocoder
+import android.location.Location
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.util.LruCache
 import android.util.Patterns
 import android.view.*
+import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.tasks.Task
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
@@ -34,6 +47,7 @@ import it.polito.mad.team19lab2.data.UserModel
 import it.polito.mad.team19lab2.viewModel.UserViewModel
 import kotlinx.android.synthetic.main.fragment_edit_profile.*
 import java.io.ByteArrayOutputStream
+import java.util.*
 
 
 class EditProfileFragment : Fragment() {
@@ -47,6 +61,9 @@ class EditProfileFragment : Fragment() {
     private var imageModified=false
     private val userVm: UserViewModel by viewModels()
     private lateinit var userId : String
+    private lateinit var supportMapFragment: SupportMapFragment
+    private lateinit var client: FusedLocationProviderClient
+    private lateinit var gMap: GoogleMap
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_edit_profile, container, false)
@@ -66,7 +83,34 @@ class EditProfileFragment : Fragment() {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
         storage = Firebase.storage
+        client= context?.let { LocationServices.getFusedLocationProviderClient(it) }!!
     }
+
+    private fun getCurrentLocation(){
+        var task: Task<Location> = client.lastLocation
+        task.addOnSuccessListener {location ->
+            if(location!=null){
+                supportMapFragment.getMapAsync {
+                    var latLng = com.google.android.gms.maps.model.LatLng(location.latitude, location.longitude)
+                    it.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10F))
+                }
+            }
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if(requestCode == 44){
+            if(grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                getCurrentLocation()
+            }
+        }
+    }
+
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
@@ -114,6 +158,9 @@ class EditProfileFragment : Fragment() {
                 image_view.setImageBitmap(imageRestored)
                 imageModified = savedInstanceState.getBoolean("group19.lab2.IMGFLAG")
             }
+            else{
+                image_view.setImageResource(R.drawable.avatar_foreground)
+            }
         }
     }
 
@@ -129,6 +176,46 @@ class EditProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_UNCHANGED)
         userId = arguments?.getString("user_id").toString()
+        supportMapFragment = ( childFragmentManager.findFragmentById(R.id.google_maps) as SupportMapFragment)
+        supportMapFragment.getMapAsync {
+            gMap = it
+            gMap.uiSettings.isMapToolbarEnabled = false
+            gMap.setOnCameraMoveStartedListener {
+                val i : ViewParent = view as ViewParent
+                i.requestDisallowInterceptTouchEvent(true)
+            }
+            gMap.setOnCameraIdleListener {
+                val i : ViewParent = view as ViewParent
+                i.requestDisallowInterceptTouchEvent(false)
+            }
+            gMap.setOnMapClickListener {point->
+                var markerPosition = MarkerOptions()
+                markerPosition.position(point)
+                gMap.clear()
+                gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(point, 10F))
+                gMap.addMarker(markerPosition)
+                val geocoder = Geocoder(context, Locale.getDefault())
+                val addresses: List<Address> = geocoder.getFromLocation(point.latitude, point.longitude, 1)
+                val streetName: String = addresses[0].getAddressLine(0).split(",")[0]
+                val cityName = addresses[0].locality
+                val countryCode = addresses[0].countryCode
+                val finalLocation= "${cityName}, $countryCode"
+                locationProfileEditText.setText(finalLocation)
+            }
+            if(savedInstanceState!=null){
+                if(user.location.isNullOrEmpty()){
+                    if(ActivityCompat.checkSelfPermission(requireContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                        getCurrentLocation()
+                    }
+                    else{
+                        ActivityCompat.requestPermissions(requireContext() as Activity, Array(1){android.Manifest.permission.ACCESS_FINE_LOCATION}, 44)
+                    }
+                }
+                else{
+                    pointInMap(locationProfileEditText.text)
+                }
+            }
+        }
         if(savedInstanceState==null) {
             userVm.getUser(userId).observe(viewLifecycleOwner, Observer { it ->
                 user = it
@@ -155,6 +242,17 @@ class EditProfileFragment : Fragment() {
                         stateVO.isSelected = true
                     }
                     listVOs.add(stateVO)
+                }
+                if(user.location.isNullOrEmpty()){
+                    if(ActivityCompat.checkSelfPermission(requireContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                        getCurrentLocation()
+                    }
+                    else{
+                        ActivityCompat.requestPermissions(requireContext() as Activity, Array(1){android.Manifest.permission.ACCESS_FINE_LOCATION}, 44)
+                    }
+                }
+                else{
+                    pointInMap(locationProfileEditText.text)
                 }
                 (requireContext() as MainActivity).setInterestsDropdown(listVOs as ArrayList<StateVO>)
             })
@@ -238,12 +336,29 @@ class EditProfileFragment : Fragment() {
                     emailProfile.error = null
             }
         })
-        emailProfileEditText.setOnFocusChangeListener { _, hasFocus ->
-            if(!hasFocus){
-                if(!isValidEmail())
-                    emailProfile.error=getString(R.string.invalidEmail)
+        locationProfileEditText.setOnFocusChangeListener { _, hasFocus ->
+            if (!hasFocus) {
+                pointInMap(locationProfileEditText.text)
             }
         }
+        locationProfileEditText.setOnEditorActionListener(
+            object : TextView.OnEditorActionListener {
+                override fun onEditorAction(
+                    v: TextView?,
+                    actionId: Int,
+                    event: KeyEvent?
+                ): Boolean {
+                    if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_DONE || event != null && event.action === KeyEvent.ACTION_DOWN && event.keyCode === KeyEvent.KEYCODE_ENTER
+                    ) {
+                        if (event == null || !event.isShiftPressed) {
+                            pointInMap(locationProfileEditText.text)
+                            return true // consume.
+                        }
+                    }
+                    return false // pass on to other listeners.
+                }
+            }
+        )
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -435,10 +550,31 @@ class EditProfileFragment : Fragment() {
         }.addOnFailureListener {
         }
     }
+
+    private fun pointInMap(location: Editable?){
+        val geocoder = Geocoder(context, Locale.getDefault())
+        gMap.clear()
+        if(!location.isNullOrEmpty()) {
+            val addresses: List<Address> =
+                geocoder.getFromLocationName(location.toString(), 1)
+            if(addresses.isNotEmpty() && addresses[0].hasLatitude() && addresses[0].hasLongitude()) {
+                val markerPosition = MarkerOptions()
+                val point = LatLng(addresses[0].latitude, addresses[0].longitude)
+                markerPosition.position(point)
+                gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(point, 10F))
+                gMap.addMarker(markerPosition)
+                val cityName = addresses[0].locality
+                val countryCode = addresses[0].countryCode
+                val finalLocation= "${cityName}, $countryCode"
+                locationProfileEditText.setText(finalLocation)
+            }
+        }
+    }
 }
 
 class StateVO {
     var title: String? = null
     var isSelected = false
 }
+
 

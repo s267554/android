@@ -249,16 +249,16 @@ class OnSaleListFragment: Fragment(),SearchDialogFragment.NoticeDialogListener{
 
     inner class myRefreshListener:SwipeRefreshLayout.OnRefreshListener {
         override fun onRefresh() {
-            itemListVm.getAllItems().observe(viewLifecycleOwner, Observer {
-                if(!search && it!=null){
-                    onSaleArray= it as ArrayList<ItemModel>
-                    adapter.onNewData(onSaleArray);
-                }
-                if (onSaleArray.count() != 0)
-                    emptyList.visibility = View.GONE
-                else
-                    emptyList.visibility = View.VISIBLE
-            })
+//            itemListVm.getAllItems().observe(viewLifecycleOwner, Observer {
+//                if(!search && it!=null){
+//                    onSaleArray= it as ArrayList<ItemModel>
+//                    adapter.onNewData(onSaleArray);
+//                }
+//                if (onSaleArray.count() != 0)
+//                    emptyList.visibility = View.GONE
+//                else
+//                    emptyList.visibility = View.VISIBLE
+//            })
             swipeRefreshLayout.isRefreshing=false
         }
     }
