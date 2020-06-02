@@ -35,7 +35,10 @@ RecyclerView.Adapter<OnSaleRecyclerViewAdapter.ViewHolder> ( ){
         onSaleCL = View.OnClickListener { v ->
             val item = v.tag as ItemModel
             val bundle = bundleOf("item_id1" to item.id)
-            v.findNavController().navigate(R.id.action_nav_home_to_nav_item_detail, bundle)
+            when(v.findNavController().currentDestination?.id){
+                R.id.nav_home -> v.findNavController().navigate(R.id.action_nav_home_to_nav_item_detail, bundle)
+                R.id.nav_bought_items -> v.findNavController().navigate(R.id.action_nav_bought_items_to_nav_item_detail, bundle)
+            }
         }
     }
 
@@ -140,7 +143,6 @@ RecyclerView.Adapter<OnSaleRecyclerViewAdapter.ViewHolder> ( ){
     }
 }
 
-
 class MyDiffUtilCallback(newList: ArrayList<ItemModel>?, oldList: ArrayList<ItemModel>?) :
     DiffUtil.Callback() {
     var newList: ArrayList<ItemModel>?
@@ -165,9 +167,7 @@ class MyDiffUtilCallback(newList: ArrayList<ItemModel>?, oldList: ArrayList<Item
         newItemPosition: Int
     ): Boolean {
         val result: Int = newList!![newItemPosition].compareTo(oldList!![oldItemPosition])
-        return if (result == 0) {
-            true
-        } else false
+        return result == 0
     }
 
     @Nullable

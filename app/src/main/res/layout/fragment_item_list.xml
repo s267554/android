@@ -8,7 +8,7 @@
         android:id="@+id/empty_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="There are no advertisements"
+        android:text="@string/there_are_no_advertisements"
         android:layout_margin="@dimen/fab_margin">
     </TextView>
 

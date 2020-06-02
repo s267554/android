@@ -9,6 +9,8 @@
         <string name="menu_profile">Profilo</string>
         <string name="menu_advertisements">I miei annunci</string>
         <string name="menu_on_sale">Annunci market</string>
+        <string name="menu_bought_items">Oggetti acquistati</string>
+        <string name="menu_items_of_interest">Oggetti d\'interesse</string>
 
         <string name="description">Descrizione</string>
         <string name="category">Categoria</string>
@@ -34,7 +36,7 @@
         <!-- da ricontrollare-->
         <string name="profile_bar">Profilo</string>
         <string name="profile_edit_bar">Modifica profilo</string>
-        <string name="item_deatails_bar">Dettagli</string>
+        <string name="item_details_bar">Dettagli</string>
         <string name="item_edit_bar">Modifica annuncio</string>
         <string name="invalidEmail">Email non valida</string>
     <string name="item_update_message">Annuncio aggiornato</string>
@@ -97,4 +99,8 @@
     <string name="notifyOwnerText">è interessato a</string>
     <string name="sendFollowerNotification">Aggiornamenti sul tuo articolo preferito!</string>
     <string name="sendFollowerNotificationText">è ora</string>
+    <string name="no_items_bought">Nessun oggetto comprato</string>
+    <string name="there_are_no_advertisements">Nessun oggetto in vendita</string>
+    <string name="no_items_of_interest">Nessun annuncio apprezzato</string>
+
 </resources>
