@@ -226,6 +226,17 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <fragment
+                    android:id="@+id/google_maps"
+                    android:name="com.google.android.gms.maps.SupportMapFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintBottom_toTopOf="@id/test"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/locationProfile" />
+
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/test"
                     style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
@@ -244,7 +255,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/locationProfile"
+                    app:layout_constraintTop_toBottomOf="@+id/google_maps"
                     app:startIconDrawable="@drawable/interests_profile_foreground"
                     app:startIconTint="@color/colorPrimary">
 

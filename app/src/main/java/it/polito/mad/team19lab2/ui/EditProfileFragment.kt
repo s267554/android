@@ -15,10 +15,10 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.util.LruCache
 import android.util.Patterns
 import android.view.*
+import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import android.widget.TextView
@@ -48,7 +48,6 @@ import it.polito.mad.team19lab2.viewModel.UserViewModel
 import kotlinx.android.synthetic.main.fragment_edit_profile.*
 import java.io.ByteArrayOutputStream
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 class EditProfileFragment : Fragment() {
@@ -159,6 +158,9 @@ class EditProfileFragment : Fragment() {
                 image_view.setImageBitmap(imageRestored)
                 imageModified = savedInstanceState.getBoolean("group19.lab2.IMGFLAG")
             }
+            else{
+                image_view.setImageResource(R.drawable.avatar_foreground)
+            }
         }
     }
 
@@ -177,6 +179,7 @@ class EditProfileFragment : Fragment() {
         supportMapFragment = ( childFragmentManager.findFragmentById(R.id.google_maps) as SupportMapFragment)
         supportMapFragment.getMapAsync {
             gMap = it
+            gMap.uiSettings.isMapToolbarEnabled = false
             gMap.setOnCameraMoveStartedListener {
                 val i : ViewParent = view as ViewParent
                 i.requestDisallowInterceptTouchEvent(true)
@@ -198,6 +201,19 @@ class EditProfileFragment : Fragment() {
                 val countryCode = addresses[0].countryCode
                 val finalLocation= "${cityName}, $countryCode"
                 locationProfileEditText.setText(finalLocation)
+            }
+            if(savedInstanceState!=null){
+                if(user.location.isNullOrEmpty()){
+                    if(ActivityCompat.checkSelfPermission(requireContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                        getCurrentLocation()
+                    }
+                    else{
+                        ActivityCompat.requestPermissions(requireContext() as Activity, Array(1){android.Manifest.permission.ACCESS_FINE_LOCATION}, 44)
+                    }
+                }
+                else{
+                    pointInMap(locationProfileEditText.text)
+                }
             }
         }
         if(savedInstanceState==null) {
@@ -325,6 +341,24 @@ class EditProfileFragment : Fragment() {
                 pointInMap(locationProfileEditText.text)
             }
         }
+        locationProfileEditText.setOnEditorActionListener(
+            object : TextView.OnEditorActionListener {
+                override fun onEditorAction(
+                    v: TextView?,
+                    actionId: Int,
+                    event: KeyEvent?
+                ): Boolean {
+                    if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_DONE || event != null && event.action === KeyEvent.ACTION_DOWN && event.keyCode === KeyEvent.KEYCODE_ENTER
+                    ) {
+                        if (event == null || !event.isShiftPressed) {
+                            pointInMap(locationProfileEditText.text)
+                            return true // consume.
+                        }
+                    }
+                    return false // pass on to other listeners.
+                }
+            }
+        )
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
