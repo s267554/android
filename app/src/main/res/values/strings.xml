@@ -9,6 +9,8 @@
     <string name="menu_profile">Profile</string>
     <string name="menu_advertisements">My advertisements</string>
     <string name="menu_on_sale">On sale advertisements</string>
+    <string name="menu_bought_items">Bought items</string>
+    <string name="menu_items_of_interest">Items of interest</string>
 
     <string name="description">Description</string>
     <string name="category">Category</string>
@@ -50,7 +52,7 @@
     <!-- da ricontrollare-->
     <string name="profile_bar">Profile</string>
     <string name="profile_edit_bar">Edit Profile</string>
-    <string name="item_deatails_bar">Item details</string>
+    <string name="item_details_bar">Item details</string>
     <string name="item_edit_bar">Item Edit</string>
     <string name="invalidEmail">Invalid email</string>
     <string name="item_update_message">Item updated</string>
@@ -107,5 +109,8 @@
     <string name="sell">Sell</string>
     <string name="no_buyers">No potential buyers</string>
     <string name="request_purchase">request purchase</string>
+    <string name="no_items_bought">No items bought yet</string>
+    <string name="there_are_no_advertisements">There are no advertisements</string>
+    <string name="no_items_of_interest">No items of interest yet</string>
 
 </resources>

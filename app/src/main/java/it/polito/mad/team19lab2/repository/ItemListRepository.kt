@@ -33,4 +33,10 @@ class ItemListRepository {
         q = q.whereEqualTo("state", 0) // Available
         return q
     }
+    fun getBoughtItems(): Query{
+        var q: Query = firestoreDB.collection("items")
+        q = q.whereEqualTo("buyerId", myId)
+        q = q.whereEqualTo("state", 2) // Sold
+        return q
+    }
 }

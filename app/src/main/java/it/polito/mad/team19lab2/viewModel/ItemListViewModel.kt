@@ -29,6 +29,12 @@ class ItemListViewModel : ViewModel() {
         return liveItems
     }
 
+    fun getBoughtItems(): MutableLiveData<List<ItemModel>>{
+        itemsList.clear()
+        takeLiveItemsFromQuery(itemListRepository.getBoughtItems())
+        return liveItems
+    }
+
     private fun takeLiveItemsFromQuery(q:Query){
         q.addSnapshotListener(EventListener { value, e ->
             if (e != null) {

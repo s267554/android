@@ -76,7 +76,10 @@ class ItemDetailsFragment : Fragment(), BuyersRecycleViewAdapter.SellItemClick {
             item = it
             if(it.userId == user?.uid ?: ""){
                 //CASE I AM THE USER
-                setHasOptionsMenu(true)
+                if (item.state != 2)
+                    setHasOptionsMenu(true)
+                else
+                    setHasOptionsMenu(false)
                 buyButton.visibility = View.GONE
                 fab.visibility=View.GONE
                 seller_textView.visibility=View.GONE
@@ -177,7 +180,10 @@ class ItemDetailsFragment : Fragment(), BuyersRecycleViewAdapter.SellItemClick {
                     buyButton.setBackgroundColor(Color.GRAY)
                     buyButton.setText(R.string.waiting_for_approval)
                 }
+
                 val fab: FloatingActionButton = view.findViewById(R.id.fab)
+                if(item.state != 2 || item.buyerId == FirebaseAuth.getInstance().uid) // Sold
+                    fab.visibility = View.VISIBLE
                 itemVm.getInterestedUsers(idItem).observe(viewLifecycleOwner, Observer { users ->
                     interestedUsers= users as ArrayList<UserShortModel>
                     for(intUser in interestedUsers){
@@ -191,12 +197,14 @@ class ItemDetailsFragment : Fragment(), BuyersRecycleViewAdapter.SellItemClick {
                 fab.setOnClickListener {
                     if(!favourite) {
                         itemVm.addInterestedUser(idItem)
+                        userVm.addInterestedItem(idItem)
                         favourite=true
                         fab.setImageResource(R.drawable.baseline_favorite_black_48dp)
                         Toast.makeText(this.context,  R.string.item_add_favourites, Toast.LENGTH_LONG).show()
                     }
                     else{
                         itemVm.removeInterestedUser(idItem)
+                        userVm.removeInterestedItem(idItem)
                         favourite=false
                         fab.setImageResource(R.drawable.baseline_favorite_border_black_48dp)
                         Toast.makeText(this.context, R.string.item_removed_favourites, Toast.LENGTH_LONG).show()
