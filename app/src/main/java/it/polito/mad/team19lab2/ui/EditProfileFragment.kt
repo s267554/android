@@ -178,55 +178,7 @@ class EditProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_UNCHANGED)
         userId = arguments?.getString("user_id").toString()
-        val supportMapFragment2 : SupportMapFragment = ( childFragmentManager.findFragmentById(R.id.google_maps) as WorkaroundMapFragment)
-        supportMapFragment2.getMapAsync {
-            gMap = it
-            gMap.uiSettings.isMapToolbarEnabled = false
-            var mScrollView = scrollParent //parent scrollview in xml, give your scrollview id value
-            (childFragmentManager.findFragmentById(R.id.google_maps) as WorkaroundMapFragment?)
-                ?.setListener(object : WorkaroundMapFragment.OnTouchListener {
-                    override fun onTouch() {
-                        mScrollView.requestDisallowInterceptTouchEvent(true)
-                    }
-                })
-            /*
-            gMap.setOnCameraMoveStartedListener {
-                val i : ViewParent = view as ViewParent
-                i.requestDisallowInterceptTouchEvent(true)
-            }
-            gMap.setOnCameraIdleListener {
-                val i : ViewParent = view as ViewParent
-                i.requestDisallowInterceptTouchEvent(false)
-            }
-             */
-            gMap.setOnMapClickListener {point->
-                var markerPosition = MarkerOptions()
-                markerPosition.position(point)
-                gMap.clear()
-                gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(point, 10F))
-                gMap.addMarker(markerPosition)
-                val geocoder = Geocoder(context, Locale.getDefault())
-                val addresses: List<Address> = geocoder.getFromLocation(point.latitude, point.longitude, 1)
-                val streetName: String = addresses[0].getAddressLine(0).split(",")[0]
-                val cityName = addresses[0].locality
-                val countryCode = addresses[0].countryCode
-                val finalLocation= "${cityName}, $countryCode"
-                locationProfileEditText.setText(finalLocation)
-            }
-            if(savedInstanceState!=null){
-                if(user.location.isNullOrEmpty()){
-                    if(ActivityCompat.checkSelfPermission(requireContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                        getCurrentLocation()
-                    }
-                    else{
-                        ActivityCompat.requestPermissions(requireContext() as Activity, Array(1){android.Manifest.permission.ACCESS_FINE_LOCATION}, 44)
-                    }
-                }
-                else{
-                    pointInMap(locationProfileEditText.text)
-                }
-            }
-        }
+        supportMapFragment = ( childFragmentManager.findFragmentById(R.id.google_maps) as WorkaroundMapFragment)
         if(savedInstanceState==null) {
             userVm.getUser(userId).observe(viewLifecycleOwner, Observer { it ->
                 user = it
@@ -254,7 +206,84 @@ class EditProfileFragment : Fragment() {
                     }
                     listVOs.add(stateVO)
                 }
-                if(user.location.isNullOrEmpty()){
+                supportMapFragment.getMapAsync {
+                    gMap = it
+                    gMap.uiSettings.isMapToolbarEnabled = false
+                    var mScrollView = scrollParent //parent scrollview in xml, give your scrollview id value
+                    (childFragmentManager.findFragmentById(R.id.google_maps) as WorkaroundMapFragment?)
+                        ?.setListener(object : WorkaroundMapFragment.OnTouchListener {
+                            override fun onTouch() {
+                                mScrollView.requestDisallowInterceptTouchEvent(true)
+                            }
+                        })
+                    gMap.setOnMapClickListener {point->
+                        var markerPosition = MarkerOptions()
+                        markerPosition.position(point)
+                        gMap.clear()
+                        gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(point, 10F))
+                        gMap.addMarker(markerPosition)
+                        val geocoder = Geocoder(context, Locale.getDefault())
+                        val addresses: List<Address> = geocoder.getFromLocation(point.latitude, point.longitude, 1)
+                        val streetName: String = addresses[0].getAddressLine(0).split(",")[0]
+                        val cityName = addresses[0].locality
+                        val countryCode = addresses[0].countryCode
+                        val finalLocation= "${cityName}, $countryCode"
+                        locationProfileEditText.setText(finalLocation)
+                    }
+                    if(savedInstanceState!=null){
+                        if(user.location.isNullOrEmpty()){
+                            if(ActivityCompat.checkSelfPermission(requireContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                                getCurrentLocation()
+                            }
+                            else{
+                                ActivityCompat.requestPermissions(requireContext() as Activity, Array(1){android.Manifest.permission.ACCESS_FINE_LOCATION}, 44)
+                            }
+                        }
+                        else{
+                            pointInMap(locationProfileEditText.text)
+                        }
+                    }
+                    if(user.location.isNullOrEmpty()){
+                        if(ActivityCompat.checkSelfPermission(requireContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                            getCurrentLocation()
+                        }
+                        else{
+                            ActivityCompat.requestPermissions(requireContext() as Activity, Array(1){android.Manifest.permission.ACCESS_FINE_LOCATION}, 44)
+                        }
+                    }
+                    else{
+                        pointInMap(locationProfileEditText.text)
+                    }
+                }
+                (requireContext() as MainActivity).setInterestsDropdown(listVOs as ArrayList<StateVO>)
+            })
+        }
+        else{
+            supportMapFragment.getMapAsync {
+                gMap = it
+                gMap.uiSettings.isMapToolbarEnabled = false
+                var mScrollView = scrollParent //parent scrollview in xml, give your scrollview id value
+                (childFragmentManager.findFragmentById(R.id.google_maps) as WorkaroundMapFragment?)
+                    ?.setListener(object : WorkaroundMapFragment.OnTouchListener {
+                        override fun onTouch() {
+                            mScrollView.requestDisallowInterceptTouchEvent(true)
+                        }
+                    })
+                gMap.setOnMapClickListener {point->
+                    var markerPosition = MarkerOptions()
+                    markerPosition.position(point)
+                    gMap.clear()
+                    gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(point, 10F))
+                    gMap.addMarker(markerPosition)
+                    val geocoder = Geocoder(context, Locale.getDefault())
+                    val addresses: List<Address> = geocoder.getFromLocation(point.latitude, point.longitude, 1)
+                    val streetName: String = addresses[0].getAddressLine(0).split(",")[0]
+                    val cityName = addresses[0].locality
+                    val countryCode = addresses[0].countryCode
+                    val finalLocation= "${cityName}, $countryCode"
+                    locationProfileEditText.setText(finalLocation)
+                }
+                if(locationProfileEditText.text.isNullOrEmpty()){
                     if(ActivityCompat.checkSelfPermission(requireContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                         getCurrentLocation()
                     }
@@ -265,8 +294,7 @@ class EditProfileFragment : Fragment() {
                 else{
                     pointInMap(locationProfileEditText.text)
                 }
-                (requireContext() as MainActivity).setInterestsDropdown(listVOs as ArrayList<StateVO>)
-            })
+            }
         }
         registerForContextMenu(imageEdit)
         imageRotateProfile.setOnClickListener{

@@ -2,6 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scrollParentShowProfile"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginBottom="8dp"
@@ -34,7 +35,6 @@
             android:layout_marginTop="16dp"
             android:contentDescription="@string/location"
             android:cropToPadding="false"
-            app:layout_constraintBottom_toTopOf="@+id/interestsIcon"
             app:layout_constraintStart_toStartOf="@+id/emailIcon"
             app:layout_constraintTop_toBottomOf="@+id/emailIcon"
             app:srcCompat="@mipmap/location_icon_round" />
@@ -47,7 +47,7 @@
             android:contentDescription="@string/interests"
             android:cropToPadding="false"
             app:layout_constraintStart_toStartOf="@+id/locationIcon"
-            app:layout_constraintTop_toBottomOf="@+id/locationIcon"
+            app:layout_constraintTop_toBottomOf="@+id/google_maps"
             app:srcCompat="@mipmap/interests_icon_round" />
 
         <ImageView
@@ -216,6 +216,16 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/email_view"
             app:layout_constraintTop_toBottomOf="@+id/textView5" />
+
+        <fragment
+            android:id="@+id/google_maps"
+            android:name="it.polito.mad.team19lab2.utilities.WorkaroundMapFragment"
+            android:layout_width="0dp"
+            android:layout_height="200dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/locationIcon"
+            app:layout_constraintTop_toBottomOf="@id/locationIcon" />
 
         <TextView
             android:id="@+id/textView5"

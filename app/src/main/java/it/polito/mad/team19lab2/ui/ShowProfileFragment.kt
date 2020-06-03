@@ -1,14 +1,26 @@
 package it.polito.mad.team19lab2.ui
 
+import android.app.Activity
+import android.content.pm.PackageManager
+import android.location.Address
+import android.location.Geocoder
 import android.os.Bundle
+import android.text.Editable
 import android.util.Log
 import android.view.*
 import android.widget.ImageView
+import androidx.core.app.ActivityCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
@@ -16,10 +28,13 @@ import com.google.firebase.storage.ktx.storage
 import com.squareup.picasso.Picasso
 import it.polito.mad.team19lab2.R
 import it.polito.mad.team19lab2.data.UserModel
+import it.polito.mad.team19lab2.utilities.WorkaroundMapFragment
 import it.polito.mad.team19lab2.viewModel.UserViewModel
+import kotlinx.android.synthetic.main.fragment_edit_profile.*
 import kotlinx.android.synthetic.main.fragment_show_profile.*
 import kotlinx.android.synthetic.main.fragment_show_profile.image_view
 import kotlinx.android.synthetic.main.fragment_show_profile.roundCardView
+import java.util.*
 
 class ShowProfileFragment :Fragment() {
 
@@ -28,6 +43,7 @@ class ShowProfileFragment :Fragment() {
     private lateinit var storage: FirebaseStorage
     private val userVm: UserViewModel by viewModels()
     private lateinit var userId: String
+    private lateinit var gMap: GoogleMap
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_show_profile, container, false)
@@ -71,6 +87,24 @@ class ShowProfileFragment :Fragment() {
                 locationIcon.visibility=View.GONE
                 location_view.visibility=View.GONE
             }
+            if(user.location.isNotEmpty()){
+                val supportMapFragment2 : SupportMapFragment = ( childFragmentManager.findFragmentById(R.id.google_maps) as WorkaroundMapFragment)
+                supportMapFragment2.getMapAsync {map ->
+                    gMap = map
+                    gMap.uiSettings.isMapToolbarEnabled = false
+                    var mScrollView = scrollParentShowProfile //parent scrollview in xml, give your scrollview id value
+                    (childFragmentManager.findFragmentById(R.id.google_maps) as WorkaroundMapFragment?)
+                        ?.setListener(object : WorkaroundMapFragment.OnTouchListener {
+                            override fun onTouch() {
+                                mScrollView.requestDisallowInterceptTouchEvent(true)
+                            }
+                        })
+                    pointInMap(user.location)
+                }
+            }
+            else{
+                view.findViewById<View>(R.id.google_maps).visibility=View.GONE
+            }
         })
         roundCardView.viewTreeObserver.addOnGlobalLayoutListener (object: ViewTreeObserver.OnGlobalLayoutListener{
             override fun onGlobalLayout() {
@@ -112,6 +146,23 @@ class ShowProfileFragment :Fragment() {
         storageRef.child(user.imagePath).downloadUrl.addOnSuccessListener {
             Picasso.get().load(it).noFade().placeholder(R.drawable.progress_animation).into(imView)
         }.addOnFailureListener {
+        }
+    }
+
+
+    private fun pointInMap(location: String){
+        val geocoder = Geocoder(context, Locale.getDefault())
+        gMap.clear()
+        if(location.isNotEmpty()) {
+            val addresses: List<Address> =
+                geocoder.getFromLocationName(location, 1)
+            if(addresses.isNotEmpty() && addresses[0].hasLatitude() && addresses[0].hasLongitude()) {
+                val markerPosition = MarkerOptions()
+                val point = LatLng(addresses[0].latitude, addresses[0].longitude)
+                markerPosition.position(point)
+                gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(point, 10F))
+                gMap.addMarker(markerPosition)
+            }
         }
     }
 }
