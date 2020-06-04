@@ -81,6 +81,8 @@
     <string name="notifyOwnerBuyText">wants to buy</string>
     <string name="sendFollowerNotification">Update on your beloved Item!</string>
     <string name="sendFollowerNotificationText">is now</string>
+    <string name="onSuccessfulBuy">Congratulations! You bought an Item!</string>
+    <string name="onSuccessfulBuyText">has been sold to you</string>
     <string name="no_users">No interested users</string>
     <string name="buy">Buy this item</string>
     <string name="seller">Seller</string>
@@ -99,7 +101,7 @@
     <string name="MinPrice">Min price</string>
     <string name="MaxPrice">Max price</string>
     <string name="cancel">cancel</string>
-    <string name="no_advs_users">There are no advertisments of other users</string>
+    <string name="no_advs_users">There are no advertisements of other users</string>
     <string name="expired">expired</string>
     <string name="available">available</string>
     <string name="item_add_favourites">item added to your interests</string>
