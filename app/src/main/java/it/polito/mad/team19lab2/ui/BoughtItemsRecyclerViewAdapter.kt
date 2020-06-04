@@ -1,14 +1,12 @@
 package it.polito.mad.team19lab2.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.annotation.Nullable
 import androidx.core.os.bundleOf
 import androidx.navigation.findNavController
@@ -20,25 +18,22 @@ import com.google.firebase.storage.ktx.storage
 import com.squareup.picasso.Picasso
 import it.polito.mad.team19lab2.R
 import it.polito.mad.team19lab2.data.ItemModel
-import it.polito.mad.team19lab2.data.ItemShortModel
 
 import kotlinx.android.synthetic.main.fragment_item.view.*
 
-class ItemsOfInterestRecyclerViewAdapter(private val itemSM: ArrayList<ItemShortModel>):
+class BoughtItemsRecyclerViewAdapter(private val boughtItems: ArrayList<ItemModel>):
 
-    RecyclerView.Adapter<ItemsOfInterestRecyclerViewAdapter.ViewHolder> ( ){
+    RecyclerView.Adapter<BoughtItemsRecyclerViewAdapter.ViewHolder> ( ){
 
-    override fun getItemCount() = itemSM.size
-    private val viewItemCL: View.OnClickListener
+    override fun getItemCount() = boughtItems.size
+    private val boughtCL: View.OnClickListener
     lateinit var storage: FirebaseStorage
 
     init {
-        viewItemCL = View.OnClickListener { v ->
-            val item = v.tag as ItemShortModel
+        boughtCL = View.OnClickListener { v ->
+            val item = v.tag as ItemModel
             val bundle = bundleOf("item_id1" to item.id)
-
-            v.findNavController().navigate(R.id.action_nav_items_of_interest_to_nav_item_detail, bundle)
-
+            v.findNavController().navigate(R.id.action_nav_bought_items_to_nav_item_detail, bundle)
         }
     }
 
@@ -49,12 +44,12 @@ class ItemsOfInterestRecyclerViewAdapter(private val itemSM: ArrayList<ItemShort
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(itemSM[position])
+        holder.bind(boughtItems[position])
         with(holder.cv) {
-            tag = itemSM[position]
+            tag = boughtItems[position]
             val b = findViewById<Button>(R.id.item_list_edit_button)
             b.visibility = View.GONE
-            setOnClickListener(viewItemCL)
+            setOnClickListener(boughtCL)
         }
     }
 
@@ -63,7 +58,7 @@ class ItemsOfInterestRecyclerViewAdapter(private val itemSM: ArrayList<ItemShort
         val itemPrice: TextView = cv.content
         val itemImage: ImageView = cv.item_image_preview
 
-        fun bind(item: ItemShortModel){
+        fun bind(item: ItemModel){
             itemTitle.text = item.title
             itemPrice.text = "€ " + item.price.toString()
             storage = Firebase.storage
@@ -84,6 +79,5 @@ class ItemsOfInterestRecyclerViewAdapter(private val itemSM: ArrayList<ItemShort
                 this.itemImage.setImageResource(R.drawable.sport_category_foreground)
             }
         }
-
     }
 }

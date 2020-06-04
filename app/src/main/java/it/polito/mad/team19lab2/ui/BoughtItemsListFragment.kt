@@ -34,7 +34,7 @@ class BoughtItemsListFragment : Fragment() {
             dataset= it as ArrayList<ItemModel>
             with(recycler) {
                 layoutManager = LinearLayoutManager(context)
-                adapter = OnSaleRecyclerViewAdapter(dataset)
+                adapter = BoughtItemsRecyclerViewAdapter(dataset)
             }
             if(dataset.count() != 0)
                 view.findViewById<TextView>(R.id.empty_list)?.visibility = View.GONE

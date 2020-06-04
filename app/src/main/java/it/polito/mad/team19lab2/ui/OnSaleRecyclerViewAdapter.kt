@@ -35,10 +35,8 @@ RecyclerView.Adapter<OnSaleRecyclerViewAdapter.ViewHolder> ( ){
         onSaleCL = View.OnClickListener { v ->
             val item = v.tag as ItemModel
             val bundle = bundleOf("item_id1" to item.id)
-            when(v.findNavController().currentDestination?.id){
-                R.id.nav_home -> v.findNavController().navigate(R.id.action_nav_home_to_nav_item_detail, bundle)
-                R.id.nav_bought_items -> v.findNavController().navigate(R.id.action_nav_bought_items_to_nav_item_detail, bundle)
-            }
+            v.findNavController().navigate(R.id.action_nav_home_to_nav_item_detail, bundle)
+
         }
     }
 
