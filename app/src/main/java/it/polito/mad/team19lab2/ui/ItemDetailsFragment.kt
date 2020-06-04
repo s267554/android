@@ -3,6 +3,8 @@ package it.polito.mad.team19lab2.ui
 import BuyersRecycleViewAdapter
 import InterestedUsersRecycleViewAdapter
 import android.graphics.Color
+import android.location.Address
+import android.location.Geocoder
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -16,6 +18,11 @@ import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
@@ -27,9 +34,15 @@ import com.squareup.picasso.Picasso
 import it.polito.mad.team19lab2.R
 import it.polito.mad.team19lab2.data.ItemModel
 import it.polito.mad.team19lab2.data.UserShortModel
+import it.polito.mad.team19lab2.utilities.WorkaroundMapFragment
 import it.polito.mad.team19lab2.viewModel.ItemViewModel
 import it.polito.mad.team19lab2.viewModel.UserViewModel
+import kotlinx.android.synthetic.main.fragment_show_profile.*
 import kotlinx.android.synthetic.main.item_details_fragment.*
+import kotlinx.android.synthetic.main.item_details_fragment.image_view
+import kotlinx.android.synthetic.main.item_details_fragment.roundCardView
+import java.util.*
+import kotlin.collections.ArrayList
 
 class ItemDetailsFragment : Fragment(), BuyersRecycleViewAdapter.SellItemClick {
 
@@ -44,6 +57,7 @@ class ItemDetailsFragment : Fragment(), BuyersRecycleViewAdapter.SellItemClick {
     private var interestedUsers = ArrayList<UserShortModel>()
     private var buyers = ArrayList<UserShortModel>()
     var favourite: Boolean = false
+    private lateinit var gMap: GoogleMap
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -226,6 +240,24 @@ class ItemDetailsFragment : Fragment(), BuyersRecycleViewAdapter.SellItemClick {
             val sub = resources.getIdentifier("sub${item.category}", "array", context?.packageName)
             if (item.subcategory != -1)
                 subCategoryTextView.text= resources.getStringArray(sub)[item.subcategory]
+            if(item.location.isNotEmpty()){
+                val supportMapFragment2 : SupportMapFragment = ( childFragmentManager.findFragmentById(R.id.google_maps) as WorkaroundMapFragment)
+                supportMapFragment2.getMapAsync {map ->
+                    gMap = map
+                    gMap.uiSettings.isMapToolbarEnabled = false
+                    var mScrollView = scrollParentShowItem
+                    (childFragmentManager.findFragmentById(R.id.google_maps) as WorkaroundMapFragment?)
+                        ?.setListener(object : WorkaroundMapFragment.OnTouchListener {
+                            override fun onTouch() {
+                                mScrollView.requestDisallowInterceptTouchEvent(true)
+                            }
+                        })
+                    pointInMap(item.location)
+                }
+            }
+            else{
+                view.findViewById<View>(R.id.google_maps).visibility=View.GONE
+            }
         })
 
 
@@ -262,5 +294,24 @@ class ItemDetailsFragment : Fragment(), BuyersRecycleViewAdapter.SellItemClick {
         item.state=2
         item.buyerId= buyers[position].id
         itemVm.sellItem(item)
+    }
+
+    private fun pointInMap(location: String){
+        val geocoder = Geocoder(context, Locale.getDefault())
+        gMap.clear()
+        if(location.isNotEmpty()) {
+            val addresses: List<Address> =
+                geocoder.getFromLocationName(location, 1)
+            if(addresses.isNotEmpty() && addresses[0].hasLatitude() && addresses[0].hasLongitude()) {
+                val markerPosition = MarkerOptions()
+                val point = LatLng(addresses[0].latitude, addresses[0].longitude)
+                markerPosition.position(point)
+                gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(point, 10F))
+                gMap.addMarker(markerPosition)
+            }
+            else{
+                view?.findViewById<View>(R.id.google_maps)?.visibility=View.GONE
+            }
+        }
     }
 }

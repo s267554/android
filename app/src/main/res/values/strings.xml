@@ -1,6 +1,6 @@
 
 <resources>
-    <string name="app_name">MyMarket</string>
+    <string name="app_name">maDketplace</string>
     <string name="nav_header_title">Full name</string>
     <string name="nav_header_subtitle">Nickname</string>
     <string name="nav_header_desc">Navigation header</string>
