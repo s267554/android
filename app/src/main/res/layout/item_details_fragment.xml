@@ -2,6 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scrollParentShowItem"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginBottom="8dp"
@@ -208,6 +209,17 @@
             app:layout_constraintTop_toBottomOf="@+id/priceIcon"
             app:srcCompat="@mipmap/location_icon_round" />
 
+        <fragment
+            android:id="@+id/google_maps"
+            android:name="it.polito.mad.team19lab2.utilities.WorkaroundMapFragment"
+            android:layout_width="0dp"
+            android:layout_height="150dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/locationIcon"
+            app:layout_constraintTop_toBottomOf="@id/locationIcon" />
+
+
         <ImageView
             android:id="@+id/ExpireIcon"
             android:layout_width="wrap_content"
@@ -216,7 +228,7 @@
             android:contentDescription="@string/expiryDate"
             android:cropToPadding="false"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/locationIcon"
+            app:layout_constraintTop_toBottomOf="@+id/google_maps"
             app:srcCompat="@mipmap/date_icon" />
 
         <TextView
