@@ -66,6 +66,11 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                                 resources.getStringArray(R.array.item_state)[remoteMessage.data["state"]!!.toInt()]
                     }
                 }
+                "onSuccessfulBuy"-> {
+                    title = resources.getString(R.string.onSuccessfulBuy)
+                    body = "${remoteMessage.data["item"]} " +
+                            resources.getString(R.string.onSuccessfulBuyText)
+                }
             }
 
             if ( title.isNotBlank() && body.isNotBlank() )
@@ -133,6 +138,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
      * @param messageBody FCM message body received.
      */
     private fun sendNotification(messageBody: String, title: String) {
+        Log.d(TAG, "sending $messageBody titled $title")
         val intent = Intent(this, MainActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         val pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
@@ -144,7 +150,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             .setSmallIcon(R.drawable.ic_shop_black_48dp)
             .setContentTitle(title)
             .setContentText(messageBody)
-            .setAutoCancel(false)
+            .setAutoCancel(true)
             .setSound(defaultSoundUri)
             .setContentIntent(pendingIntent)
 
@@ -158,7 +164,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             notificationManager.createNotificationChannel(channel)
         }
 
-        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build())
+        notificationManager.notify(messageBody.hashCode(), notificationBuilder.build())
     }
 
     companion object {

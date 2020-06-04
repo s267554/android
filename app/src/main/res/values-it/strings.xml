@@ -95,14 +95,18 @@
     </string-array>
     <string name="expired">scaduto</string>
     <string name="available">disponibile</string>
-    <string name="notifyOwner">Il tuo articolo ha riscosso interesse!</string>
-    <string name="notifyOwnerText">è interessato a</string>
     <string name="sendFollowerNotification">Aggiornamenti sul tuo articolo preferito!</string>
     <string name="sendFollowerNotificationText">è ora</string>
     <string name="no_items_bought">Nessun oggetto comprato</string>
     <string name="there_are_no_advertisements">Nessun oggetto in vendita</string>
     <string name="no_items_of_interest">Nessun annuncio apprezzato</string>
+
     <string name="rate_and_commment">Rate and add comment</string>
     <string name="comment">Write your comment here</string>
-
+    <string name="notifyOwnerInterest">Il tuo articolo ha ricevuto apprezzamenti!</string>
+    <string name="notifyOwnerInterestText">è interessato a</string>
+    <string name="notifyOwnerBuy">Il tuo articolo può essere venduto ora!</string>
+    <string name="notifyOwnerBuyText">vuole comprare</string>
+    <string name="onSuccessfulBuy">Congratulazioni! Hai comprato un articolo!</string>
+    <string name="onSuccessfulBuyText">è stato venduto a te</string>
 </resources>
