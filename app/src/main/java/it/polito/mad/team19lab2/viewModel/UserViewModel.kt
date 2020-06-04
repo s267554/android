@@ -1,9 +1,11 @@
 package it.polito.mad.team19lab2.viewModel
 
 import android.content.ClipData
+import android.icu.util.TimeUnit
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.google.android.gms.tasks.Tasks
 import com.google.firebase.firestore.EventListener
 import com.google.firebase.firestore.Query
 import it.polito.mad.team19lab2.data.ItemShortModel
@@ -11,6 +13,8 @@ import it.polito.mad.team19lab2.data.UserModel
 import it.polito.mad.team19lab2.repository.ItemRepository
 import it.polito.mad.team19lab2.repository.UserRepository
 import it.polito.mad.team19lab2.ui.ItemsOfInterestListFragment
+import java.util.concurrent.ExecutionException
+import java.util.concurrent.TimeoutException
 
 class UserViewModel: ViewModel() {
     private val TAG = "USER_VIEW_MODEL"
@@ -20,7 +24,24 @@ class UserViewModel: ViewModel() {
     private var liveUser: MutableLiveData<UserModel> = MutableLiveData()
     private var liveItems : MutableLiveData<List<ItemShortModel>> = MutableLiveData()
 
-
+    fun updateRate(userId:String,rate:Float){
+        userRepository.getUser(userId).addSnapshotListener(EventListener { value, e ->
+            if (e != null) {
+                Log.e(TAG, "Listen failed.", e)
+                liveUser.value = null
+                return@EventListener
+            }
+            if (value != null) {
+                val u=value.toObject(UserModel::class.java)
+                if(u!=null) {
+                    u.rating = rate
+                    userRepository.saveUser(u).addOnFailureListener {
+                        Log.e(TAG, "Failed to save User!")
+                    }
+                }
+            }
+        })
+    }
     fun saveUser(user: UserModel){
         userRepository.saveProfile(user).addOnFailureListener {
             Log.e(TAG, "Failed to save User!")

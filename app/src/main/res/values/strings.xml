@@ -112,5 +112,7 @@
     <string name="no_items_bought">No items bought yet</string>
     <string name="there_are_no_advertisements">There are no advertisements</string>
     <string name="no_items_of_interest">No items of interest yet</string>
+    <string name="rate_and_commment">Rate seller</string>
+    <string name="comment">Write your comment here</string>
 
 </resources>

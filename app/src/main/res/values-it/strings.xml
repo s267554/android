@@ -102,5 +102,7 @@
     <string name="no_items_bought">Nessun oggetto comprato</string>
     <string name="there_are_no_advertisements">Nessun oggetto in vendita</string>
     <string name="no_items_of_interest">Nessun annuncio apprezzato</string>
+    <string name="rate_and_commment">Rate and add comment</string>
+    <string name="comment">Write your comment here</string>
 
 </resources>

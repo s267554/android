@@ -21,6 +21,10 @@ class UserRepository {
         var documentReference = firestoreDB.collection("utenti").document(profile.id)
         return documentReference.set(profile)
     }
+    fun saveUser(profile: UserModel): Task<Void> {
+        var documentReference = firestoreDB.collection("utenti").document(profile.id)
+        return documentReference.set(profile)
+    }
 
     fun getUser(userId : String): DocumentReference {
         var documentReference = firestoreDB.collection("utenti").document(userId)
