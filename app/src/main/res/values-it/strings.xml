@@ -50,7 +50,7 @@
     <string name="logout">logout</string>
     <string name="search">Cerca</string>
     <string name="clear">cancella</string>
-    <string name="interestedUsers">Utenti interessati</string>
+    <string name="interested_users">Utenti interessati</string>
     <string name="no_users">Nessun utente interessato</string>
     <string name="buy">Compra</string>
     <string name="state_hint">Stato</string>
@@ -60,7 +60,7 @@
     <string name="Availability">Disponibilità</string>
     <string name="bought">Acquistato</string>
     <string name="item_bought">Prodotto acquistato</string>
-    <string name="sold">Acquistato</string>
+    <string name="sold">Venduto</string>
     <string name="blocked">Bloccato</string>
     <string name="from">"da "</string>
     <string name="upTo">"fino a "</string>
@@ -69,7 +69,7 @@
     <string name="any_title">qualsiasi titolo</string>
     <string name="any_category">IN qualsiasi categoria</string>
     <string name="any_location">\@ qualsiasi luogo</string>
-    <string name="modify">modifica</string>
+    <string name="modify">Modifica</string>
     <string name="MinPrice">Prezzo minimo</string>
     <string name="MaxPrice">Prezzo massimo</string>
     <string name="view">visita</string>
@@ -93,16 +93,24 @@
         <item>Auto</item>
         <item>Altro</item>
     </string-array>
-    <string name="expired">scaduto</string>
-    <string name="available">disponibile</string>
+    <string name="expired">Scaduto</string>
+    <string name="available">Disponibile</string>
     <string name="sendFollowerNotification">Aggiornamenti sul tuo articolo preferito!</string>
     <string name="sendFollowerNotificationText">è ora</string>
     <string name="no_items_bought">Nessun oggetto comprato</string>
     <string name="there_are_no_advertisements">Nessun oggetto in vendita</string>
     <string name="no_items_of_interest">Nessun annuncio apprezzato</string>
 
-    <string name="rate_and_commment">Rate and add comment</string>
-    <string name="comment">Write your comment here</string>
+    <string name="item_add_favourites">Oggetto aggiunto alla tua lista d\'interessi</string>
+    <string name="item_removed_favourites">Oggetto rimosso dalla tua lista d\'interessi</string>
+    <string name="waiting_for_approval">In attesa di conferma</string>
+    <string name="buyers">Potenziali acquirenti</string>
+    <string name="sell">Vendi</string>
+    <string name="no_buyers">Nessun potenziale acquirente</string>
+    <string name="request_purchase">Invia richiesta d\'acquisto</string>
+
+    <string name="rate_and_commment">Vota e commenta</string>
+    <string name="comment">Scrivi qui la tua recensione</string>
     <string name="notifyOwnerInterest">Il tuo articolo ha ricevuto apprezzamenti!</string>
     <string name="notifyOwnerInterestText">è interessato a</string>
     <string name="notifyOwnerBuy">Il tuo articolo può essere venduto ora!</string>

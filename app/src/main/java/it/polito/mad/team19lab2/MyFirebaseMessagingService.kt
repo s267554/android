@@ -10,6 +10,8 @@ import android.media.RingtoneManager
 import android.os.Build
 import android.util.Log
 import androidx.core.app.NotificationCompat
+import androidx.core.os.bundleOf
+import androidx.navigation.NavDeepLinkBuilder
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
@@ -73,8 +75,10 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 }
             }
 
-            if ( title.isNotBlank() && body.isNotBlank() )
-                sendNotification(body, title)
+            val itemId: String = remoteMessage.data["item_id"].toString()
+
+            if ( title.isNotBlank() && body.isNotBlank() && itemId.isNotBlank())
+                sendNotification(body, title, itemId)
 
         }
 
@@ -137,12 +141,23 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
      *
      * @param messageBody FCM message body received.
      */
-    private fun sendNotification(messageBody: String, title: String) {
+    private fun sendNotification(
+        messageBody: String,
+        title: String,
+        itemId: String
+    ) {
         Log.d(TAG, "sending $messageBody titled $title")
         val intent = Intent(this, MainActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         val pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
             PendingIntent.FLAG_ONE_SHOT)
+
+        val myPendingIntent = NavDeepLinkBuilder(applicationContext)
+            .setComponentName(MainActivity::class.java)
+            .setGraph(R.navigation.mobile_navigation)
+            .setDestination(R.id.nav_item_detail)
+            .setArguments(bundleOf("item_id1" to itemId))
+            .createPendingIntent()
 
         val channelId = getString(R.string.default_notification_channel_id)
         val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
@@ -152,7 +167,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             .setContentText(messageBody)
             .setAutoCancel(true)
             .setSound(defaultSoundUri)
-            .setContentIntent(pendingIntent)
+            .setContentIntent(myPendingIntent)
 
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 

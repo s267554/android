@@ -24,12 +24,12 @@ exports.notifyOwnerInterest = functions.firestore
       // access a particular field as you would any JS property
       const fullname = newValue.fullname;
       const nickname = newValue.nickname
-      //const id = newValue.id
+      const itemId = context.params.itemId
 
       // perform desired operations ...
-      console.log('Someone got interest for', fullname, context.params.itemId);
+      console.log('Someone got interest for', fullname, itemId);
 
-      return db.collection('items').doc(context.params.itemId).get().then(item => {
+      return db.collection('items').doc(itemId).get().then(item => {
           const owner = item.data().userId
           const title = item.data().title
           console.log('ownerId is', owner);
@@ -38,7 +38,8 @@ exports.notifyOwnerInterest = functions.firestore
               "data": {
                 "op": "notifyOwnerInterest",
                 "fullname": `${fullname}`,
-                "item": `${title}`
+                "item": `${title}`,
+                "item_id": `${itemId}`
               }
           };
           return db.collection('utenti').doc(owner).get().then(async (doc) => {
@@ -80,7 +81,7 @@ exports.notifyOwnerBuy = functions.firestore
       // access a particular field as you would any JS property
       const fullname = newValue.fullname;
       const nickname = newValue.nickname
-      //const id = newValue.id
+      const itemId = context.params.itemId
 
       // perform desired operations ...
       console.log('Someone got interest for', fullname, context.params.itemId);
@@ -94,7 +95,8 @@ exports.notifyOwnerBuy = functions.firestore
               "data": {
                 "op": "notifyOwnerBuy",
                 "fullname": `${fullname}`,
-                "item": `${title}`
+                "item": `${title}`,
+                "item_id": `${itemId}`
               }
           };
           return db.collection('utenti').doc(owner).get().then(async (doc) => {
@@ -133,6 +135,8 @@ exports.sendFollowerNotification = functions.firestore.document('items/{itemId}'
         const oldState = change.before.data().state
         const title = change.after.data().title
 
+        const itemId = context.params.itemId
+
         const buyer = change.after.data().buyerId
 
         if(newState == oldState){
@@ -144,14 +148,16 @@ exports.sendFollowerNotification = functions.firestore.document('items/{itemId}'
             "data": {
               "op": "sendFollowerNotification",
               "item": `${title}`,
-              "state": `${newState}`
+              "state": `${newState}`,
+              "item_id": `${itemId}`
             }
         };
 
         let payload1 = {
             "data": {
               "op": "onSuccessfulBuy",
-              "item": `${title}`
+              "item": `${title}`,
+              "item_id": `${itemId}`
             }
         };
 
