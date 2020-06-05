@@ -111,6 +111,8 @@ class ItemDetailsFragment : Fragment(), BuyersRecycleViewAdapter.SellItemClick {
                             if (interestedUsers.size == 0) {
                                 noUsers.visibility = View.VISIBLE
                             }
+                            else
+                                noUsers.visibility = View.GONE
                         })
                     itemVm.getBuyers(idItem).observe(viewLifecycleOwner, Observer { users ->
                         buyers = users as ArrayList<UserShortModel>
@@ -124,6 +126,8 @@ class ItemDetailsFragment : Fragment(), BuyersRecycleViewAdapter.SellItemClick {
                         if (buyers.size == 0) {
                             noBuyers.visibility = View.VISIBLE
                         }
+                        else
+                            noBuyers.visibility = View.GONE
                     })
                     if(item.state==1){
                         statusTextView.setText(R.string.blocked)
