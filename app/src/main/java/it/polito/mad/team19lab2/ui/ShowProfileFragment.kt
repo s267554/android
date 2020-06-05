@@ -9,12 +9,16 @@ import android.text.Editable
 import android.util.Log
 import android.view.*
 import android.widget.ImageView
+import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -27,6 +31,8 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
 import com.squareup.picasso.Picasso
 import it.polito.mad.team19lab2.R
+import it.polito.mad.team19lab2.data.ItemModel
+import it.polito.mad.team19lab2.data.ReviewModel
 import it.polito.mad.team19lab2.data.UserModel
 import it.polito.mad.team19lab2.utilities.WorkaroundMapFragment
 import it.polito.mad.team19lab2.viewModel.UserViewModel
@@ -35,6 +41,7 @@ import kotlinx.android.synthetic.main.fragment_show_profile.*
 import kotlinx.android.synthetic.main.fragment_show_profile.image_view
 import kotlinx.android.synthetic.main.fragment_show_profile.roundCardView
 import java.util.*
+import kotlin.collections.ArrayList
 
 class ShowProfileFragment :Fragment() {
 
@@ -44,9 +51,12 @@ class ShowProfileFragment :Fragment() {
     private val userVm: UserViewModel by viewModels()
     private lateinit var userId: String
     private lateinit var gMap: GoogleMap
+    private lateinit var reviewArray:ArrayList<ReviewModel>
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_show_profile, container, false)
+
+        val view= inflater.inflate(R.layout.fragment_show_profile, container, false)
+        return view;
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -110,6 +120,21 @@ class ShowProfileFragment :Fragment() {
             override fun onGlobalLayout() {
                 roundCardView.radius =  roundCardView.height.toFloat() / 2.0F
                 roundCardView.viewTreeObserver.removeOnGlobalLayoutListener(this)
+            }
+        })
+        val recycler: RecyclerView = view.findViewById(R.id.commentList)
+        userVm.getReviews(userId).observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+            reviewArray= it as ArrayList<ReviewModel>
+            with(recycler) {
+                layoutManager = LinearLayoutManager(context)
+                adapter = CommentsRecyclerViewAdapter(reviewArray)
+            }
+            if(reviewArray.count() != 0) {
+                view.findViewById<TextView>(R.id.noCommentsToShow)?.visibility = View.GONE
+                view.findViewById<ConstraintLayout>(R.id.commentContainer)?.visibility = View.VISIBLE
+            }else{
+                view.findViewById<TextView>(R.id.noCommentsToShow)?.visibility = View.VISIBLE
+                view.findViewById<ConstraintLayout>(R.id.commentContainer)?.visibility = View.GONE
             }
         })
     }

@@ -1,6 +1,7 @@
 package it.polito.mad.team19lab2.ui
 
 import android.content.Context
+import android.opengl.Visibility
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -41,7 +42,7 @@ class BoughtItemsRecyclerViewAdapter(private val boughtItems: ArrayList<ItemMode
         }
         rateOnClickListener= View.OnClickListener { v ->
             val item = v.tag as ItemModel
-            val d=RateAndCommentDialog(item.userId)
+            val d=RateAndCommentDialog(item.userId,item.id)
             d.show(v.findFragment<Fragment>().childFragmentManager,"search dialog")
 
             //b.findFragment<Fragment>()
@@ -60,10 +61,16 @@ class BoughtItemsRecyclerViewAdapter(private val boughtItems: ArrayList<ItemMode
         with(holder.cv) {
             tag = boughtItems[position]
             val b = findViewById<Button>(R.id.item_list_edit_button)
-            b.text = resources.getString(R.string.rate_and_commment)
-            b.tag= boughtItems[position]
-            b.setOnClickListener(rateOnClickListener)
             setOnClickListener(boughtCL)
+            if(!boughtItems[position].reviewed) {
+                b.text = resources.getString(R.string.rate_and_commment)
+                b.tag = boughtItems[position]
+                b.setOnClickListener(rateOnClickListener)
+
+            }
+            else{
+                b.visibility=View.GONE
+            }
         }
     }
 
