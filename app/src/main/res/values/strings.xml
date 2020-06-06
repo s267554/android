@@ -73,8 +73,7 @@
     <string name="upTo">"up to "</string>
     <string name="pUnbound">up to unbounded</string>
     <string name="upUnbound">"up to unbounded"</string>
-    <string name="default_notification_channel_id" />
-    <string name="fcm_message" />
+    <string name="default_notification_channel_id" translatable="false">it.polito.mad.team19lab2</string>
     <string name="notifyOwnerInterest">Your Item got some love!</string>
     <string name="notifyOwnerInterestText">has expressed interest for</string>
     <string name="notifyOwnerBuy">Your Item can be sold now!</string>

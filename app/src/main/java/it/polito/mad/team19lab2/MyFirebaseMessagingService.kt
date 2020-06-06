@@ -3,9 +3,7 @@ package it.polito.mad.team19lab2
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.app.PendingIntent
 import android.content.Context
-import android.content.Intent
 import android.media.RingtoneManager
 import android.os.Build
 import android.util.Log
@@ -36,7 +34,6 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         // messages. For more see: https://firebase.google.com/docs/cloud-messaging/concept-options
         // [END_EXCLUDE]
 
-        // TODO(developer): Handle FCM messages here.
         // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
         Log.d(TAG, "From: ${remoteMessage.from}")
 
@@ -111,13 +108,6 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     // [END on_new_token]
 
     /**
-     * Handle time allotted to BroadcastReceivers.
-     */
-    private fun handleNow() {
-        Log.d(TAG, "Short lived task is done.")
-    }
-
-    /**
      * Persist token to third-party servers.
      *
      * Modify this method to associate the user's FCM InstanceID token with any server-side account
@@ -126,7 +116,6 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
      * @param token The new token.
      */
     private fun sendRegistrationToServer(token: String?) {
-        // TODO: add multiple tokens for each device
         val repo = UserRepository()
         if(repo.user != null) {
             Log.d(TAG, "sendRegistrationTokenToServer($token)")
@@ -146,12 +135,6 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         title: String,
         itemId: String
     ) {
-        Log.d(TAG, "sending $messageBody titled $title")
-        val intent = Intent(this, MainActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-        val pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
-            PendingIntent.FLAG_ONE_SHOT)
-
         val myPendingIntent = NavDeepLinkBuilder(applicationContext)
             .setComponentName(MainActivity::class.java)
             .setGraph(R.navigation.mobile_navigation)
@@ -174,11 +157,12 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         // Since android Oreo notification channel is needed.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(channelId,
-                "Channel human readable title",
+                "MADketPlace notifications channel",
                 NotificationManager.IMPORTANCE_DEFAULT)
             notificationManager.createNotificationChannel(channel)
         }
 
+        // Notification's id is generated form body message.
         notificationManager.notify(messageBody.hashCode(), notificationBuilder.build())
     }
 
