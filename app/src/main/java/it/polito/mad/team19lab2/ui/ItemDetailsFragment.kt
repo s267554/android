@@ -252,6 +252,12 @@ class ItemDetailsFragment : Fragment(), BuyersRecycleViewAdapter.SellItemClick {
                                 mScrollView.requestDisallowInterceptTouchEvent(true)
                             }
                         })
+                    if(item.userId != user?.uid ?: ""){
+                        gMap.setOnMapClickListener {
+                            val dialog = LocationRouteDialog.newInstance(item.location)
+                            dialog.show(childFragmentManager, "showRouteDialog")
+                        }
+                    }
                     pointInMap(item.location)
                 }
             }
