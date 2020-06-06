@@ -2,6 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scrollParentEditItem"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginBottom="16dp"
@@ -172,6 +173,16 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
+        <fragment
+            android:id="@+id/google_maps"
+            android:name="it.polito.mad.team19lab2.utilities.WorkaroundMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/locationTextField" />
+
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/priceTextField"
             android:layout_width="0dp"
@@ -222,7 +233,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/locationTextField"
+            app:layout_constraintTop_toBottomOf="@+id/google_maps"
             app:startIconDrawable="@drawable/date_icon_edit"
             app:startIconTint="@color/colorPrimary">
 

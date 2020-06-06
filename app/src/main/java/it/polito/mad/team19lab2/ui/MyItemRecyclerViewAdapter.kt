@@ -71,7 +71,7 @@ class MyItemRecyclerViewAdapter(
             }.addOnFailureListener {
             }
         } else {
-            holder.mImage.setImageResource(R.drawable.sport_category_foreground)
+            holder.mImage.setImageResource(R.mipmap.launcher_icon_no_text)
         }
         if(item.state == 0){
             if(item.expireDatestamp.seconds < Timestamp.now().seconds){

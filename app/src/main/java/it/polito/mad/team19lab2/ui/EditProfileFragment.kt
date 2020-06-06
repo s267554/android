@@ -230,19 +230,6 @@ class EditProfileFragment : Fragment() {
                         val finalLocation= "${cityName}, $countryCode"
                         locationProfileEditText.setText(finalLocation)
                     }
-                    if(savedInstanceState!=null){
-                        if(user.location.isNullOrEmpty()){
-                            if(ActivityCompat.checkSelfPermission(requireContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                                getCurrentLocation()
-                            }
-                            else{
-                                ActivityCompat.requestPermissions(requireContext() as Activity, Array(1){android.Manifest.permission.ACCESS_FINE_LOCATION}, 44)
-                            }
-                        }
-                        else{
-                            pointInMap(locationProfileEditText.text)
-                        }
-                    }
                     if(user.location.isNullOrEmpty()){
                         if(ActivityCompat.checkSelfPermission(requireContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                             getCurrentLocation()
