@@ -12,7 +12,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.os.bundleOf
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.findFragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
@@ -33,6 +35,8 @@ import com.ms.square.android.expandabletextview.ExpandableTextView
 import com.squareup.picasso.Picasso
 import it.polito.mad.team19lab2.R
 import it.polito.mad.team19lab2.data.ItemModel
+import it.polito.mad.team19lab2.data.ReviewModel
+import it.polito.mad.team19lab2.data.UserModel
 import it.polito.mad.team19lab2.data.UserShortModel
 import it.polito.mad.team19lab2.utilities.WorkaroundMapFragment
 import it.polito.mad.team19lab2.viewModel.ItemViewModel
@@ -44,7 +48,7 @@ import kotlinx.android.synthetic.main.item_details_fragment.roundCardView
 import java.util.*
 import kotlin.collections.ArrayList
 
-class ItemDetailsFragment : Fragment(), BuyersRecycleViewAdapter.SellItemClick {
+class ItemDetailsFragment : Fragment(), BuyersRecycleViewAdapter.SellItemClick,RateAndCommentDialog.NoticeDialogListener  {
 
 
     private lateinit var item: ItemModel
@@ -53,6 +57,7 @@ class ItemDetailsFragment : Fragment(), BuyersRecycleViewAdapter.SellItemClick {
     private val userVm: UserViewModel by viewModels()
     private lateinit var idItem : String
     private lateinit var sellerUser:String
+    private lateinit var currentuser: UserModel
     private var user = FirebaseAuth.getInstance().currentUser
     private var interestedUsers = ArrayList<UserShortModel>()
     private var buyers = ArrayList<UserShortModel>()
@@ -73,6 +78,8 @@ class ItemDetailsFragment : Fragment(), BuyersRecycleViewAdapter.SellItemClick {
 
     override fun onViewCreated (view: View, savedInstanceState : Bundle?){
         super.onViewCreated(view, savedInstanceState)
+        userVm.getUser(FirebaseAuth.getInstance().currentUser!!.uid).observe(viewLifecycleOwner,
+            androidx.lifecycle.Observer { currentuser=it as UserModel })
         val descriptionExpandable = view.findViewById<ExpandableTextView>(R.id.expand_text_view)
         roundCardView.viewTreeObserver.addOnGlobalLayoutListener (object: ViewTreeObserver.OnGlobalLayoutListener{
             override fun onGlobalLayout() {
@@ -269,13 +276,16 @@ class ItemDetailsFragment : Fragment(), BuyersRecycleViewAdapter.SellItemClick {
             else{
                 view.findViewById<View>(R.id.google_maps).visibility=View.GONE
             }
+            if(!item.reviewed) {
+                seller_view_button.text = resources.getString(R.string.rate_and_commment)
+                seller_view_button.setOnClickListener {
+                    if(it!=null&&!sellerUser.isEmpty()){
+                        //Navigation.findNavController(requireView()).navigate(R.id.action_nav_item_detail_to_nav_show_profile,bundleOf("user_id" to sellerUser))
+                        val d=RateAndCommentDialog(item.userId,item.id)
+                        d.show(it.findFragment<Fragment>().childFragmentManager,"search dialog")
+                    } }
+            }else{seller_view_button.visibility=View.GONE}
         })
-
-
-            seller_view_button.setOnClickListener {
-                if(it!=null&&!sellerUser.isEmpty()){
-                    Navigation.findNavController(requireView()).navigate(R.id.action_nav_item_detail_to_nav_show_profile,bundleOf("user_id" to sellerUser))
-                } }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, menuInflater: MenuInflater) {
@@ -325,4 +335,22 @@ class ItemDetailsFragment : Fragment(), BuyersRecycleViewAdapter.SellItemClick {
             }
         }
     }
+    override fun onDialogPositiveClick(
+        userId: String,
+        itemId: String,
+        comment: String?,
+        rate: Float,
+        user_nick: String
+    ) {
+        var c=""
+        if(!comment.isNullOrEmpty())
+            c=comment
+        val r= ReviewModel(itemId,userId,c,rate,user_nick,currentuser.id,currentuser.nickname)
+        var u=userVm.addReview(r)
+    }
+
+    override fun onDialogNegativeClick(dialog: DialogFragment) {
+        return;
+    }
+
 }
