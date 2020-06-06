@@ -17,6 +17,7 @@ class UserViewModel: ViewModel() {
     private var itemRepository = ItemRepository()
     private var itemList : MutableList<ItemShortModel> = mutableListOf()
     private var liveUser: MutableLiveData<UserModel> = MutableLiveData()
+    private var currentUser: MutableLiveData<UserModel> = MutableLiveData()
     private var liveItems : MutableLiveData<List<ItemShortModel>> = MutableLiveData()
     private var reviewList : MutableList<ReviewModel> = mutableListOf()
     private var liveReviews : MutableLiveData<List<ReviewModel>> = MutableLiveData()
@@ -40,6 +41,20 @@ class UserViewModel: ViewModel() {
             }
         })
         return liveUser
+    }
+
+    fun getProfile(): MutableLiveData<UserModel> {
+        userRepository.getProfile().addSnapshotListener(EventListener { value, e ->
+            if (e != null) {
+                Log.e(TAG, "Listen failed.", e)
+                currentUser.value = null
+                return@EventListener
+            }
+            if (value != null) {
+                currentUser.value = value.toObject(UserModel::class.java)
+            }
+        })
+        return currentUser
     }
 
     fun getOrCreateUser(): MutableLiveData<UserModel>{

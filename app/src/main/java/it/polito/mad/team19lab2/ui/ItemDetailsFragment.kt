@@ -78,8 +78,11 @@ class ItemDetailsFragment : Fragment(), BuyersRecycleViewAdapter.SellItemClick,R
 
     override fun onViewCreated (view: View, savedInstanceState : Bundle?){
         super.onViewCreated(view, savedInstanceState)
-        userVm.getUser(FirebaseAuth.getInstance().currentUser!!.uid).observe(viewLifecycleOwner,
-            androidx.lifecycle.Observer { currentuser=it as UserModel })
+        userVm.getProfile().observe(viewLifecycleOwner,
+            androidx.lifecycle.Observer {
+                currentuser=it as UserModel
+            }
+        )
         val descriptionExpandable = view.findViewById<ExpandableTextView>(R.id.expand_text_view)
         roundCardView.viewTreeObserver.addOnGlobalLayoutListener (object: ViewTreeObserver.OnGlobalLayoutListener{
             override fun onGlobalLayout() {
@@ -123,7 +126,6 @@ class ItemDetailsFragment : Fragment(), BuyersRecycleViewAdapter.SellItemClick,R
                         })
                     itemVm.getBuyers(idItem).observe(viewLifecycleOwner, Observer { users ->
                         buyers = users as ArrayList<UserShortModel>
-                        Log.d("xxxx", users.toString())
                         with(recyclerBuyer) {
                             layoutManager =
                                 androidx.recyclerview.widget.LinearLayoutManager(context)
