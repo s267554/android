@@ -278,11 +278,13 @@ class ItemDetailsFragment : Fragment(), BuyersRecycleViewAdapter.SellItemClick,R
             else{
                 view.findViewById<View>(R.id.google_maps).visibility=View.GONE
             }
-            if(!item.reviewed) {
+            materialCardView3.setOnClickListener{
+                Navigation.findNavController(requireView()).navigate(R.id.action_nav_item_detail_to_nav_show_profile,bundleOf("user_id" to sellerUser))
+            }
+            if(!item.reviewed&&item.state==2) {
                 seller_view_button.text = resources.getString(R.string.rate_and_commment)
                 seller_view_button.setOnClickListener {
                     if(it!=null&&!sellerUser.isEmpty()){
-                        //Navigation.findNavController(requireView()).navigate(R.id.action_nav_item_detail_to_nav_show_profile,bundleOf("user_id" to sellerUser))
                         val d=RateAndCommentDialog(item.userId,item.id)
                         d.show(it.findFragment<Fragment>().childFragmentManager,"search dialog")
                     } }
