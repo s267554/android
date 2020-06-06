@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import it.polito.mad.team19lab2.R
 import it.polito.mad.team19lab2.data.ItemModel
 import it.polito.mad.team19lab2.data.ReviewModel
@@ -23,6 +24,7 @@ class BoughtItemsListFragment : Fragment(),RateAndCommentDialog.NoticeDialogList
     private var dataset = ArrayList<ItemModel>()
     private val itemListVm: ItemListViewModel by viewModels()
     private val userViewModel: UserViewModel by viewModels()
+    lateinit var swipeRefreshLayout: SwipeRefreshLayout
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,6 +46,12 @@ class BoughtItemsListFragment : Fragment(),RateAndCommentDialog.NoticeDialogList
         return view
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        swipeRefreshLayout=view.findViewById(R.id.swipeRefreshLayoutOnSale)
+        swipeRefreshLayout.setOnRefreshListener(myRefreshListener())
+    }
+
     override fun onDialogPositiveClick(
         userId: String,
         itemId: String,
@@ -60,5 +68,11 @@ class BoughtItemsListFragment : Fragment(),RateAndCommentDialog.NoticeDialogList
 
     override fun onDialogNegativeClick(dialog: DialogFragment) {
         return;
+    }
+
+    inner class myRefreshListener: SwipeRefreshLayout.OnRefreshListener {
+        override fun onRefresh() {
+            swipeRefreshLayout.isRefreshing=false
+        }
     }
 }

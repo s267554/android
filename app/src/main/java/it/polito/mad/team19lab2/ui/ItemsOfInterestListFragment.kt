@@ -14,6 +14,7 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
 import androidx.navigation.findNavController
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
 import it.polito.mad.team19lab2.R
@@ -31,6 +32,7 @@ class ItemsOfInterestListFragment : Fragment() {
 
     private var dataset = ArrayList<ItemShortModel>()
     private val userListVm: UserViewModel by viewModels()
+    lateinit var swipeRefreshLayout: SwipeRefreshLayout
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -51,4 +53,17 @@ class ItemsOfInterestListFragment : Fragment() {
         })
         return view
     }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        swipeRefreshLayout=view.findViewById(R.id.swipeRefreshLayoutOnSale)
+        swipeRefreshLayout.setOnRefreshListener(myRefreshListener())
+    }
+    inner class myRefreshListener: SwipeRefreshLayout.OnRefreshListener {
+        override fun onRefresh() {
+            swipeRefreshLayout.isRefreshing=false
+        }
+    }
+
 }
+
+
