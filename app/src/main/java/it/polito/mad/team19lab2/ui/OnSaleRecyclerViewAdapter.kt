@@ -179,7 +179,7 @@ class MyDiffUtilCallback(newList: ArrayList<ItemModel>?, oldList: ArrayList<Item
         if (!newContact.price.equals(oldContact.price)) {
             diff.putFloat("price", newContact.price)
         }
-        if (!newContact.imagePath.equals(oldContact.imagePath)) {
+        if (newContact.imageVersion!=oldContact.imageVersion) {
             diff.putString("imagePath", newContact.imagePath)
         }
         return if (diff.size() == 0) {

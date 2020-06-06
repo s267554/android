@@ -554,6 +554,7 @@ class EditItemFragment : Fragment() {
                 itemPictureRef = storage.reference.child("itemPicture/${idItem}")
                 path = "itemPicture/${idItem}"
             }
+            item.imageVersion+=1
             item.imagePath = path
             val baos = ByteArrayOutputStream()
             image.compress(Bitmap.CompressFormat.JPEG, 100, baos)
