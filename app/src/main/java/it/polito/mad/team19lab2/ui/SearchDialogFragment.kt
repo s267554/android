@@ -4,6 +4,8 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
+import android.location.Address
+import android.location.Geocoder
 import android.os.Bundle
 import android.text.InputFilter
 import android.view.View
@@ -11,11 +13,16 @@ import android.view.WindowManager
 import android.widget.AutoCompleteTextView
 import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.fragment.app.DialogFragment
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import it.polito.mad.team19lab2.R
 import it.polito.mad.team19lab2.utilities.DropdownAdapter
 import it.polito.mad.team19lab2.utilities.PriceInputFilter
+import kotlinx.android.synthetic.main.fragment_edit_profile.*
+import java.util.*
 
 class SearchDialogFragment(var title: String?=null, var category: Int = -1,
                            private var min:String?=null, private var max:String?=null, var location: String?=null): AppCompatDialogFragment(){
@@ -86,7 +93,20 @@ class SearchDialogFragment(var title: String?=null, var category: Int = -1,
                         val category=categoryEditText.text?.toString()
                         val minprice=this.minPrice.text.toString()
                         val maxprice=this.maxPrice.text.toString()
-                        val location=locationEditText.text?.toString()
+                        var location=locationEditText.text?.toString()
+                        val geocoder = Geocoder(context, Locale.getDefault())
+                        if (location != null) {
+                            if(location.isNotEmpty()) {
+                                val addresses: List<Address> =
+                                    geocoder.getFromLocationName(location, 1)
+                                if(addresses.isNotEmpty() && addresses[0].hasLatitude() && addresses[0].hasLongitude()) {
+                                    val cityName = addresses[0].locality
+                                    val countryCode = addresses[0].countryCode
+                                    val finalLocation= "${cityName}, $countryCode"
+                                    location = finalLocation
+                                }
+                            }
+                        }
                         listener.onDialogPositiveClick(title,category,minprice,maxprice,location)
                     })
                 .setNeutralButton(R.string.cancel,
