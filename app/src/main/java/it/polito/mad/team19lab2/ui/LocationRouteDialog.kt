@@ -151,7 +151,7 @@ class LocationRouteDialog(): AppCompatDialogFragment() {
                                 point,
                                 latLng
                             ).width(3f).color(Color.BLUE))
-                    googleMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(point, 15F))
+                    googleMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(point, 10F))
                 }
             }
         }
