@@ -25,7 +25,7 @@ class CommentsRecyclerViewAdapter(var reviewArray: ArrayList<ReviewModel>) : Rec
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             val review = reviewArray[position]
-            holder.mIdView.text = review.userNick
+            holder.mIdView.text = review.buyerNick
             holder.mContentView.text = review.comment
             holder.commentratingbar.rating=review.rate
 //            with(holder.mView) {

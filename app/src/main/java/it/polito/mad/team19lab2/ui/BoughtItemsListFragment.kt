@@ -11,9 +11,11 @@ import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.google.firebase.auth.FirebaseAuth
 import it.polito.mad.team19lab2.R
 import it.polito.mad.team19lab2.data.ItemModel
 import it.polito.mad.team19lab2.data.ReviewModel
+import it.polito.mad.team19lab2.data.UserModel
 import it.polito.mad.team19lab2.viewModel.ItemListViewModel
 import it.polito.mad.team19lab2.viewModel.UserViewModel
 
@@ -25,6 +27,7 @@ class BoughtItemsListFragment : Fragment(),RateAndCommentDialog.NoticeDialogList
     private val itemListVm: ItemListViewModel by viewModels()
     private val userViewModel: UserViewModel by viewModels()
     lateinit var swipeRefreshLayout: SwipeRefreshLayout
+    private lateinit var currentuser:UserModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,6 +45,8 @@ class BoughtItemsListFragment : Fragment(),RateAndCommentDialog.NoticeDialogList
             if(dataset.count() != 0)
                 view.findViewById<TextView>(R.id.empty_list)?.visibility = View.GONE
         })
+        userViewModel.getUser(FirebaseAuth.getInstance().currentUser!!.uid).observe(viewLifecycleOwner,
+            androidx.lifecycle.Observer { currentuser=it as UserModel })
 
         return view
     }
@@ -62,7 +67,7 @@ class BoughtItemsListFragment : Fragment(),RateAndCommentDialog.NoticeDialogList
         var c=""
         if(!comment.isNullOrEmpty())
             c=comment
-        val r=ReviewModel(itemId,userId,c,rate,user_nick)
+        val r=ReviewModel(itemId,userId,c,rate,user_nick,currentuser.id,currentuser.nickname)
         var u=userViewModel.addReview(r)
     }
 

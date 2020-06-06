@@ -9,7 +9,9 @@ data class ReviewModel(
     var userId: String,
     var comment: String,
     var rate: Float,
-    var userNick: String
+    var userNick: String,
+    var buyerId: String="",
+    var buyerNick:String=""
 ): Parcelable {
-    constructor():this ("","","", Float.MIN_VALUE,"")
+    constructor():this ("","","", 0.0F,"")
 }
