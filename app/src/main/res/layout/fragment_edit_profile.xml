@@ -201,7 +201,7 @@
                     android:layout_height="wrap_content"
                     android:enabled="true"
                     android:inputType="text"
-                    android:maxLength="50"
+                    android:maxLength="60"
                     android:singleLine="true"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
