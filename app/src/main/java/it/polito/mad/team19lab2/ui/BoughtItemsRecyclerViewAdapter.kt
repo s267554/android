@@ -97,7 +97,7 @@ class BoughtItemsRecyclerViewAdapter(private val boughtItems: ArrayList<ItemMode
                 }.addOnFailureListener {
                 }
             } else {
-                this.itemImage.setImageResource(R.drawable.sport_category_foreground)
+                this.itemImage.setImageResource(R.mipmap.launcher_icon_no_text)
             }
         }
     }

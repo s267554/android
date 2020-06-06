@@ -4,9 +4,13 @@ import android.app.Activity
 import android.app.DatePickerDialog
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Matrix
 import android.graphics.drawable.BitmapDrawable
+import android.location.Address
+import android.location.Geocoder
+import android.location.Location
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -16,14 +20,25 @@ import android.text.TextWatcher
 import android.util.Log
 import android.util.LruCache
 import android.view.*
+import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.AutoCompleteTextView
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.tasks.Task
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.ktx.Firebase
@@ -34,8 +49,14 @@ import it.polito.mad.team19lab2.R
 import it.polito.mad.team19lab2.data.ItemModel
 import it.polito.mad.team19lab2.utilities.DropdownAdapter
 import it.polito.mad.team19lab2.utilities.PriceInputFilter
+import it.polito.mad.team19lab2.utilities.WorkaroundMapFragment
 import it.polito.mad.team19lab2.viewModel.ItemViewModel
 import kotlinx.android.synthetic.main.fragment_edit_item.*
+import kotlinx.android.synthetic.main.fragment_edit_item.imageEdit
+import kotlinx.android.synthetic.main.fragment_edit_item.image_view
+import kotlinx.android.synthetic.main.fragment_edit_item.progressBar
+import kotlinx.android.synthetic.main.fragment_edit_item.roundCardView
+import kotlinx.android.synthetic.main.fragment_edit_profile.*
 import java.io.ByteArrayOutputStream
 import java.util.*
 
@@ -57,6 +78,11 @@ class EditItemFragment : Fragment() {
     private lateinit var catArray : MutableList<String>
     private lateinit var subCatArray: MutableList<String>
 
+    private lateinit var supportMapFragment: SupportMapFragment
+    private lateinit var client: FusedLocationProviderClient
+    private lateinit var gMap: GoogleMap
+
+
     companion object {
         private val maxMemory : Long = Runtime.getRuntime().maxMemory() / 1024
         private val cacheSize = (maxMemory/4).toInt()
@@ -71,8 +97,35 @@ class EditItemFragment : Fragment() {
         super.onCreate(savedInstanceState)
         storage = Firebase.storage
         setHasOptionsMenu(true)
+        client= context?.let { LocationServices.getFusedLocationProviderClient(it) }!!
         catArray = resources.getStringArray(R.array.categories).toMutableList()
     }
+
+    private fun getCurrentLocation(){
+        var task: Task<Location> = client.lastLocation
+        task.addOnSuccessListener {location ->
+            if(location!=null){
+                supportMapFragment.getMapAsync {
+                    var latLng = com.google.android.gms.maps.model.LatLng(location.latitude, location.longitude)
+                    it.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10F))
+                }
+            }
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if(requestCode == 44){
+            if(grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                getCurrentLocation()
+            }
+        }
+    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -85,6 +138,7 @@ class EditItemFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
         idItem = arguments?.getString("item_id1").toString()
+        supportMapFragment = ( childFragmentManager.findFragmentById(R.id.google_maps) as WorkaroundMapFragment)
         //Round image management
         roundCardView.viewTreeObserver.addOnGlobalLayoutListener (object: ViewTreeObserver.OnGlobalLayoutListener{
             override fun onGlobalLayout() {
@@ -113,7 +167,7 @@ class EditItemFragment : Fragment() {
                     val stateArray = resources.getStringArray(R.array.item_state).toMutableList()
                     stateSpinner.setText(stateArray[item.state])
                     if (item.imagePath.isEmpty()) {
-                        image_view.setImageResource(R.drawable.sport_category_foreground)
+                        image_view.setImageResource(R.mipmap.launcher_icon_no_text)
                     } else {
                         downloadFile()
                     }
@@ -143,18 +197,93 @@ class EditItemFragment : Fragment() {
                             }
                         }
                     }
+                    //MAPS
+                    supportMapFragment.getMapAsync {
+                        gMap = it
+                        gMap.uiSettings.isMapToolbarEnabled = false
+                        var mScrollView = scrollParentEditItem //parent scrollview in xml, give your scrollview id value
+                        (childFragmentManager.findFragmentById(R.id.google_maps) as WorkaroundMapFragment?)
+                            ?.setListener(object : WorkaroundMapFragment.OnTouchListener {
+                                override fun onTouch() {
+                                    mScrollView.requestDisallowInterceptTouchEvent(true)
+                                }
+                            })
+                        gMap.setOnMapClickListener {point->
+                            var markerPosition = MarkerOptions()
+                            markerPosition.position(point)
+                            gMap.clear()
+                            gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(point, 10F))
+                            gMap.addMarker(markerPosition)
+                            val geocoder = Geocoder(context, Locale.getDefault())
+                            val addresses: List<Address> = geocoder.getFromLocation(point.latitude, point.longitude, 1)
+                            val streetName: String = addresses[0].getAddressLine(0).split(",")[0]
+                            val cityName = addresses[0].locality
+                            val countryCode = addresses[0].countryCode
+                            val finalLocation= "${cityName}, $countryCode"
+                            locationEditText.setText(finalLocation)
+                        }
+                        if(item.location.isNullOrEmpty()){
+                            if(ActivityCompat.checkSelfPermission(requireContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                                getCurrentLocation()
+                            }
+                            else{
+                                ActivityCompat.requestPermissions(requireContext() as Activity, Array(1){android.Manifest.permission.ACCESS_FINE_LOCATION}, 44)
+                            }
+                        }
+                        else{
+                            pointInMap(locationEditText.text)
+                        }
+                    }
                 })
             } else {
                 item = ItemModel()
                 item.id = "${System.currentTimeMillis()}-${user?.uid ?: ""}"
                 item.userId = user?.uid ?: ""
-                image_view.setImageResource(R.drawable.sport_category_foreground)
+                image_view.setImageResource(R.mipmap.launcher_icon_no_text)
                 titleTextField.error = getString(R.string.notEmpty)
                 locationTextField.error = getString(R.string.notEmpty)
                 priceTextField.error = getString(R.string.notEmpty)
                 dateTextField.error = getString(R.string.notEmpty)
                 categoryTextField.error = getString(R.string.notEmpty)
                 stateSpinner.setText(stateValue[0])
+            }
+        }
+        else{
+            supportMapFragment.getMapAsync {
+                gMap = it
+                gMap.uiSettings.isMapToolbarEnabled = false
+                var mScrollView = scrollParentEditItem //parent scrollview in xml, give your scrollview id value
+                (childFragmentManager.findFragmentById(R.id.google_maps) as WorkaroundMapFragment?)
+                    ?.setListener(object : WorkaroundMapFragment.OnTouchListener {
+                        override fun onTouch() {
+                            mScrollView.requestDisallowInterceptTouchEvent(true)
+                        }
+                    })
+                gMap.setOnMapClickListener {point->
+                    var markerPosition = MarkerOptions()
+                    markerPosition.position(point)
+                    gMap.clear()
+                    gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(point, 10F))
+                    gMap.addMarker(markerPosition)
+                    val geocoder = Geocoder(context, Locale.getDefault())
+                    val addresses: List<Address> = geocoder.getFromLocation(point.latitude, point.longitude, 1)
+                    val streetName: String = addresses[0].getAddressLine(0).split(",")[0]
+                    val cityName = addresses[0].locality
+                    val countryCode = addresses[0].countryCode
+                    val finalLocation= "${cityName}, $countryCode"
+                    locationEditText.setText(finalLocation)
+                }
+                if(locationEditText.text.isNullOrEmpty()){
+                    if(ActivityCompat.checkSelfPermission(requireContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                        getCurrentLocation()
+                    }
+                    else{
+                        ActivityCompat.requestPermissions(requireContext() as Activity, Array(1){android.Manifest.permission.ACCESS_FINE_LOCATION}, 44)
+                    }
+                }
+                else{
+                    pointInMap(locationEditText.text)
+                }
             }
         }
         titleEditText.addTextChangedListener(object : TextWatcher {
@@ -202,6 +331,29 @@ class EditItemFragment : Fragment() {
                     locationTextField.error = null
             }
         })
+        locationEditText.setOnFocusChangeListener { _, hasFocus ->
+            if (!hasFocus) {
+                pointInMap(locationEditText.text)
+            }
+        }
+        locationEditText.setOnEditorActionListener(
+            object : TextView.OnEditorActionListener {
+                override fun onEditorAction(
+                    v: TextView?,
+                    actionId: Int,
+                    event: KeyEvent?
+                ): Boolean {
+                    if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_DONE || event != null && event.action === KeyEvent.ACTION_DOWN && event.keyCode === KeyEvent.KEYCODE_ENTER
+                    ) {
+                        if (event == null || !event.isShiftPressed) {
+                            pointInMap(locationEditText.text)
+                            return true // consume.
+                        }
+                    }
+                    return false // pass on to other listeners.
+                }
+            }
+        )
         dateEditText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
                 if (p0 != null) {
@@ -356,7 +508,7 @@ class EditItemFragment : Fragment() {
                     imageModified = savedInstanceState.getBoolean("group19.lab2.IMGFLAG")
                 }
                 else{
-                    image_view.setImageResource(R.drawable.sport_category_foreground)
+                    image_view.setImageResource(R.mipmap.launcher_icon_no_text)
                 }
                 item= savedInstanceState.getParcelable("group19.lab2.ITEM")!!
                 return
@@ -566,4 +718,28 @@ class EditItemFragment : Fragment() {
         }.addOnFailureListener {
         }
     }
+
+    private fun pointInMap(location: Editable?){
+        val geocoder = Geocoder(context, Locale.getDefault())
+        gMap.clear()
+        if(!location.isNullOrEmpty()) {
+            val addresses: List<Address> =
+                geocoder.getFromLocationName(location.toString(), 1)
+            if(addresses.isNotEmpty() && addresses[0].hasLatitude() && addresses[0].hasLongitude()) {
+                val markerPosition = MarkerOptions()
+                val point = LatLng(addresses[0].latitude, addresses[0].longitude)
+                markerPosition.position(point)
+                gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(point, 10F))
+                gMap.addMarker(markerPosition)
+                val cityName = addresses[0].locality
+                val countryCode = addresses[0].countryCode
+                val finalLocation= "${cityName}, $countryCode"
+                locationEditText.setText(finalLocation)
+            }
+            else{
+                Toast.makeText(requireContext(), R.string.location_not_found, Toast.LENGTH_LONG).show()
+            }
+        }
+    }
+
 }

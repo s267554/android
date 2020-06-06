@@ -230,7 +230,7 @@ class ItemDetailsFragment : Fragment(), BuyersRecycleViewAdapter.SellItemClick {
                 }
             }
             if(item.imagePath.isEmpty()){
-                image_view.setImageResource(R.drawable.sport_category_foreground)
+                image_view.setImageResource(R.mipmap.launcher_icon_no_text)
             }
             else{
                 downloadFile()
