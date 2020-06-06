@@ -45,6 +45,7 @@ import kotlinx.android.synthetic.main.fragment_show_profile.*
 import kotlinx.android.synthetic.main.item_details_fragment.*
 import kotlinx.android.synthetic.main.item_details_fragment.image_view
 import kotlinx.android.synthetic.main.item_details_fragment.roundCardView
+import kotlinx.coroutines.*
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -272,7 +273,39 @@ class ItemDetailsFragment : Fragment(), BuyersRecycleViewAdapter.SellItemClick,R
                             dialog.show(childFragmentManager, "showRouteDialog")
                         }
                     }
-                    pointInMap(item.location)
+                    //pointsinmap()
+                    val geocoder = Geocoder(context, Locale.getDefault())
+                    gMap.clear()
+                    if(item.location.isNotEmpty()) {
+                        CoroutineScope(Dispatchers.Default).launch {
+                            val systime = System.currentTimeMillis()
+                            val addresses = GlobalScope.async {
+                                try {
+                                    geocoder.getFromLocationName(item.location, 1)
+                                } catch (e: Exception) {
+                                    Log.d("itemdetailfrag", "eccezzionale veramente")
+                                    null
+                                }
+                            }
+                            Log.d("itemdetailfrag", "millis: ${System.currentTimeMillis() -systime}")
+                            withContext(Dispatchers.Main) {
+                                addresses.await()?.let { addresses ->
+                                    if(addresses.isNotEmpty() && addresses[0].hasLatitude() && addresses[0].hasLongitude()) {
+                                        val markerPosition = MarkerOptions()
+                                        val point = LatLng(addresses[0].latitude, addresses[0].longitude)
+                                        markerPosition.position(point)
+                                        gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(point, 10F))
+                                        gMap.addMarker(markerPosition)
+                                    }
+                                    else{
+                                        view.findViewById<View>(R.id.google_maps)?.visibility=View.GONE
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+
                 }
             }
             else{
