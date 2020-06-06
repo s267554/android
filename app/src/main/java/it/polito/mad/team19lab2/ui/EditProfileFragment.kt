@@ -588,11 +588,11 @@ class EditProfileFragment : Fragment() {
                 val point = LatLng(addresses[0].latitude, addresses[0].longitude)
                 markerPosition.position(point)
                 gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(point, 10F))
-                gMap.addMarker(markerPosition)
                 val cityName = addresses[0].locality
                 val countryCode = addresses[0].countryCode
                 val finalLocation= "${cityName}, $countryCode"
                 locationProfileEditText.setText(finalLocation)
+                gMap.addMarker(markerPosition)
             }
         }
     }

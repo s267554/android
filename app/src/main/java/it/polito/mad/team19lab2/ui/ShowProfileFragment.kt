@@ -185,6 +185,9 @@ class ShowProfileFragment :Fragment() {
                 gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(point, 10F))
                 gMap.addMarker(markerPosition)
             }
+            else{
+                view?.findViewById<View>(R.id.google_maps)?.visibility=View.GONE
+            }
         }
     }
 }
