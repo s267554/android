@@ -246,6 +246,31 @@ class EditItemFragment : Fragment() {
                 dateTextField.error = getString(R.string.notEmpty)
                 categoryTextField.error = getString(R.string.notEmpty)
                 stateSpinner.setText(stateValue[0])
+                supportMapFragment.getMapAsync {
+                    gMap = it
+                    gMap.uiSettings.isMapToolbarEnabled = false
+                    var mScrollView = scrollParentEditItem //parent scrollview in xml, give your scrollview id value
+                    (childFragmentManager.findFragmentById(R.id.google_maps) as WorkaroundMapFragment?)
+                        ?.setListener(object : WorkaroundMapFragment.OnTouchListener {
+                            override fun onTouch() {
+                                mScrollView.requestDisallowInterceptTouchEvent(true)
+                            }
+                        })
+                    gMap.setOnMapClickListener {point->
+                        var markerPosition = MarkerOptions()
+                        markerPosition.position(point)
+                        gMap.clear()
+                        gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(point, 10F))
+                        gMap.addMarker(markerPosition)
+                        val geocoder = Geocoder(context, Locale.getDefault())
+                        val addresses: List<Address> = geocoder.getFromLocation(point.latitude, point.longitude, 1)
+                        val streetName: String = addresses[0].getAddressLine(0).split(",")[0]
+                        val cityName = addresses[0].locality
+                        val countryCode = addresses[0].countryCode
+                        val finalLocation= "${cityName}, $countryCode"
+                        locationEditText.setText(finalLocation)
+                    }
+                }
             }
         }
         else{
