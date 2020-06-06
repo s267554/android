@@ -22,7 +22,6 @@ class RateAndCommentDialog(val userId:String="",val itemId:String=""): AppCompat
     // Use this instance of the interface to deliver action events
     private lateinit var listener: NoticeDialogListener
     private val uservm:UserViewModel by viewModels()
-    private var title="Rate "
     private var firstime=true
     private lateinit var builder:AlertDialog.Builder
     private var dialogview:View?=null
@@ -46,8 +45,8 @@ class RateAndCommentDialog(val userId:String="",val itemId:String=""): AppCompat
                     DialogInterface.OnClickListener { dialog, id ->
                         listener.onDialogNegativeClick(this)
                     })
-                .setIcon(R.drawable.ic_search_black_24dp)
-                .setTitle(title)
+                .setIcon(R.drawable.ic_rate)
+                .setTitle(resources.getString(R.string.rate_title))
 
             builder.create()
         } ?: throw IllegalStateException("Activity cannot be null")
@@ -61,7 +60,7 @@ class RateAndCommentDialog(val userId:String="",val itemId:String=""): AppCompat
 
         Log.d("ccccc",dialog?.toString()+"fff")
         val s=uservm.getUser(userId).observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-            dialog?.setTitle(title+it.nickname)
+            dialog?.setTitle(resources.getString(R.string.rate_title)+ " " +it.nickname)
             Log.d("ccccc",dialog?.toString()+"fff")
             user_nick=it.nickname
         } )
