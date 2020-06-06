@@ -8,13 +8,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.findNavController
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import it.polito.mad.team19lab2.R
 import it.polito.mad.team19lab2.data.ItemModel
+import it.polito.mad.team19lab2.data.ReviewModel
 import it.polito.mad.team19lab2.viewModel.ItemListViewModel
 import it.polito.mad.team19lab2.viewModel.UserViewModel
 
@@ -46,8 +44,18 @@ class BoughtItemsListFragment : Fragment(),RateAndCommentDialog.NoticeDialogList
         return view
     }
 
-    override fun onDialogPositiveClick(userId: String, comment: String?, rate: Float) {
-        var u=userViewModel.updateRate(userId, rate)
+    override fun onDialogPositiveClick(
+        userId: String,
+        itemId: String,
+        comment: String?,
+        rate: Float,
+        user_nick: String
+    ) {
+        var c=""
+        if(!comment.isNullOrEmpty())
+            c=comment
+        val r=ReviewModel(itemId,userId,c,rate,user_nick)
+        var u=userViewModel.addReview(r)
     }
 
     override fun onDialogNegativeClick(dialog: DialogFragment) {

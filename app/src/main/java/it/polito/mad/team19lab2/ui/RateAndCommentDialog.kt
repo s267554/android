@@ -17,7 +17,7 @@ import it.polito.mad.team19lab2.R
 import it.polito.mad.team19lab2.viewModel.UserViewModel
 import kotlinx.android.synthetic.main.rate_dialog_layout.*
 
-class RateAndCommentDialog(val userId:String=""): AppCompatDialogFragment(){
+class RateAndCommentDialog(val userId:String="",val itemId:String=""): AppCompatDialogFragment(){
 
     // Use this instance of the interface to deliver action events
     private lateinit var listener: NoticeDialogListener
@@ -26,6 +26,7 @@ class RateAndCommentDialog(val userId:String=""): AppCompatDialogFragment(){
     private var firstime=true
     private lateinit var builder:AlertDialog.Builder
     private var dialogview:View?=null
+    private var user_nick=""
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
             builder = AlertDialog.Builder(it)
@@ -39,7 +40,7 @@ class RateAndCommentDialog(val userId:String=""): AppCompatDialogFragment(){
                 // Add action buttons
                 .setPositiveButton("Ok",
                     DialogInterface.OnClickListener { dialog, id ->
-                        listener.onDialogPositiveClick(userId,commentEditText.toString(),ratingBar.rating)
+                        listener.onDialogPositiveClick(userId,itemId,commentEditText.text.toString(),ratingBar.rating,user_nick)
                     })
                 .setNeutralButton(R.string.cancel,
                     DialogInterface.OnClickListener { dialog, id ->
@@ -62,7 +63,7 @@ class RateAndCommentDialog(val userId:String=""): AppCompatDialogFragment(){
         val s=uservm.getUser(userId).observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             dialog?.setTitle(title+it.nickname)
             Log.d("ccccc",dialog?.toString()+"fff")
-
+            user_nick=it.nickname
         } )
 
         return dialogview
@@ -78,8 +79,10 @@ class RateAndCommentDialog(val userId:String=""): AppCompatDialogFragment(){
     interface NoticeDialogListener {
         fun onDialogPositiveClick(
             userId:String,
+            itemId:String,
             comment: String?,
-            rate:Float
+            rate:Float,
+            uuser_nick:String
         )
         fun onDialogNegativeClick(dialog: DialogFragment)
     }

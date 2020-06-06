@@ -21,7 +21,8 @@ data class ItemModel (
     var state: Int,
     var userId: String,
     var expireDatestamp: Timestamp,
-    var buyerId: String
+    var buyerId: String,
+    var reviewed:Boolean=false
 ) : Parcelable{
     fun compareTo(other: ItemModel): Int {
         val x=id==other.id&&title==other.title&&price==other.price&&imagePath==other.imagePath
