@@ -118,4 +118,6 @@
     <string name="onSuccessfulBuy">Congratulazioni! Hai comprato un articolo!</string>
     <string name="onSuccessfulBuyText">è stato venduto a te</string>
     <string name="location_not_found">Luogo non trovato sulla mappa</string>
+    <string name="rate_title">Valuta</string>
+
 </resources>
