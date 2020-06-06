@@ -169,8 +169,9 @@ class ItemDetailsFragment : Fragment(), BuyersRecycleViewAdapter.SellItemClick {
                         buyButton.setText(R.string.blocked)
                     }
                     else{
-                        if(item.buyerId == user?.uid)
+                        if(item.buyerId == user?.uid) {
                             buyButton.setText(R.string.bought)
+                        }
                         else
                             buyButton.setText(R.string.sold)
                         buyButton.setBackgroundColor(Color.GRAY)
@@ -200,7 +201,7 @@ class ItemDetailsFragment : Fragment(), BuyersRecycleViewAdapter.SellItemClick {
                 }
 
                 val fab: FloatingActionButton = view.findViewById(R.id.fab)
-                if(item.state != 2 || item.buyerId == FirebaseAuth.getInstance().uid) // Sold
+                if(item.state != 2)
                     fab.visibility = View.VISIBLE
                 itemVm.getInterestedUsers(idItem).observe(viewLifecycleOwner, Observer { users ->
                     interestedUsers= users as ArrayList<UserShortModel>
