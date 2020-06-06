@@ -115,5 +115,6 @@
     <string name="no_items_of_interest">No items of interest yet</string>
     <string name="rate_and_commment">Rate seller</string>
     <string name="comment">Write your comment here</string>
+    <string name="location_not_found">Location not found in map</string>
 
 </resources>

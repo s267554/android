@@ -134,7 +134,7 @@ RecyclerView.Adapter<OnSaleRecyclerViewAdapter.ViewHolder> ( ){
                 }.addOnFailureListener {
                 }
             } else {
-                this.itemImage.setImageResource(R.drawable.sport_category_foreground)
+                this.itemImage.setImageResource(R.mipmap.launcher_icon_no_text)
             }
         }
 
@@ -179,7 +179,7 @@ class MyDiffUtilCallback(newList: ArrayList<ItemModel>?, oldList: ArrayList<Item
         if (!newContact.price.equals(oldContact.price)) {
             diff.putFloat("price", newContact.price)
         }
-        if (!newContact.imagePath.equals(oldContact.imagePath)) {
+        if (newContact.imageVersion!=oldContact.imageVersion) {
             diff.putString("imagePath", newContact.imagePath)
         }
         return if (diff.size() == 0) {

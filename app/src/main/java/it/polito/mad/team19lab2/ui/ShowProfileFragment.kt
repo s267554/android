@@ -83,19 +83,16 @@ class ShowProfileFragment :Fragment() {
             nickname_view.text = user.nickname
             interests_view.text = buildInterestsString()
             ratingBar.rating= user.rating
+            location_view.text = user.location
             if(user.id == currentUser?.uid ?: ""){
                 setHasOptionsMenu(true)
                 email_view.text = user.email
-                location_view.text = user.location
             }
             else{
                 setHasOptionsMenu(false)
                 textView4.visibility=View.GONE
-                textView5.visibility=View.GONE
                 emailIcon.visibility=View.GONE
                 email_view.visibility=View.GONE
-                locationIcon.visibility=View.GONE
-                location_view.visibility=View.GONE
             }
             if(user.location.isNotEmpty()){
                 val supportMapFragment2 : SupportMapFragment = ( childFragmentManager.findFragmentById(R.id.google_maps) as WorkaroundMapFragment)
