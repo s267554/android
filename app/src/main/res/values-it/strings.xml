@@ -124,5 +124,11 @@
     <string name="confirm_purchase_text">Sei sicuro di voler comprare questo elemento?</string>
     <string name="new_item">Nuovo annuncio</string>
     <string name="yes">Conferma</string>
+    <string name="comments">Commenti</string>
+    <string name="there_are_no_comments_to_show">Non ci sono commenti da mostrare</string>
+    <string name="fab_new_item_on_long">Tocca per creare un nuovo articolo</string>
+    <string name="fab_add_to_interests_on_long">Tocca per aggiungere agli articoli d\'interesse</string>
+    <string name="fab_remove_from_interests_on_long">Tocca per rimuovere dagli articoli d\'interesse</string>
+    <string name="rate_button_long_click">Tocca per lasciare una recensione</string>
 
 </resources>

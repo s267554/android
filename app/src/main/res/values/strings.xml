@@ -126,4 +126,6 @@
     <string name="confirm_purchase_text">Do you really want to buy this item? </string>
     <string name="new_item">New item</string>
     <string name="yes">Confirm</string>
+    <string name="comments">Comments</string>
+    <string name="there_are_no_comments_to_show">There are no comments to show</string>
 </resources>
