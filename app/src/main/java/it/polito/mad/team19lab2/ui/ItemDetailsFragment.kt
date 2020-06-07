@@ -174,8 +174,10 @@ class ItemDetailsFragment : Fragment(), BuyersRecycleViewAdapter.SellItemClick,R
                     if(item.state==1) {
                         buyButton.setBackgroundColor(Color.GRAY)
                         buyButton.setText(R.string.blocked)
+                        buyButton.setOnClickListener(null)
                     }
                     else{
+                        buyButton.setOnClickListener(null)
                         if(item.buyerId == user?.uid) {
                             buyButton.setText(R.string.bought)
                         }
@@ -196,24 +198,29 @@ class ItemDetailsFragment : Fragment(), BuyersRecycleViewAdapter.SellItemClick,R
                         if (flag == 1) {
                             buyButton.setBackgroundColor(Color.GRAY)
                             buyButton.setText(R.string.waiting_for_approval)
-                        }
-                    })
-                }
-                buyButton.setOnClickListener {
-                    AlertDialog.Builder(requireContext())
-                        .setTitle(R.string.confirm_purchase)
-                        .setMessage(R.string.confirm_purchase_text)
-                        .setIcon(android.R.drawable.ic_dialog_alert)
-                        .setNeutralButton(R.string.cancel, null)
-                        .setPositiveButton(R.string.yes
-                        ) { _, _ ->
-                            itemVm.saveBuyer(item)
                             buyButton.isClickable = false
                             buyButton.isEnabled = false
-                            buyButton.setBackgroundColor(Color.GRAY)
-                            buyButton.setText(R.string.waiting_for_approval)
                             buyButton.setOnClickListener(null)
-                        }.show()
+                        }
+                        else{
+                            buyButton.setOnClickListener {
+                                AlertDialog.Builder(requireContext())
+                                    .setTitle(R.string.confirm_purchase)
+                                    .setMessage(R.string.confirm_purchase_text)
+                                    .setIcon(android.R.drawable.ic_dialog_alert)
+                                    .setNeutralButton(R.string.cancel, null)
+                                    .setPositiveButton(R.string.yes
+                                    ) { _, _ ->
+                                        itemVm.saveBuyer(item)
+                                        buyButton.isClickable = false
+                                        buyButton.isEnabled = false
+                                        buyButton.setBackgroundColor(Color.GRAY)
+                                        buyButton.setText(R.string.waiting_for_approval)
+                                        buyButton.setOnClickListener(null)
+                                    }.show()
+                            }
+                        }
+                    })
                 }
 
                 val fab: FloatingActionButton = view.findViewById(R.id.fab)
