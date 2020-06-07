@@ -2,11 +2,12 @@ package it.polito.mad.team19lab2.ui
 
 import BuyersRecycleViewAdapter
 import InterestedUsersRecycleViewAdapter
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.graphics.Color
 import android.location.Address
 import android.location.Geocoder
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.ImageView
 import android.widget.TextView
@@ -26,7 +27,6 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
@@ -41,10 +41,7 @@ import it.polito.mad.team19lab2.data.UserShortModel
 import it.polito.mad.team19lab2.utilities.WorkaroundMapFragment
 import it.polito.mad.team19lab2.viewModel.ItemViewModel
 import it.polito.mad.team19lab2.viewModel.UserViewModel
-import kotlinx.android.synthetic.main.fragment_show_profile.*
 import kotlinx.android.synthetic.main.item_details_fragment.*
-import kotlinx.android.synthetic.main.item_details_fragment.image_view
-import kotlinx.android.synthetic.main.item_details_fragment.roundCardView
 import kotlinx.coroutines.*
 import java.util.*
 import kotlin.collections.ArrayList
@@ -203,11 +200,19 @@ class ItemDetailsFragment : Fragment(), BuyersRecycleViewAdapter.SellItemClick,R
                     })
                 }
                 buyButton.setOnClickListener {
-                    itemVm.saveBuyer(item)
-                    buyButton.isClickable = false
-                    buyButton.isEnabled = false
-                    buyButton.setBackgroundColor(Color.GRAY)
-                    buyButton.setText(R.string.waiting_for_approval)
+                    var dialog = AlertDialog.Builder(requireContext())
+                        .setTitle(R.string.confirm_purchase)
+                        .setMessage(R.string.confirm_purchase_text)
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setNeutralButton(R.string.cancel, null)
+                        .setPositiveButton(R.string.yes
+                        ) { _, _ ->
+                            itemVm.saveBuyer(item)
+                            buyButton.isClickable = false
+                            buyButton.isEnabled = false
+                            buyButton.setBackgroundColor(Color.GRAY)
+                            buyButton.setText(R.string.waiting_for_approval)
+                        }.show()
                 }
 
                 val fab: FloatingActionButton = view.findViewById(R.id.fab)

@@ -53,7 +53,7 @@
     <string name="profile_bar">Profile</string>
     <string name="profile_edit_bar">Edit Profile</string>
     <string name="item_details_bar">Item details</string>
-    <string name="item_edit_bar">Item Edit</string>
+    <string name="item_edit_bar">Edit item</string>
     <string name="invalidEmail">Invalid email</string>
     <string name="item_update_message">Item updated</string>
     <string name="item_create_message">Item created</string>
@@ -122,4 +122,8 @@
     <string name="fab_add_to_interests_on_long">Tap to add the item to interests list</string>
     <string name="fab_remove_from_interests_on_long">Tap to remove the item from interests list</string>
     <string name="rate_button_long_click">"Tap to leave a review"</string>
+    <string name="confirm_purchase">Confirm purchase</string>
+    <string name="confirm_purchase_text">Do you really want to buy this item? </string>
+    <string name="new_item">New item</string>
+    <string name="yes">Confirm</string>
 </resources>

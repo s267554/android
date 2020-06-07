@@ -120,6 +120,9 @@
     <string name="location_not_found">Luogo non trovato sulla mappa</string>
     <string name="rate_title">Valuta</string>
     <string name="toast_min_max_price">Il prezzo massimo deve essere maggiore o uguale al prezzo minimo.</string>
-
+    <string name="confirm_purchase">Conferma acquisto</string>
+    <string name="confirm_purchase_text">Sei sicuro di voler comprare questo elemento?</string>
+    <string name="new_item">Nuovo annuncio</string>
+    <string name="yes">Conferma</string>
 
 </resources>

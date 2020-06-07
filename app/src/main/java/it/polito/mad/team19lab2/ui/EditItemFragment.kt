@@ -45,6 +45,7 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
 import com.squareup.picasso.Picasso
+import it.polito.mad.team19lab2.MainActivity
 import it.polito.mad.team19lab2.R
 import it.polito.mad.team19lab2.data.ItemModel
 import it.polito.mad.team19lab2.utilities.DropdownAdapter
@@ -222,7 +223,7 @@ class EditItemFragment : Fragment() {
                             val finalLocation= "${cityName}, $countryCode"
                             locationEditText.setText(finalLocation)
                         }
-                        if(item.location.isNullOrEmpty()){
+                        if(item.location.isEmpty()){
                             if(ActivityCompat.checkSelfPermission(requireContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                                 getCurrentLocation()
                             }
@@ -270,6 +271,13 @@ class EditItemFragment : Fragment() {
                         val finalLocation= "${cityName}, $countryCode"
                         locationEditText.setText(finalLocation)
                     }
+                    if(ActivityCompat.checkSelfPermission(requireContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                        getCurrentLocation()
+                    }
+                    else{
+                        ActivityCompat.requestPermissions(requireContext() as Activity, Array(1){android.Manifest.permission.ACCESS_FINE_LOCATION}, 44)
+                    }
+
                 }
             }
         }
@@ -452,6 +460,10 @@ class EditItemFragment : Fragment() {
         })
 
         //STATE SPINNER MANAGEMENT
+        if(idItem==="-1"){
+            (activity as MainActivity).supportActionBar?.title = getString(R.string.new_item)
+            stateValue.removeAt(2)
+        }
         val dropAdapter = DropdownAdapter(
             requireContext(),
             R.layout.list_item,
