@@ -128,4 +128,6 @@
     <string name="yes">Confirm</string>
     <string name="comments">Comments</string>
     <string name="there_are_no_comments_to_show">There are no comments to show</string>
+    <string name="confirm_sell_text">Do you really want to sell this item?</string>
+    <string name="confirm_sell">Confirm the sale</string>
 </resources>

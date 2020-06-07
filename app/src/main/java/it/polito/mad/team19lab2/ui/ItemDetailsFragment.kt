@@ -200,7 +200,7 @@ class ItemDetailsFragment : Fragment(), BuyersRecycleViewAdapter.SellItemClick,R
                     })
                 }
                 buyButton.setOnClickListener {
-                    var dialog = AlertDialog.Builder(requireContext())
+                    AlertDialog.Builder(requireContext())
                         .setTitle(R.string.confirm_purchase)
                         .setMessage(R.string.confirm_purchase_text)
                         .setIcon(android.R.drawable.ic_dialog_alert)
@@ -212,6 +212,7 @@ class ItemDetailsFragment : Fragment(), BuyersRecycleViewAdapter.SellItemClick,R
                             buyButton.isEnabled = false
                             buyButton.setBackgroundColor(Color.GRAY)
                             buyButton.setText(R.string.waiting_for_approval)
+                            buyButton.setOnClickListener(null)
                         }.show()
                 }
 
@@ -359,9 +360,17 @@ class ItemDetailsFragment : Fragment(), BuyersRecycleViewAdapter.SellItemClick,R
     }
 
     override fun sellButtonOnClick(v: View?, position: Int) {
-        item.state=2
-        item.buyerId= buyers[position].id
-        itemVm.sellItem(item)
+        AlertDialog.Builder(requireContext())
+            .setTitle(R.string.confirm_sell)
+            .setMessage(R.string.confirm_sell_text)
+            .setIcon(android.R.drawable.ic_dialog_alert)
+            .setNeutralButton(R.string.cancel, null)
+            .setPositiveButton(R.string.yes
+            ) { _, _ ->
+                item.state=2
+                item.buyerId= buyers[position].id
+                itemVm.sellItem(item)
+            }.show()
     }
 
     private fun pointInMap(location: String){
@@ -382,6 +391,7 @@ class ItemDetailsFragment : Fragment(), BuyersRecycleViewAdapter.SellItemClick,R
             }
         }
     }
+
     override fun onDialogPositiveClick(
         userId: String,
         itemId: String,

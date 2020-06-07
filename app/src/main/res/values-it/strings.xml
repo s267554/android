@@ -130,5 +130,7 @@
     <string name="fab_add_to_interests_on_long">Tocca per aggiungere agli articoli d\'interesse</string>
     <string name="fab_remove_from_interests_on_long">Tocca per rimuovere dagli articoli d\'interesse</string>
     <string name="rate_button_long_click">Tocca per lasciare una recensione</string>
+    <string name="confirm_sell_text">Sei sicuro di voler vendere questo elemento?</string>
+    <string name="confirm_sell">Conferma la vendita</string>
 
 </resources>
