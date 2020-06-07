@@ -290,11 +290,9 @@ class ItemDetailsFragment : Fragment(), BuyersRecycleViewAdapter.SellItemClick,R
                                 try {
                                     geocoder.getFromLocationName(item.location, 1)
                                 } catch (e: Exception) {
-                                    Log.d("itemdetailfrag", "eccezzionale veramente")
-                                    null
+                                    ArrayList<Address>()
                                 }
                             }
-                            Log.d("itemdetailfrag", "millis: ${System.currentTimeMillis() -systime}")
                             withContext(Dispatchers.Main) {
                                 addresses.await()?.let { addresses ->
                                     if(addresses.isNotEmpty() && addresses[0].hasLatitude() && addresses[0].hasLongitude()) {
