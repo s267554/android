@@ -117,5 +117,6 @@
     <string name="comment">Write your comment here</string>
     <string name="location_not_found">Location not found in map</string>
     <string name="rate_title">Rate</string>
+    <string name="toast_min_max_price">Maximum price must be greater or equal then minimum price.</string>
 
 </resources>

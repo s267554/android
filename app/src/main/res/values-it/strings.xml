@@ -119,5 +119,7 @@
     <string name="onSuccessfulBuyText">è stato venduto a te</string>
     <string name="location_not_found">Luogo non trovato sulla mappa</string>
     <string name="rate_title">Valuta</string>
+    <string name="toast_min_max_price">Il prezzo massimo deve essere maggiore o uguale al prezzo minimo.</string>
+
 
 </resources>
