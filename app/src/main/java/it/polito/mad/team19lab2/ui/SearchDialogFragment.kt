@@ -9,6 +9,7 @@ import android.location.Address
 import android.location.Geocoder
 import android.os.Bundle
 import android.text.InputFilter
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.WindowManager
@@ -118,7 +119,7 @@ class SearchDialogFragment(var title: String?=null, var category: Int = -1,
                         }
                     }
                 }
-            if (minprice <= maxprice) {
+            if (minprice.toFloat() <= maxprice.toFloat()) {
                 listener.onDialogPositiveClick(title,category,minprice,maxprice,location)
                 dismiss()
             }  else {

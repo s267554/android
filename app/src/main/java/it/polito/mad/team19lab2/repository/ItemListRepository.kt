@@ -22,9 +22,9 @@ class ItemListRepository {
     ): Query {
         var q:Query=firestoreDB.collection("items")
         if(!minprice.isNullOrEmpty())
-            q=q.whereGreaterThanOrEqualTo("price", minprice.toInt())
+            q=q.whereGreaterThanOrEqualTo("price", minprice.toFloat())
         if(!maxprice.isNullOrEmpty())
-            q=q.whereLessThanOrEqualTo("price", maxprice.toInt())
+            q=q.whereLessThanOrEqualTo("price", maxprice.toFloat())
         if(category != -1)
             q=q.whereEqualTo("category", category)
         if(!location.isNullOrEmpty())
