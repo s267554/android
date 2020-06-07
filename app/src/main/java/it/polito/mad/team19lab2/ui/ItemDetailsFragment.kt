@@ -239,6 +239,13 @@ class ItemDetailsFragment : Fragment(), BuyersRecycleViewAdapter.SellItemClick,R
                         Toast.makeText(this.context, R.string.item_removed_favourites, Toast.LENGTH_LONG).show()
                     }
                 }
+                fab.setOnLongClickListener {
+                    if(favourite)
+                        Toast.makeText(context, R.string.fab_remove_from_interests_on_long, Toast.LENGTH_SHORT).show()
+                    else
+                        Toast.makeText(context, R.string.fab_add_to_interests_on_long, Toast.LENGTH_SHORT).show()
+                    return@setOnLongClickListener true
+                }
             }
             if(item.imagePath.isEmpty()){
                 image_view.setImageResource(R.mipmap.launcher_icon_no_text)

@@ -118,5 +118,8 @@
     <string name="location_not_found">Location not found in map</string>
     <string name="rate_title">Rate</string>
     <string name="toast_min_max_price">Maximum price must be greater or equal then minimum price.</string>
-
+    <string name="fab_new_item_on_long">"Tap to create a new Item"</string>
+    <string name="fab_add_to_interests_on_long">Tap to add the item to interests list</string>
+    <string name="fab_remove_from_interests_on_long">Tap to remove the item from interests list</string>
+    <string name="rate_button_long_click">"Tap to leave a review"</string>
 </resources>
