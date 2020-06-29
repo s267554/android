@@ -119,6 +119,7 @@
         android:layout_height="0dp"
         android:layout_marginBottom="8dp"
         android:fillViewport="true"
+        android:id="@+id/scrollParentEditItem"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
@@ -285,11 +286,21 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="text"
-                    android:maxLength="20"
+                    android:maxLength="60"
                     android:singleLine="true"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
             </com.google.android.material.textfield.TextInputLayout>
+
+            <fragment
+                android:id="@+id/google_maps"
+                android:name="it.polito.mad.team19lab2.utilities.WorkaroundMapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/locationTextField" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/dateTextField"
@@ -308,7 +319,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/locationTextField"
+                app:layout_constraintTop_toBottomOf="@+id/google_maps"
                 app:startIconDrawable="@drawable/date_icon_edit"
                 app:startIconTint="@color/colorPrimary">
 

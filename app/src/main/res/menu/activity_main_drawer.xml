@@ -13,6 +13,14 @@
             android:icon="@drawable/ic_shop_black_48dp"
             android:title="@string/menu_advertisements" />
         <item
+            android:id="@+id/nav_bought_items"
+            android:icon="@drawable/ic_bought_menu"
+            android:title="@string/menu_bought_items" />
+        <item
+            android:id="@+id/nav_items_of_interest"
+            android:icon="@drawable/baseline_favorite_border_black_48dp"
+            android:title="@string/menu_items_of_interest" />
+        <item
             android:id="@+id/nav_show_profile"
             android:icon="@drawable/ic_face_black_48dp"
             android:title="@string/menu_profile" />

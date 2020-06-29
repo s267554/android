@@ -3,13 +3,13 @@ package it.polito.mad.team19lab2
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.app.PendingIntent
 import android.content.Context
-import android.content.Intent
 import android.media.RingtoneManager
 import android.os.Build
 import android.util.Log
 import androidx.core.app.NotificationCompat
+import androidx.core.os.bundleOf
+import androidx.navigation.NavDeepLinkBuilder
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
@@ -34,7 +34,6 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         // messages. For more see: https://firebase.google.com/docs/cloud-messaging/concept-options
         // [END_EXCLUDE]
 
-        // TODO(developer): Handle FCM messages here.
         // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
         Log.d(TAG, "From: ${remoteMessage.from}")
 
@@ -46,10 +45,16 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             var body = ""
 
             when (remoteMessage.data["op"]) {
-                "notifyOwner" -> {
-                    title = resources.getString(R.string.notifyOwner)
+                "notifyOwnerInterest" -> {
+                    title = resources.getString(R.string.notifyOwnerInterest)
                     body = "${remoteMessage.data["fullname"]} " +
-                            "${resources.getString(R.string.notifyOwnerText)} " +
+                            "${resources.getString(R.string.notifyOwnerInterestText)} " +
+                            "${remoteMessage.data["item"]}"
+                }
+                "notifyOwnerBuy" -> {
+                    title = resources.getString(R.string.notifyOwnerBuy)
+                    body = "${remoteMessage.data["fullname"]} " +
+                            "${resources.getString(R.string.notifyOwnerBuyText)} " +
                             "${remoteMessage.data["item"]}"
                 }
                 "sendFollowerNotification" -> {
@@ -60,10 +65,17 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                                 resources.getStringArray(R.array.item_state)[remoteMessage.data["state"]!!.toInt()]
                     }
                 }
+                "onSuccessfulBuy"-> {
+                    title = resources.getString(R.string.onSuccessfulBuy)
+                    body = "${remoteMessage.data["item"]} " +
+                            resources.getString(R.string.onSuccessfulBuyText)
+                }
             }
 
-            if ( title.isNotBlank() && body.isNotBlank() )
-                sendNotification(body, title)
+            val itemId: String = remoteMessage.data["item_id"].toString()
+
+            if ( title.isNotBlank() && body.isNotBlank() && itemId.isNotBlank())
+                sendNotification(body, title, itemId)
 
         }
 
@@ -96,13 +108,6 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     // [END on_new_token]
 
     /**
-     * Handle time allotted to BroadcastReceivers.
-     */
-    private fun handleNow() {
-        Log.d(TAG, "Short lived task is done.")
-    }
-
-    /**
      * Persist token to third-party servers.
      *
      * Modify this method to associate the user's FCM InstanceID token with any server-side account
@@ -111,7 +116,6 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
      * @param token The new token.
      */
     private fun sendRegistrationToServer(token: String?) {
-        // TODO: add multiple tokens for each device
         val repo = UserRepository()
         if(repo.user != null) {
             Log.d(TAG, "sendRegistrationTokenToServer($token)")
@@ -126,11 +130,17 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
      *
      * @param messageBody FCM message body received.
      */
-    private fun sendNotification(messageBody: String, title: String) {
-        val intent = Intent(this, MainActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-        val pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
-            PendingIntent.FLAG_ONE_SHOT)
+    private fun sendNotification(
+        messageBody: String,
+        title: String,
+        itemId: String
+    ) {
+        val myPendingIntent = NavDeepLinkBuilder(applicationContext)
+            .setComponentName(MainActivity::class.java)
+            .setGraph(R.navigation.mobile_navigation)
+            .setDestination(R.id.nav_item_detail)
+            .setArguments(bundleOf("item_id1" to itemId))
+            .createPendingIntent()
 
         val channelId = getString(R.string.default_notification_channel_id)
         val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
@@ -138,21 +148,22 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             .setSmallIcon(R.drawable.ic_shop_black_48dp)
             .setContentTitle(title)
             .setContentText(messageBody)
-            .setAutoCancel(false)
+            .setAutoCancel(true)
             .setSound(defaultSoundUri)
-            .setContentIntent(pendingIntent)
+            .setContentIntent(myPendingIntent)
 
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
         // Since android Oreo notification channel is needed.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(channelId,
-                "Channel human readable title",
+                "MADketPlace notifications channel",
                 NotificationManager.IMPORTANCE_DEFAULT)
             notificationManager.createNotificationChannel(channel)
         }
 
-        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build())
+        // Notification's id is generated form body message.
+        notificationManager.notify(messageBody.hashCode(), notificationBuilder.build())
     }
 
     companion object {

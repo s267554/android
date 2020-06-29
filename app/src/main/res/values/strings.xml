@@ -1,6 +1,6 @@
 
 <resources>
-    <string name="app_name">MyMarket</string>
+    <string name="app_name">maDketplace</string>
     <string name="nav_header_title">Full name</string>
     <string name="nav_header_subtitle">Nickname</string>
     <string name="nav_header_desc">Navigation header</string>
@@ -9,10 +9,12 @@
     <string name="menu_profile">Profile</string>
     <string name="menu_advertisements">My advertisements</string>
     <string name="menu_on_sale">On sale advertisements</string>
+    <string name="menu_bought_items">Bought items</string>
+    <string name="menu_items_of_interest">Items of interest</string>
 
     <string name="description">Description</string>
     <string name="category">Category</string>
-    <string name="undefined">undefined</string>
+    <string name="undefined">Undefined</string>
     <string name="price">Price</string>
     <string name="location">Location</string>
     <string name="expiryDate">Expiry date</string>
@@ -50,8 +52,8 @@
     <!-- da ricontrollare-->
     <string name="profile_bar">Profile</string>
     <string name="profile_edit_bar">Edit Profile</string>
-    <string name="item_deatails_bar">Item details</string>
-    <string name="item_edit_bar">Item Edit</string>
+    <string name="item_details_bar">Item details</string>
+    <string name="item_edit_bar">Edit item</string>
     <string name="invalidEmail">Invalid email</string>
     <string name="item_update_message">Item updated</string>
     <string name="item_create_message">Item created</string>
@@ -64,19 +66,22 @@
     <string name="logout">logout</string>
     <string name="search">Search</string>
     <string name="clear">clear</string>
-    <string name="interestedUsers">Interested users</string>
+    <string name="interested_users">Interested users</string>
     <string name="view">view</string>
     <string name="nofilter">No filter</string>
     <string name="from">"from "</string>
     <string name="upTo">"up to "</string>
     <string name="pUnbound">up to unbounded</string>
     <string name="upUnbound">"up to unbounded"</string>
-    <string name="default_notification_channel_id" />
-    <string name="fcm_message" />
-    <string name="notifyOwner">Your Item got some love!</string>
-    <string name="notifyOwnerText">has expressed interest for</string>
+    <string name="default_notification_channel_id" translatable="false">it.polito.mad.team19lab2</string>
+    <string name="notifyOwnerInterest">Your Item got some love!</string>
+    <string name="notifyOwnerInterestText">has expressed interest for</string>
+    <string name="notifyOwnerBuy">Your Item can be sold now!</string>
+    <string name="notifyOwnerBuyText">wants to buy</string>
     <string name="sendFollowerNotification">Update on your beloved Item!</string>
     <string name="sendFollowerNotificationText">is now</string>
+    <string name="onSuccessfulBuy">Congratulations! You bought an Item!</string>
+    <string name="onSuccessfulBuyText">has been sold to you</string>
     <string name="no_users">No interested users</string>
     <string name="buy">Buy this item</string>
     <string name="seller">Seller</string>
@@ -95,8 +100,34 @@
     <string name="MinPrice">Min price</string>
     <string name="MaxPrice">Max price</string>
     <string name="cancel">cancel</string>
-    <string name="no_advs_users">There are no advertisments of other users</string>
-    <string name="expired">expired</string>
-    <string name="available">available</string>
-
+    <string name="no_advs_users">There are no advertisements of other users</string>
+    <string name="expired">Expired</string>
+    <string name="available">Available</string>
+    <string name="item_add_favourites">Item added to your interests</string>
+    <string name="item_removed_favourites">Item removed from your interests</string>
+    <string name="waiting_for_approval">Pending approval</string>
+    <string name="buyers">Potential buyers</string>
+    <string name="sell">Sell</string>
+    <string name="no_buyers">No potential buyers</string>
+    <string name="request_purchase">Request purchase</string>
+    <string name="no_items_bought">No items bought yet</string>
+    <string name="there_are_no_advertisements">There are no advertisements</string>
+    <string name="no_items_of_interest">No items of interest yet</string>
+    <string name="rate_and_commment">Rate seller</string>
+    <string name="comment">Write your comment here</string>
+    <string name="location_not_found">Location not found in map</string>
+    <string name="rate_title">Rate</string>
+    <string name="toast_min_max_price">Maximum price must be greater or equal then minimum price.</string>
+    <string name="fab_new_item_on_long">"Tap to create a new Item"</string>
+    <string name="fab_add_to_interests_on_long">Tap to add the item to interests list</string>
+    <string name="fab_remove_from_interests_on_long">Tap to remove the item from interests list</string>
+    <string name="rate_button_long_click">"Tap to leave a review"</string>
+    <string name="confirm_purchase">Confirm purchase</string>
+    <string name="confirm_purchase_text">Do you really want to buy this item? </string>
+    <string name="new_item">New item</string>
+    <string name="yes">Confirm</string>
+    <string name="comments">Comments</string>
+    <string name="there_are_no_comments_to_show">There are no comments to show</string>
+    <string name="confirm_sell_text">Do you really want to sell this item?</string>
+    <string name="confirm_sell">Confirm the sale</string>
 </resources>

@@ -20,15 +20,18 @@ data class ItemModel (
     //var state: String,
     var state: Int,
     var userId: String,
-    var expireDatestamp: Timestamp
+    var expireDatestamp: Timestamp,
+    var buyerId: String,
+    var reviewed:Boolean=false,
+    var imageVersion:Int=0
 ) : Parcelable{
     fun compareTo(other: ItemModel): Int {
-        val x=id==other.id&&title==other.title&&price==other.price&&imagePath==other.imagePath
+        val x=id==other.id&&title==other.title&&price==other.price&&imageVersion==other.imageVersion
         if (x)
             return 0
         else
             return 1
     }
 
-    constructor() : this("","","",-1,-1,"","","", 0.0F, 1, "",Timestamp(0,0))
+    constructor() : this("","","",-1,-1,"","","", 0.0F, 1, "",Timestamp(0,0), "")
 }

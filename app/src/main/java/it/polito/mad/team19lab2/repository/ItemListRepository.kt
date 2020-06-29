@@ -22,15 +22,21 @@ class ItemListRepository {
     ): Query {
         var q:Query=firestoreDB.collection("items")
         if(!minprice.isNullOrEmpty())
-            q=q.whereGreaterThanOrEqualTo("price", minprice.toInt())
+            q=q.whereGreaterThanOrEqualTo("price", minprice.toFloat())
         if(!maxprice.isNullOrEmpty())
-            q=q.whereLessThanOrEqualTo("price", maxprice.toInt())
+            q=q.whereLessThanOrEqualTo("price", maxprice.toFloat())
         if(category != -1)
             q=q.whereEqualTo("category", category)
         if(!location.isNullOrEmpty())
             q=q.whereEqualTo("location", location)
         //q=q.whereEqualTo("state","Available")
         q = q.whereEqualTo("state", 0) // Available
+        return q
+    }
+    fun getBoughtItems(): Query{
+        var q: Query = firestoreDB.collection("items")
+        q = q.whereEqualTo("buyerId", myId)
+        q = q.whereEqualTo("state", 2) // Sold
         return q
     }
 }

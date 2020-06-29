@@ -36,6 +36,7 @@ RecyclerView.Adapter<OnSaleRecyclerViewAdapter.ViewHolder> ( ){
             val item = v.tag as ItemModel
             val bundle = bundleOf("item_id1" to item.id)
             v.findNavController().navigate(R.id.action_nav_home_to_nav_item_detail, bundle)
+
         }
     }
 
@@ -133,13 +134,12 @@ RecyclerView.Adapter<OnSaleRecyclerViewAdapter.ViewHolder> ( ){
                 }.addOnFailureListener {
                 }
             } else {
-                this.itemImage.setImageResource(R.drawable.sport_category_foreground)
+                this.itemImage.setImageResource(R.mipmap.launcher_icon_no_text)
             }
         }
 
     }
 }
-
 
 class MyDiffUtilCallback(newList: ArrayList<ItemModel>?, oldList: ArrayList<ItemModel>?) :
     DiffUtil.Callback() {
@@ -165,9 +165,7 @@ class MyDiffUtilCallback(newList: ArrayList<ItemModel>?, oldList: ArrayList<Item
         newItemPosition: Int
     ): Boolean {
         val result: Int = newList!![newItemPosition].compareTo(oldList!![oldItemPosition])
-        return if (result == 0) {
-            true
-        } else false
+        return result == 0
     }
 
     @Nullable
@@ -181,7 +179,7 @@ class MyDiffUtilCallback(newList: ArrayList<ItemModel>?, oldList: ArrayList<Item
         if (!newContact.price.equals(oldContact.price)) {
             diff.putFloat("price", newContact.price)
         }
-        if (!newContact.imagePath.equals(oldContact.imagePath)) {
+        if (newContact.imageVersion!=oldContact.imageVersion) {
             diff.putString("imagePath", newContact.imagePath)
         }
         return if (diff.size() == 0) {

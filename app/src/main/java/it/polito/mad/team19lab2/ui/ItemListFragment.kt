@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
@@ -47,6 +48,10 @@ class ItemListFragment : Fragment() {
             "sourceFragment" to R.id.action_nav_my_advertisement_to_nav_edit_item
         )
         fab.setOnClickListener {  it.findNavController().navigate(R.id.action_nav_my_advertisement_to_nav_edit_item, bundle)
+        }
+        fab.setOnLongClickListener{
+            Toast.makeText(context, R.string.fab_new_item_on_long, Toast.LENGTH_SHORT).show()
+            return@setOnLongClickListener true
         }
 
         return view

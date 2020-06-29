@@ -2,6 +2,7 @@ package it.polito.mad.team19lab2.viewModel
 
 
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.EventListener
@@ -10,6 +11,7 @@ import it.polito.mad.team19lab2.data.ItemModel
 import it.polito.mad.team19lab2.data.UserShortModel
 import it.polito.mad.team19lab2.repository.ItemRepository
 import it.polito.mad.team19lab2.repository.UserRepository
+import kotlin.coroutines.coroutineContext
 
 class ItemViewModel : ViewModel() {
     private var itemRepository = ItemRepository()
@@ -17,11 +19,33 @@ class ItemViewModel : ViewModel() {
     private var TAG = "ITEM_VIEW_MODEL"
     private var liveItem: MutableLiveData<ItemModel> = MutableLiveData()
     private var liveUsers : MutableLiveData<List<UserShortModel>> = MutableLiveData()
+    private var liveBuyers : MutableLiveData<List<UserShortModel>> = MutableLiveData()
     private var userList : MutableList<UserShortModel> = mutableListOf()
+    private var buyerList : MutableList<UserShortModel> = mutableListOf()
 
-    fun saveItem(item: ItemModel) {
+    fun saveBuyer(item: ItemModel) {
+        val query = userRepository.getProfile().get()
+        query.addOnSuccessListener {
+            if (it != null) {
+                val usm = it.toObject(UserShortModel::class.java)
+                if (usm != null) {
+                    itemRepository.saveBuyer(item, usm).addOnFailureListener {
+
+                    }
+                }
+            }
+        }
+    }
+
+    fun saveItem(item: ItemModel){
         itemRepository.saveItem(item).addOnFailureListener {
+            Log.e("ERROR", "Error on save item")
+        }
+    }
 
+    fun sellItem(item: ItemModel){
+        itemRepository.sellItem(item).addOnFailureListener {
+            Log.e("ERROR", "Error on sell item")
         }
     }
 
@@ -42,6 +66,28 @@ class ItemViewModel : ViewModel() {
         userList.clear()
         takeLiveUsersFromQuery(itemRepository.getInterestedUsers(id))
         return liveUsers
+    }
+
+    fun getBuyers(id: String):MutableLiveData<List<UserShortModel>>{
+        buyerList.clear()
+        takeLiveBuyersFromQuery(itemRepository.getBuyers(id))
+        return liveBuyers
+    }
+
+    private fun takeLiveBuyersFromQuery(q: Query){
+        q.addSnapshotListener(EventListener { value, e ->
+            if (e != null) {
+                liveBuyers.value = null
+                return@EventListener
+            }
+            for (doc in value!!) {
+                val user = doc.toObject(UserShortModel::class.java)
+                buyerList.add(user)
+            }
+            val tmpArray=ArrayList(buyerList)
+            liveBuyers.value = tmpArray
+            buyerList.clear()
+        })
     }
 
     private fun takeLiveUsersFromQuery(q: Query){

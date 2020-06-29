@@ -2,6 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scrollParentShowItem"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginBottom="8dp"
@@ -22,14 +23,13 @@
             android:layout_alignParentBottom="true"
             android:layout_marginTop="@dimen/fab_margin"
             android:layout_marginEnd="@dimen/fab_margin"
+            android:visibility="gone"
             app:backgroundTint="@color/colorAccent"
             app:elevation="1dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:pressedTranslationZ="1dp"
             app:srcCompat="@drawable/baseline_favorite_border_black_48dp" />
-
-        />
 
         <TextView
             android:id="@+id/priceTextView"
@@ -179,6 +179,15 @@
             app:srcCompat="@mipmap/category_icon_round" />
 
         <ImageView
+            android:id="@+id/statusIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ExpireIcon"
+            app:srcCompat="@mipmap/status_icon_round" />
+
+        <ImageView
             android:id="@+id/priceIcon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -200,6 +209,17 @@
             app:layout_constraintTop_toBottomOf="@+id/priceIcon"
             app:srcCompat="@mipmap/location_icon_round" />
 
+        <fragment
+            android:id="@+id/google_maps"
+            android:name="it.polito.mad.team19lab2.utilities.WorkaroundMapFragment"
+            android:layout_width="0dp"
+            android:layout_height="150dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/locationIcon"
+            app:layout_constraintTop_toBottomOf="@id/locationIcon" />
+
+
         <ImageView
             android:id="@+id/ExpireIcon"
             android:layout_width="wrap_content"
@@ -208,7 +228,7 @@
             android:contentDescription="@string/expiryDate"
             android:cropToPadding="false"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/locationIcon"
+            app:layout_constraintTop_toBottomOf="@+id/google_maps"
             app:srcCompat="@mipmap/date_icon" />
 
         <TextView
@@ -283,6 +303,65 @@
             app:layout_constraintStart_toStartOf="@+id/categoryLabel"
             app:layout_constraintTop_toBottomOf="@+id/categoryTextView" />
 
+        <TextView
+            android:id="@+id/statusLabel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/state_hint"
+            app:layout_constraintEnd_toEndOf="@+id/frameLayout2"
+            app:layout_constraintStart_toEndOf="@+id/statusIcon"
+            app:layout_constraintTop_toTopOf="@+id/statusIcon" />
+
+        <TextView
+            android:id="@+id/statusTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@color/primaryText"
+            app:layout_constraintEnd_toEndOf="@+id/buyButton"
+            app:layout_constraintStart_toStartOf="@+id/statusLabel"
+            app:layout_constraintTop_toBottomOf="@+id/statusLabel" />
+
+        <TextView
+            android:id="@+id/buyers"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/buyers"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/materialCardView3" />
+
+        <TextView
+            android:id="@+id/noBuyers"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="@string/no_buyers"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@+id/interestedUsers"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/buyers" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/buyerList"
+            android:name="it.polito.mad.team19lab2.BuyerFragment"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/buyers"
+            tools:context=".ui.ItemDetailsFragment"
+            tools:listitem="@layout/fragment_buyer">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/userList"
             android:name="it.polito.mad.team19lab2.UserFragment"
@@ -301,34 +380,23 @@
             android:id="@+id/interestedUsers"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@string/interestedUsers"
+            android:layout_marginTop="16dp"
+            android:text="@string/interested_users"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/materialCardView3" />
-
-        <Button
-            android:id="@+id/buyButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="@string/buy"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ExpireIcon" />
-
+            app:layout_constraintTop_toBottomOf="@id/buyerList" />
 
         <TextView
             android:id="@+id/noUsers"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             android:text="@string/no_users"
             android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/interestedUsers" />
+            app:layout_constraintTop_toBottomOf="@id/interestedUsers" />
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/materialCardView3"
@@ -382,6 +450,17 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.card.MaterialCardView>
+
+        <Button
+            android:id="@+id/buyButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/request_purchase"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/statusIcon" />
 
         <TextView
             android:id="@+id/seller_textView"

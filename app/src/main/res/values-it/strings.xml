@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-        <string name="app_name">MyMarket</string>
+        <string name="app_name">maDketplace</string>
         <string name="nav_header_title">Nome</string>
         <string name="nav_header_subtitle">Nickname</string>
         <string name="nav_header_desc">Navigation header</string>
@@ -9,6 +9,8 @@
         <string name="menu_profile">Profilo</string>
         <string name="menu_advertisements">I miei annunci</string>
         <string name="menu_on_sale">Annunci market</string>
+        <string name="menu_bought_items">Oggetti acquistati</string>
+        <string name="menu_items_of_interest">Oggetti d\'interesse</string>
 
         <string name="description">Descrizione</string>
         <string name="category">Categoria</string>
@@ -34,7 +36,7 @@
         <!-- da ricontrollare-->
         <string name="profile_bar">Profilo</string>
         <string name="profile_edit_bar">Modifica profilo</string>
-        <string name="item_deatails_bar">Dettagli</string>
+        <string name="item_details_bar">Dettagli</string>
         <string name="item_edit_bar">Modifica annuncio</string>
         <string name="invalidEmail">Email non valida</string>
     <string name="item_update_message">Annuncio aggiornato</string>
@@ -48,7 +50,7 @@
     <string name="logout">logout</string>
     <string name="search">Cerca</string>
     <string name="clear">cancella</string>
-    <string name="interestedUsers">Utenti interessati</string>
+    <string name="interested_users">Utenti interessati</string>
     <string name="no_users">Nessun utente interessato</string>
     <string name="buy">Compra</string>
     <string name="state_hint">Stato</string>
@@ -58,7 +60,7 @@
     <string name="Availability">Disponibilità</string>
     <string name="bought">Acquistato</string>
     <string name="item_bought">Prodotto acquistato</string>
-    <string name="sold">Acquistato</string>
+    <string name="sold">Venduto</string>
     <string name="blocked">Bloccato</string>
     <string name="from">"da "</string>
     <string name="upTo">"fino a "</string>
@@ -67,7 +69,7 @@
     <string name="any_title">qualsiasi titolo</string>
     <string name="any_category">IN qualsiasi categoria</string>
     <string name="any_location">\@ qualsiasi luogo</string>
-    <string name="modify">modifica</string>
+    <string name="modify">Modifica</string>
     <string name="MinPrice">Prezzo minimo</string>
     <string name="MaxPrice">Prezzo massimo</string>
     <string name="view">visita</string>
@@ -91,10 +93,44 @@
         <item>Auto</item>
         <item>Altro</item>
     </string-array>
-    <string name="expired">scaduto</string>
-    <string name="available">disponibile</string>
-    <string name="notifyOwner">Il tuo articolo ha riscosso interesse!</string>
-    <string name="notifyOwnerText">è interessato a</string>
+    <string name="expired">Scaduto</string>
+    <string name="available">Disponibile</string>
     <string name="sendFollowerNotification">Aggiornamenti sul tuo articolo preferito!</string>
     <string name="sendFollowerNotificationText">è ora</string>
+    <string name="no_items_bought">Nessun oggetto comprato</string>
+    <string name="there_are_no_advertisements">Nessun oggetto in vendita</string>
+    <string name="no_items_of_interest">Nessun annuncio apprezzato</string>
+
+    <string name="item_add_favourites">Oggetto aggiunto alla tua lista d\'interessi</string>
+    <string name="item_removed_favourites">Oggetto rimosso dalla tua lista d\'interessi</string>
+    <string name="waiting_for_approval">In attesa di conferma</string>
+    <string name="buyers">Potenziali acquirenti</string>
+    <string name="sell">Vendi</string>
+    <string name="no_buyers">Nessun potenziale acquirente</string>
+    <string name="request_purchase">Invia richiesta d\'acquisto</string>
+
+    <string name="rate_and_commment">Vota e commenta</string>
+    <string name="comment">Scrivi qui la tua recensione</string>
+    <string name="notifyOwnerInterest">Il tuo articolo ha ricevuto apprezzamenti!</string>
+    <string name="notifyOwnerInterestText">è interessato a</string>
+    <string name="notifyOwnerBuy">Il tuo articolo può essere venduto ora!</string>
+    <string name="notifyOwnerBuyText">vuole comprare</string>
+    <string name="onSuccessfulBuy">Congratulazioni! Hai comprato un articolo!</string>
+    <string name="onSuccessfulBuyText">è stato venduto a te</string>
+    <string name="location_not_found">Luogo non trovato sulla mappa</string>
+    <string name="rate_title">Valuta</string>
+    <string name="toast_min_max_price">Il prezzo massimo deve essere maggiore o uguale al prezzo minimo.</string>
+    <string name="confirm_purchase">Conferma acquisto</string>
+    <string name="confirm_purchase_text">Sei sicuro di voler comprare questo elemento?</string>
+    <string name="new_item">Nuovo annuncio</string>
+    <string name="yes">Conferma</string>
+    <string name="comments">Commenti</string>
+    <string name="there_are_no_comments_to_show">Non ci sono commenti da mostrare</string>
+    <string name="fab_new_item_on_long">Tocca per creare un nuovo articolo</string>
+    <string name="fab_add_to_interests_on_long">Tocca per aggiungere agli articoli d\'interesse</string>
+    <string name="fab_remove_from_interests_on_long">Tocca per rimuovere dagli articoli d\'interesse</string>
+    <string name="rate_button_long_click">Tocca per lasciare una recensione</string>
+    <string name="confirm_sell_text">Sei sicuro di voler vendere questo elemento?</string>
+    <string name="confirm_sell">Conferma la vendita</string>
+
 </resources>

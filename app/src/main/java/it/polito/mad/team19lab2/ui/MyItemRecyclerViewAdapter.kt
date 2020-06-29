@@ -1,5 +1,6 @@
 package it.polito.mad.team19lab2.ui
 
+import android.opengl.Visibility
 import android.util.Log
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
@@ -8,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.view.menu.MenuView
 import androidx.core.os.bundleOf
 import androidx.navigation.findNavController
 import com.google.firebase.Timestamp
@@ -69,7 +71,7 @@ class MyItemRecyclerViewAdapter(
             }.addOnFailureListener {
             }
         } else {
-            holder.mImage.setImageResource(R.drawable.sport_category_foreground)
+            holder.mImage.setImageResource(R.mipmap.launcher_icon_no_text)
         }
         if(item.state == 0){
             if(item.expireDatestamp.seconds < Timestamp.now().seconds){
@@ -88,6 +90,7 @@ class MyItemRecyclerViewAdapter(
         else{
             holder.mStateText.setText(R.string.sold)
             holder.mStateImage.setImageResource(R.drawable.state_sold)
+            holder.mEditButton.visibility = View.GONE
         }
 
         with(holder.mView) {

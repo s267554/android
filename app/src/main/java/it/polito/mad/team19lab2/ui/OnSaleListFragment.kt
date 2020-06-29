@@ -174,12 +174,12 @@ class OnSaleListFragment: Fragment(),SearchDialogFragment.NoticeDialogListener{
         var m1=minprice
         var m2=maxprice
         if(!minprice.isNullOrEmpty())
-            if(minprice.toInt()<=0)
+            if(minprice.toFloat()<=0)
                 m1=null
             else
                 search=true
         if(!maxprice.isNullOrEmpty())
-            if(maxprice.toInt()>=999999)
+            if(maxprice.toFloat()>=999999)
                 m2=null
             else
                 search=true
@@ -249,16 +249,16 @@ class OnSaleListFragment: Fragment(),SearchDialogFragment.NoticeDialogListener{
 
     inner class myRefreshListener:SwipeRefreshLayout.OnRefreshListener {
         override fun onRefresh() {
-            itemListVm.getAllItems().observe(viewLifecycleOwner, Observer {
-                if(!search && it!=null){
-                    onSaleArray= it as ArrayList<ItemModel>
-                    adapter.onNewData(onSaleArray);
-                }
-                if (onSaleArray.count() != 0)
-                    emptyList.visibility = View.GONE
-                else
-                    emptyList.visibility = View.VISIBLE
-            })
+//            itemListVm.getAllItems().observe(viewLifecycleOwner, Observer {
+//                if(!search && it!=null){
+//                    onSaleArray= it as ArrayList<ItemModel>
+//                    adapter.onNewData(onSaleArray);
+//                }
+//                if (onSaleArray.count() != 0)
+//                    emptyList.visibility = View.GONE
+//                else
+//                    emptyList.visibility = View.VISIBLE
+//            })
             swipeRefreshLayout.isRefreshing=false
         }
     }

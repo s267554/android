@@ -2,6 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scrollParentShowProfile"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginBottom="8dp"
@@ -34,7 +35,6 @@
             android:layout_marginTop="16dp"
             android:contentDescription="@string/location"
             android:cropToPadding="false"
-            app:layout_constraintBottom_toTopOf="@+id/interestsIcon"
             app:layout_constraintStart_toStartOf="@+id/emailIcon"
             app:layout_constraintTop_toBottomOf="@+id/emailIcon"
             app:srcCompat="@mipmap/location_icon_round" />
@@ -47,7 +47,7 @@
             android:contentDescription="@string/interests"
             android:cropToPadding="false"
             app:layout_constraintStart_toStartOf="@+id/locationIcon"
-            app:layout_constraintTop_toBottomOf="@+id/locationIcon"
+            app:layout_constraintTop_toBottomOf="@+id/google_maps"
             app:srcCompat="@mipmap/interests_icon_round" />
 
         <ImageView
@@ -214,8 +214,18 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textColor="#000000"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/email_view"
+            app:layout_constraintStart_toStartOf="@+id/textView5"
             app:layout_constraintTop_toBottomOf="@+id/textView5" />
+
+        <fragment
+            android:id="@+id/google_maps"
+            android:name="it.polito.mad.team19lab2.utilities.WorkaroundMapFragment"
+            android:layout_width="0dp"
+            android:layout_height="200dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/locationIcon"
+            app:layout_constraintTop_toBottomOf="@id/locationIcon" />
 
         <TextView
             android:id="@+id/textView5"
@@ -224,7 +234,7 @@
             android:text="@string/location"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/textView4"
+            app:layout_constraintStart_toStartOf="@+id/textView3"
             app:layout_constraintTop_toTopOf="@+id/locationIcon" />
 
         <TextView
@@ -250,6 +260,52 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/textView6"
             app:layout_constraintTop_toBottomOf="@+id/textView6" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/commentContainer"
+            android:layout_width="0dp"
+            android:layout_height="200dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/noCommentsToShow">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/commentList"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:context=".ui.ShowProfileFragment"
+                tools:listitem="@layout/fragment_comment" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/comment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/comments"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/interestsIcon" />
+
+        <TextView
+            android:id="@+id/noCommentsToShow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="24dp"
+            android:text="@string/there_are_no_comments_to_show"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/comment"
+            tools:text="There are no comments to show" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
